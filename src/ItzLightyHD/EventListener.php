@@ -7,10 +7,13 @@ use pocketmine\event\Listener;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\item\Item;
+use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\entity\EffectInstance;
+use pocketmine\entity\Effect;
 use pocketmine\Player;
+use pocketmine\Server;
 use pocketmine\level\sound\ClickSound;
 
 class EventListener implements Listener {
@@ -64,7 +67,16 @@ class EventListener implements Listener {
                             }
                     }
                 }
+                if($event->getCause() === EntityDamageEvent::CAUSE_FALL) {
+                    $event->setCancelled();
+                }
             }
+        }
+    }
+
+    public function Hunger(PlayerExhaustEvent $event) {
+        if($event->getPlayer()->getLevel()->getFolderName() === KnockbackFFA::getInstance()->getGameData()->get("arena")) {
+            $event->setCancelled(true);
         }
     }
 
@@ -86,6 +98,9 @@ class EventListener implements Listener {
                 $player->addEffect(new EffectInstance(Effect::getEffect(8), 99999, 1, false));
 
                 $player->getLevel()->addSound(new ClickSound($player));
+            } else {
+                $player = $event->getEntity();
+                $player->removeAllEffects();
             }
         }
     }
