@@ -16,7 +16,7 @@ use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Effect;
 use pocketmine\Player;
 use pocketmine\Server;
-use pocketmine\level\sound\ClickSound;
+use pocketmine\level\sound\PopSound;
 use pocketmine\level\sound\AnvilFallSound;
 use pocketmine\level\sound\FizzSound;
 
@@ -77,6 +77,7 @@ class EventListener implements Listener {
                                 $players = $event->getEntity()->getLevel()->getPlayers();
             
                                 foreach ($players as $p) {
+                                    $p->getLevel()->addSound(new PopSound($p));
                                     $p->sendPopup("§8[§5KBFFA§8] §r§7§l» §r§f" . Server::getInstance()->getPlayer($this->lastDmg[strtolower($event->getEntity()->getName())])->getDisplayName() . "§r§6 is at §e" . $this->killstreak[$this->lastDmg[strtolower($event->getEntity()->getName())]] . "§6 kills");
                                 }
                             } else {
