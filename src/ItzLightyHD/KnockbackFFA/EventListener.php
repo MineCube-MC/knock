@@ -156,7 +156,8 @@ class EventListener implements Listener {
                 $stick = Item::get(280, 0, 1);
                 $stick->addEnchantment(new EnchantmentInstance(Enchantment::getEnchantment(12), 2));
                 $player->getInventory()->setItem(0, $stick);
-
+                
+                $player->removeAllEffects();
                 $player->addEffect(new EffectInstance(Effect::getEffect(1), 99999, 1, false));
                 $player->addEffect(new EffectInstance(Effect::getEffect(8), 99999, 1, false));
             } else {
