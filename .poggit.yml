@@ -5,5 +5,5 @@ branches:
 projects:
   KnockbackFFA:
     path: ""
-    icon: "KnockbackFFA.gif"
+    icon: "icon.png"
 ...
