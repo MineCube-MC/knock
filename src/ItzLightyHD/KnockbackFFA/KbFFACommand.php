@@ -33,6 +33,25 @@ class KbFFACommand extends Command implements PluginIdentifiableCommand {
             return;
         }
         $world = KnockbackFFA::getInstance()->getGameData()->get("arena");
+        if(isset($args[0])) {
+            if($args[0] === "kills") {
+                    if(!isset(args[1])) {
+                        $sender->sendMessage("§cUsage: /kbffa kills <player>");
+                        return;
+                    }
+                    $player = Server::getInstance()->getPlayer($args[1]);
+                    if($player->isOnline()) {
+                        if(EventListener::getInstance()->getKillstreak($player->getName()) === "None") {
+                            $sender->sendMessage("§8[§5KBFFA§8] §r§7§l» §r§e" . $player->getDisplayName() . " §r§6didn't play KnockbackFFA yet");
+                        } else {
+                            $sender->sendMessage("§8[§5KBFFA§8] §r§7§l» §r§e" . $player->getDisplayName() . " §r§6is at §e" . EventListener::getInstance()->getKillstreak(Server::getInstance()->getPlayer($args[1])->getName()) . " §6kills");
+                        }
+                    } else {
+                        $sender->sendMessage("§8[§5KBFFA§8] §r§7§l» §r§c" . $args[1] . " isn't online!");
+                    }
+                return;
+            }
+        }
         $sender->teleport(Server::getInstance()->getLevelByName($world)->getSpawnLocation());
     }
 }
