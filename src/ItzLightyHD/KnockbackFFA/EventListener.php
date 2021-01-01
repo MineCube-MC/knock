@@ -147,6 +147,7 @@ class EventListener implements Listener {
         if($event->getEntity() instanceof Player) {
             if($event->getTarget()->getFolderName() === KnockBackFFA::getInstance()->getGameData()->get("arena")) {
                 $player = $event->getEntity();
+                $this->killstreak[strtolower($event->getEntity()->getName())] = 0;
                 $player->setHealth(20);
                 $player->setFood(20);
 
@@ -163,7 +164,7 @@ class EventListener implements Listener {
             } else {
                 $player = $event->getEntity();
                 $player->removeAllEffects();
-                $this->killstreak[strtolower($event->getEntity()->getName())] = 0;
+                $this->killstreak[strtolower($event->getEntity()->getName())] = "None";
             }
         }
     }
