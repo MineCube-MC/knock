@@ -1,3 +1,4 @@
+![KnockbackFFA](https://raw.githubusercontent.com/AetherPlace/KnockbackFFA/main/KnockbackFFA.gif)
 # KnockbackFFA
 The classic SumoFFA minigame, open to all for PocketMine-MP.
 
