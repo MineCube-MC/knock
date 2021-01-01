@@ -35,7 +35,7 @@ class KbFFACommand extends Command implements PluginIdentifiableCommand {
         $world = KnockbackFFA::getInstance()->getGameData()->get("arena");
         if(isset($args[0])) {
             if($args[0] === "kills") {
-                    if(!isset(args[1])) {
+                    if(!isset($args[1])) {
                         $sender->sendMessage("§cUsage: /kbffa kills <player>");
                         return;
                     }
