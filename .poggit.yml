@@ -5,4 +5,5 @@ branches:
 projects:
   KnockbackFFA:
     path: ""
+    image: "https://raw.githubusercontent.com/AetherPlace/KnockbackFFA/main/KnockbackFFA.gif"
 ...
