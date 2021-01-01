@@ -18,3 +18,6 @@ To get the current kills of a player just use this function from the EventListen
 ```php
 \ItzLightyHD\KnockbackFFA\EventListener::getInstance()->getKillstreak($player->getName());
 ```
+
+## Contributing
+Just go in our [GitHub page](https://github.com/AetherPlace/KnockbackFFA) and click the 'Sponsor' button to support us on Patreon.
