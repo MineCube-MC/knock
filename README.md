@@ -21,3 +21,4 @@ To get the current kills of a player just use this function from the EventListen
 
 ## Contributing
 Just go in our [GitHub page](https://github.com/AetherPlace/KnockbackFFA) and click the 'Sponsor' button to support us on Patreon.
+You can also help us with finding bugs through issues and help us with the plugin by doing some pull requests.
