@@ -52,6 +52,10 @@ class KnockbackCommand extends Command implements PluginIdentifiableCommand {
                 return;
             }
         }
-        $sender->teleport(Server::getInstance()->getLevelByName($world)->getSpawnLocation());
+        if(Server::getInstance()->isLevelLoaded($world)) {
+            $sender->teleport(Server::getInstance()->getLevelByName($world)->getSpawnLocation());
+        } else {
+            $sender->sendMessage("§cCouldn't teleport you to the minigame. This is because the level is either not loaded or it doesn't even exist. If you are the server administrator, try to change the world in config.yml to make it work.");
+        }
     }
 }
