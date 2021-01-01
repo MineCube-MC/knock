@@ -19,7 +19,7 @@ class KnockbackFFA extends PluginBase {
     public function onEnable(): void {
         self::$instance = $this;
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-        $this->getServer()->getCommandMap()->register("kbffa", new KbFFACommand($this));
+        $this->getServer()->getCommandMap()->register("kbffa", new KnockbackCommand($this));
         @mkdir($this->getDataFolder());
         $this->saveResource("kbffa.yml");
         $this->getServer()->loadLevel($this->getGameData()->get("arena"));
