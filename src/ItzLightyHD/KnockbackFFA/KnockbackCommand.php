@@ -11,6 +11,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\math\Vector3;
 use pocketmine\level\Position;
+use pocketmine\level\Level;
 use function implode;
 
 class KnockbackCommand extends Command implements PluginIdentifiableCommand {
