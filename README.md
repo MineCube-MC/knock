@@ -2,7 +2,7 @@
 
 [![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/a75eNEAtrt)
 [![License](https://img.shields.io/github/license/ApexieDevelopment/Knock)](https://github.com/ApexieDevelopment/Knock)
-[![Poggit](https://poggit.pmmp.io/shield.dl.total/KnockbackFFA)](https://poggit.pmmp.io/p/KnockbackFFA) <br>
+[![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3DItzLightyHD%26type%3Dpatrons&style=flat)](https://patreon.com/ItzLightyHD) <br>
 <b>The classic sumo minigame fun to play for PocketMine-MP.</b>
 
 ### Features
@@ -29,7 +29,3 @@ You can get the killstreak of any player from the event listener as it shows her
 \ItzLightyHD\KnockbackFFA\EventListener::getInstance()->getKillstreak($player->getName());
 ```
 If the player isn't playing KnockbackFFA, the function will return as "None".
-
-### Contributing
-[![Become a Patreon!](https://shieldsio-patreon.vercel.app/api/?username=itzlightyhd&type=patrons)](https://patreon.com/ItzLightyHD)
-Click the button right here to become a Patreon of ItzLightyHD, the main developer of this plugin. You can also help us with finding bugs through issues and help us with the plugin by doing some pull requests.
