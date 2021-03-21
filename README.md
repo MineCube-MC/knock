@@ -1,4 +1,5 @@
 <h1>Knock<img src="https://raw.githubusercontent.com/ApexieDevelopment/Knock/main/KnockbackFFA.gif" height="64" width="64" align="left" alt=""></h1><br>
+
 [![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/a75eNEAtrt)
 [![License](https://img.shields.io/github/license/ApexieDevelopment/Knock)](https://github.com/ApexieDevelopment/Knock)
 [![Poggit](https://poggit.pmmp.io/shield.dl.total/KnockbackFFA)](https://poggit.pmmp.io/p/KnockbackFFA) <br>
@@ -30,5 +31,5 @@ You can get the killstreak of any player from the event listener as it shows her
 If the player isn't playing KnockbackFFA, the function will return as "None".
 
 ### Contributing
-<a href="https://www.patreon.com/bePatron?u=45332961" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+[![Become a Patreon!](https://shieldsio-patreon.vercel.app/api/?username=itzlightyhd&type=patrons)](https://patreon.com/ItzLightyHD)
 Click the button right here to become a Patreon of ItzLightyHD, the main developer of this plugin. You can also help us with finding bugs through issues and help us with the plugin by doing some pull requests.
