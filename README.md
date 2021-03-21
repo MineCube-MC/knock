@@ -1,8 +1,7 @@
 <h1>Knock<img src="https://raw.githubusercontent.com/ApexieDevelopment/Knock/main/KnockbackFFA.gif" height="64" width="64" align="left" alt=""></h1><br>
-![License](https://img.shields.io/github/license/ApexieDevelopment/Knock)
-![Forks](https://img.shields.io/github/forks/ApexieDevelopment/Knock)
-![Stars](https://img.shields.io/github/stars/ApexieDevelopment/Knock)
-![Poggit-CI](https://poggit.pmmp.io/ci.shield/ApexieDevelopment/Knock/KnockbackFFA) <br>
+[![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/a75eNEAtrt)
+[![License](https://img.shields.io/github/license/ApexieDevelopment/Knock)](https://github.com/ApexieDevelopment/Knock)
+[![Poggit](https://poggit.pmmp.io/shield.dl.total/KnockbackFFA)](https://poggit.pmmp.io/p/KnockbackFFA) <br>
 <b>The classic sumo minigame fun to play for PocketMine-MP.</b>
 
 ### Features
