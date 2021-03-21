@@ -43,13 +43,16 @@ class KnockbackCommand extends Command implements PluginIdentifiableCommand {
                     $player = Server::getInstance()->getPlayer($args[1]);
                     if($player->isOnline()) {
                         if(EventListener::getInstance()->getKillstreak($player->getName()) === "None") {
-                            $sender->sendMessage("§8[§5KBFFA§8] §r§7§l» §r§e" . $player->getDisplayName() . " §r§6isn't playing KnockBackFFA right now");
+                            $sender->sendMessage(KnockbackFFA::getInstance()->getGameData()->get("prefix") . "§r§e" . $player->getDisplayName() . " §r§6isn't playing KnockBackFFA right now");
                         } else {
-                            $sender->sendMessage("§8[§5KBFFA§8] §r§7§l» §r§e" . $player->getDisplayName() . " §r§6is at §e" . EventListener::getInstance()->getKillstreak(Server::getInstance()->getPlayer($args[1])->getName()) . " §6kills");
+                            $sender->sendMessage(KnockbackFFA::getInstance()->getGameData()->get("prefix") . "§r§e" . $player->getDisplayName() . " §r§6is at §e" . EventListener::getInstance()->getKillstreak(Server::getInstance()->getPlayer($args[1])->getName()) . " §6kills");
                         }
                     } else {
-                        $sender->sendMessage("§8[§5KBFFA§8] §r§7§l» §r§c" . $args[1] . " isn't online!");
+                        $sender->sendMessage(KnockbackFFA::getInstance()->getGameData()->get("prefix") . "§r§c" . $args[1] . " isn't online!");
                     }
+                return;
+            } else {
+                $sender->sendMessage("Usage: /kbffa, /kbffa kills <player>");
                 return;
             }
         }

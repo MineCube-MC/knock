@@ -1,5 +1,22 @@
 # First, let's get the world which will be used for the minigame
-arena: kbffa
+arena: "kbffa"
 
-# How many blocks of radius should the player get protected?
+# How many blocks of radius should the player get protected from spawn?
 protection-radius: 5
+
+# Should the other players see the kills from the scoretag?
+# The scoretag format can use these placeholders:
+# {kills} -> Numer of kills of the player
+kills-scoretag: true
+scoretag-format: "§6{kills} §rkills"
+
+# Change how the behaviour of the game is by changing some values here
+# If you want to have the recommended experience, leave these as default
+# If some values will return as 0, they'll be disabled
+massive-knockback: true # The game will have a slightly modified knockback
+enchant-level: 2 # Players will have a stick with the desired knockback level
+speed-level: 1 # Players will have the speed effect with the desired level
+jump-boost-level: 1 # Players will have the jump boost effect with the desired level
+
+# Which prefix do you want to use for the messages?
+prefix: "§8[§5KBFFA§8] §r§7§l» "

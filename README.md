@@ -1,23 +1,35 @@
-![KnockbackFFA](https://raw.githubusercontent.com/ApexieDevelopment/Knock/main/KnockbackFFA.gif)
-# Knock
-The classic SumoFFA minigame, open to all for PocketMine-MP.
+<h1>Knock<img src="https://raw.githubusercontent.com/ApexieDevelopment/Knock/main/KnockbackFFA.gif" height="64" width="64" align="left" alt=""></h1><br>
+![License](https://img.shields.io/github/license/ApexieDevelopment/Knock)
+![Forks](https://img.shields.io/github/forks/ApexieDevelopment/Knock)
+![Stars](https://img.shields.io/github/stars/ApexieDevelopment/Knock)
+![Poggit-CI](https://poggit.pmmp.io/ci.shield/ApexieDevelopment/Knock/KnockbackFFA) <br>
+<b>The classic sumo minigame fun to play for PocketMine-MP.</b>
 
-## How to setup & play
+### Features
+- Easy to setup
+- Customizable scoretag for the players
+- Arena map loading when starting the plugin
+- Ingame sounds, to make the gameplay alive
+- Customizable game behaviour
+- Random maps <b>(Coming soon)</b>
+- Permissions <b>(Coming soon)</b>
+- Scoreboard <b>(Coming soon)</b>
+
+### How to setup & play
 The plugin itself it's easy to setup. Follow the steps:
-- First, setup the minigame in config.yml inserting the world where the minigame will be setup and the protection radius, so players can't hit each other on spawn
-- Join the server, and type in the chat `/kbffa` and you'll get teleported to the minigame
-- Fight and get kills by using your Knockback stick
-- The "winner" is the first player who reaches 40 kills or who is the first to get many kills in an amount of minutes (you can see the kills of a player by typing in the chat `/kbffa kills <playername>`)
+- Install the plugin
+- Change the config values as you like
+- Go to your server and type /kbffa
+- Enjoy ;)
 
-## Scoreboard?
-We are still working on it for the next update, we won't use any external scoreboard plugins for that
-
-## Developers and API
-To get the current kills of a player just use this function from the EventListener:
+### Developers and API
+#### Getting a killstreak
+You can get the killstreak of any player from the event listener as it shows here here:
 ```php
 \ItzLightyHD\KnockbackFFA\EventListener::getInstance()->getKillstreak($player->getName());
 ```
+If the player isn't playing KnockbackFFA, the function will return as "None".
 
-## Contributing
-Just go in our [GitHub page](https://github.com/ApexieDevelopment/Knock) and click the 'Sponsor' button to support us on Patreon.
-You can also help us with finding bugs through issues and help us with the plugin by doing some pull requests.
+### Contributing
+<a href="https://www.patreon.com/bePatron?u=45332961" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+Click the button right here to become a Patreon of ItzLightyHD, the main developer of this plugin. You can also help us with finding bugs through issues and help us with the plugin by doing some pull requests.

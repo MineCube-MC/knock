@@ -15,15 +15,36 @@ class KnockbackFFA extends PluginBase {
     /** @var self $instance */
     protected static $instance;
 
+    # Game modifiers
+    public $massive_knockback;
+    public $enchant_level;
+    public $speed_level;
+    public $jump_boost_level;
+
+    # Scoretag?
+    public $scoretag;
+
     // What happens when plugin is enabled
     public function onEnable(): void {
+        // Sets the instance
         self::$instance = $this;
+        // Registers the event listener
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+        // Registers the "kbffa" command
         $this->getServer()->getCommandMap()->register("kbffa", new KnockbackCommand($this));
+        // Creates the data folder for the plugin
         @mkdir($this->getDataFolder());
+        // Saves the resource on the data folder
         $this->saveResource("kbffa.yml");
+        // Loads the arena that is wrote in the folder
         $this->getServer()->loadLevel($this->getGameData()->get("arena"));
-        $this->checkUpdate();
+        // Changes the game modifiers variables to the config ones
+        $this->massive_knockback = $this->getGameData()->get("massive-knockback");
+        $this->enchant_level = $this->getGameData()->get("enchant-level");
+        $this->speed_level = $this->getGameData()->get("speed-level");
+        $this->jump_boost_level = $this->getGameData()->get("jump-boost-level");
+        // Changes the scoretag variable to the config one
+        $this->scoretag = $this->getGameData()->get("kills-scoretag");
     }
 
     // Helpul to make an API for the plugin
@@ -32,56 +53,9 @@ class KnockbackFFA extends PluginBase {
         return self::$instance;
     }
 
+    // Gets the config
     public function getGameData() {
         $data = new Config($this->getDataFolder() . "kbffa.yml", Config::YAML);
         return $data;
-    }
-
-    // Make sure the plugin it's up-to-date
-    public function checkUpdate() {
-        $arrContextOptions = array(
-            "ssl" => array(
-                "verify_peer" => false,
-                "verify_peer_name" => false,
-            ),
-        );
-
-        $datei = file_get_contents("https://raw.githubusercontent.com/AetherPlace/KnockbackFFA/main/plugin.yml", false, stream_context_create($arrContextOptions));
-        if (!$datei)
-            return false;
-
-        $datei = str_replace("\n", "", $datei);
-        $newversion = explode("version: ", $datei);
-        $newversion = explode("api: ", $newversion[1]);
-        $newversion = $newversion[0];
-        //var_dump($newversion);
-
-        $plugin = $this->getServer()->getPluginManager()->getPlugin("KnockbackFFA");
-        $version = $plugin->getDescription()->getVersion();
-        //var_dump($version);
-        if (!($version === $newversion)) {
-            $update = false;
-            if (intval($version[0]) < intval($newversion[0])) {
-                $update = true;
-            } elseif (intval($version[0]) === intval($newversion[0])) {
-                if (intval($version[1]) < intval($newversion[1])) {
-                    $update = true;
-                } elseif (intval($version[1]) === intval($newversion[1])) {
-                    if (intval($version[2]) < intval($newversion[2])) {
-                        $update = true;
-                    }
-                }
-            }
-
-            if ($update) {
-                $this->getLogger()->info("§6New update available!");
-                $this->getLogger()->info("§6Local version: " . $version);
-                $this->getLogger()->info("§6Newest version: " . $newversion);
-                $this->getLogger()->info("§6Update your plugin by downloading the newest .phar at https://github.com/AetherPlace/KnockbackFFA/releases");
-                return true;
-            }
-        }
-
-        return false;
     }
 }
