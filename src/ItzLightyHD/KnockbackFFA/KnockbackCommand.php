@@ -35,7 +35,7 @@ class KnockbackCommand extends Command implements PluginIdentifiableCommand {
         }
         $world = KnockbackFFA::getInstance()->getGameData()->get("arena");
         if(isset($args[0])) {
-            if($args[0] === "kills") {
+            if($args[0] == "kills") {
                     if(!isset($args[1])) {
                         $sender->sendMessage("§cUsage: /kbffa kills <player>");
                         return;
@@ -51,6 +51,11 @@ class KnockbackCommand extends Command implements PluginIdentifiableCommand {
                         $sender->sendMessage(KnockbackFFA::getInstance()->getGameData()->get("prefix") . "§r§c" . $args[1] . " isn't online!");
                     }
                 return;
+            } elseif($args[0] == "leave") {
+                if(Server::getInstance()->getLevelByName(EventListener::getInstance()->lastworld[strtolower($sender->getName())]) instanceof Level) {
+                    $sender->teleport(Server::getInstance()->getLevelByName(EventListener::getInstance()->lastworld[strtolower($sender->getName())])->getSpawnLocation());
+                    $sender->sendMessage("§cThe world you joined the minigame from doesn't exist. It was probably removed or unloaded. If you are the server administrator, load the level again and retry.");
+                }
             } else {
                 $sender->sendMessage("Usage: /kbffa, /kbffa kills <player>");
                 return;

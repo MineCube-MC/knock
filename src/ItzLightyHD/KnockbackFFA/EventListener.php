@@ -14,6 +14,7 @@ use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Effect;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\level\sound\PopSound;
@@ -27,13 +28,16 @@ class EventListener implements Listener {
     /** @var self $instance */
     protected static $instance;
 
+    // Last world for each player
+    public $lastworld = [];
+
     public function __construct(KnockbackFFA $plugin)
     {
         $this->plugin = $plugin;
         self::$instance = $this;
     }
 
-    public function getPlugin() : Plugin{
+    public function getPlugin(): KnockbackFFA {
         return $this->plugin;
     }
 
@@ -47,6 +51,7 @@ class EventListener implements Listener {
         $name = strtolower($player->getName());
         $this->lastDmg[$name] = "none";
         $this->killstreak[$name] = 0;
+        $this->lastWorld[$name] = $player->getLevel()->getFolderName();
     }
 
     public function getKillstreak($player) {
@@ -59,20 +64,22 @@ class EventListener implements Listener {
     }
 
     public function onEntityDamage(EntityDamageEvent $event): void {
-        if($event->getEntity() instanceof Player) {
+        $player = $event->getEntity();
+        if($player instanceof Player) {
             if($event->getEntity()->getLevel()->getFolderName() === KnockbackFFA::getInstance()->getGameData()->get("arena")) {
+                $cause = $event->getCause();
                 if($event->getCause() === EntityDamageEvent::CAUSE_VOID) {
                     $event->setCancelled();
                     $event->getEntity()->teleport(Server::getInstance()->getLevelByName(KnockbackFFA::getInstance()->getGameData()->get("arena"))->getSpawnLocation());
-                    if($this->lastDmg[strtolower($event->getEntity()->getName())] === "none") {
+                    if($this->lastDmg[strtolower($player->getName())] === "none") {
                         $event->getEntity()->getLevel()->addSound(new AnvilFallSound($event->getEntity()));
                         if(KnockbackFFA::getInstance()->scoretag == true) {
-                            $event->getEntity()->setScoreTag(str_replace(["{kills}"], [$this->killstreak[strtolower($event->getEntity()->getName())]], KnockbackFFA::getInstance()->getGameData()->get("scoretag-format")));
+                            $event->getEntity()->setScoreTag(str_replace(["{kills}"], [$this->killstreak[strtolower($player->getName())]], KnockbackFFA::getInstance()->getGameData()->get("scoretag-format")));
                         }
-                        $event->getEntity()->sendPopup(KnockbackFFA::getInstance()->getGameData()->get("prefix") . "§r§cYou died");
+                        $player->sendPopup(KnockbackFFA::getInstance()->getGameData()->get("prefix") . "§r§cYou died");
                     } else {
-                        $this->killstreak[strtolower($event->getEntity()->getName())] = 0;
-                        $killedBy = Server::getInstance()->getPlayer($this->lastDmg[strtolower($event->getEntity()->getName())]);
+                        $this->killstreak[strtolower($player->getName())] = 0;
+                        $killedBy = Server::getInstance()->getPlayer($this->lastDmg[strtolower($player->getName())]);
                         if($killedBy->isOnline()) {
                             $this->killstreak[strtolower($killedBy->getName())] = $this->killstreak[strtolower($killedBy->getName())] + 1;
                             $ks = [5, 10, 15, 20, 25, 30, 40, 50];
@@ -81,7 +88,7 @@ class EventListener implements Listener {
             
                                 foreach ($players as $p) {
                                     $p->getLevel()->addSound(new PopSound($p));
-                                    $p->sendPopup(KnockbackFFA::getInstance()->getGameData()->get("prefix") . "§r§f" . Server::getInstance()->getPlayer($this->lastDmg[strtolower($event->getEntity()->getName())])->getDisplayName() . "§r§6 is at §e" . $this->killstreak[$this->lastDmg[strtolower($event->getEntity()->getName())]] . "§6 kills");
+                                    $p->sendPopup(KnockbackFFA::getInstance()->getGameData()->get("prefix") . "§r§f" . Server::getInstance()->getPlayer($this->lastDmg[strtolower($player->getName())])->getDisplayName() . "§r§6 is at §e" . $this->killstreak[$this->lastDmg[strtolower($player->getName())]] . "§6 kills");
                                 }
                                 if(KnockbackFFA::getInstance()->scoretag == true) {
                                     $killedBy->setScoreTag(str_replace(["{kills}"], [$this->killstreak[strtolower($killedBy->getName())]], KnockbackFFA::getInstance()->getGameData()->get("scoretag-format")));
@@ -90,54 +97,58 @@ class EventListener implements Listener {
                                 if(KnockbackFFA::getInstance()->scoretag == true) {
                                     $killedBy->setScoreTag(str_replace(["{kills}"], [$this->killstreak[strtolower($killedBy->getName())]], KnockbackFFA::getInstance()->getGameData()->get("scoretag-format")));
                                 }
-                                $killedBy->sendPopup(KnockbackFFA::getInstance()->getGameData()->get("prefix") . "§r§aYou killed §f" . $event->getEntity()->getDisplayName());
+                                $killedBy->sendPopup(KnockbackFFA::getInstance()->getGameData()->get("prefix") . "§r§aYou killed §f" . $player->getDisplayName());
                             }
                             $killedBy->getLevel()->addSound(new FizzSound($killedBy));
                         }
                         $event->getEntity()->getLevel()->addSound(new AnvilFallSound($event->getEntity()));
                         if(KnockbackFFA::getInstance()->scoretag == true) {
-                            $event->getEntity()->setScoreTag(str_replace(["{kills}"], [$this->killstreak[strtolower($event->getEntity()->getName())]], KnockbackFFA::getInstance()->getGameData()->get("scoretag-format")));
+                            $event->getEntity()->setScoreTag(str_replace(["{kills}"], [$this->killstreak[strtolower($player->getName())]], KnockbackFFA::getInstance()->getGameData()->get("scoretag-format")));
                         }
-                        $event->getEntity()->sendPopup(KnockbackFFA::getInstance()->getGameData()->get("prefix") . "§r§cYou were killed by §f" . $killedBy->getDisplayName());
+                        $player->sendPopup(KnockbackFFA::getInstance()->getGameData()->get("prefix") . "§r§cYou were killed by §f" . $killedBy->getDisplayName());
                     }
-                    $this->lastDmg[strtolower($event->getEntity()->getName())] = "none";                    
-                }
-                if($event->getCause() === EntityDamageEvent::CAUSE_ENTITY_ATTACK) {
-                    $event->getEntity()->setHealth(20);
-                    $event->getEntity()->setSaturation(20);
-
-                    // Protection radius thing
-                    $damager = $event->getDamager();
-                    if($damager instanceof Player) {
-                        $x = $event->getEntity()->getX();
-                        $y = $event->getEntity()->getY();
-                        $z = $event->getEntity()->getZ();
-                        $xx = $event->getEntity()->getLevel()->getSafeSpawn()->getX();
-                        $yy = $event->getEntity()->getLevel()->getSafeSpawn()->getY();
-                        $zz = $event->getEntity()->getLevel()->getSafeSpawn()->getZ();
-                        $sr = KnockbackFFA::getInstance()->getGameData()->get("protection-radius");
-
-                        if (abs($xx - $x) < $sr && abs($yy - $y) < $sr && abs($zz - $z) < $sr) {
-                            $event->setCancelled();
-                            $damager->sendMessage("§cYou can't hit the players here!");
-                            return;
-                        }
-
-                        $this->lastDmg[strtolower($event->getEntity()->getName())] = strtolower($damager->getName());
-
-                        $item = $damager->getInventory()->getItemInHand()->getId();
-                        if(KnockbackFFA::getInstance()->massive_knockback == true) {
-                            if ($item == 280) {
-                                $x = $damager->getDirectionVector()->x;
-                                $z = $damager->getDirectionVector()->z;
-                                $event->getEntity()->knockBack($event->getEntity(), 0, $x, $z, 0.6);
-                                return;
-                            }
-                        }
-                    }
+                    $this->lastDmg[strtolower($player->getName())] = "none";                    
                 }
                 if($event->getCause() === EntityDamageEvent::CAUSE_FALL) {
                     $event->setCancelled();
+                }
+            }
+        }
+    }
+
+    public function entityAttacked(EntityDamageByEntityEvent $event) {
+        $player = $event->getEntity();
+        $damager = $event->getDamager();
+
+        if($player instanceof Player) {
+            $player->setHealth(20);
+            $player->setSaturation(20);
+
+            if($damager instanceof Player) {
+                $x = $player->getX();
+                $y = $player->getY();
+                $z = $player->getZ();
+                $xx = $player->getLevel()->getSafeSpawn()->getX();
+                $yy = $player->getLevel()->getSafeSpawn()->getY();
+                $zz = $player->getLevel()->getSafeSpawn()->getZ();
+                $sr = KnockbackFFA::getInstance()->getGameData()->get("protection-radius");
+
+                if (abs($xx - $x) < $sr && abs($yy - $y) < $sr && abs($zz - $z) < $sr) {
+                    $event->setCancelled();
+                    $damager->sendMessage("§cYou can't hit the players here!");
+                    return;
+                }
+
+                $this->lastDmg[strtolower($player->getName())] = strtolower($damager->getName());
+
+                $item = $damager->getInventory()->getItemInHand()->getId();
+                if(KnockbackFFA::getInstance()->massive_knockback == true) {
+                    if ($item == 280) {
+                        $x = $damager->getDirectionVector()->x;
+                        $z = $damager->getDirectionVector()->z;
+                        $player->knockBack($event->getEntity(), 0, $x, $z, 0.6);
+                        return;
+                    }
                 }
             }
         }
@@ -158,10 +169,10 @@ class EventListener implements Listener {
     }
 
     public function onEntityLevelChange(EntityLevelChangeEvent $event): void {
-        if($event->getEntity() instanceof Player) {
-            if($event->getTarget()->getFolderName() === KnockBackFFA::getInstance()->getGameData()->get("arena")) {
-                $player = $event->getEntity();
-                $this->killstreak[strtolower($event->getEntity()->getName())] = 0;
+        $player = $event->getEntity();
+        if($player instanceof Player) {
+            if($event->getTarget()->getFolderName() == KnockBackFFA::getInstance()->getGameData()->get("arena")) {
+                $this->killstreak[strtolower($player->getName())] = 0;
                 $player->setHealth(20);
                 $player->setFood(20);
 
@@ -185,14 +196,13 @@ class EventListener implements Listener {
                 }
 
                 if(KnockbackFFA::getInstance()->scoretag == true) {
-                    $event->getEntity()->setScoreTag(str_replace(["{kills}"], [$this->killstreak[strtolower($event->getEntity()->getName())]], KnockbackFFA::getInstance()->getGameData()->get("scoretag-format")));
+                    $player->setScoreTag(str_replace(["{kills}"], [$this->killstreak[strtolower($player->getName())]], KnockbackFFA::getInstance()->getGameData()->get("scoretag-format")));
                 }
             } else {
-                $player = $event->getEntity();
                 $player->removeAllEffects();
-                $this->killstreak[strtolower($event->getEntity()->getName())] = "None";
+                $this->killstreak[strtolower($player->getName())] = "None";
                 if(KnockbackFFA::getInstance()->scoretag == true) {
-                    $event->getEntity()->setScoreTag("");
+                    $player->setScoreTag("");
                 }
             }
         }
