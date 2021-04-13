@@ -57,7 +57,7 @@ class KnockbackCommand extends Command implements PluginIdentifiableCommand {
                     $sender->sendMessage("§cThe world you joined the minigame from doesn't exist. It was probably removed or unloaded. If you are the server administrator, load the level again and retry.");
                 }
             } else {
-                $sender->sendMessage("Usage: /kbffa, /kbffa kills <player>");
+                $sender->sendMessage("Usage: /kbffa, /kbffa leave, /kbffa kills <player>");
                 return;
             }
         }
