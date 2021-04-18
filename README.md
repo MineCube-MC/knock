@@ -36,7 +36,7 @@ The plugin itself it's easy to setup. Follow the steps:
 
 ### Troubleshooting
 #### The server crashes
-When you reload the server, the plugin will mess up. What you can do is just to restart the server every time you changed a configuration file.
+When you reload the server, the plugin will mess up. What you can do is to just restart the server every time you changed a configuration file.
 
 ### Developers and API
 #### Getting a killstreak
