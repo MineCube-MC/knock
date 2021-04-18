@@ -29,3 +29,6 @@
 composer.json
 composer.lock
 .vscode
+
+# Nothing
+temp_changelogs.md

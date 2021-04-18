@@ -54,11 +54,9 @@ class EventListener implements Listener {
         $this->lastDmg[$name] = "none";
         $this->killstreak[$name] = 0;
         $this->lastWorld[$name] = $player->getLevel()->getFolderName();
-        if($this->plugin->getGameData()->get("world-handler") == true) {
-            if($player->getLevel()->getFolderName() == $this->plugin->getGameData()->get("arena")) {
-                $lobbyWorld = $this->plugin->getGameData()->get("lobby-world");
-                $player->teleport(Server::getInstance()->getLevelByName($lobbyWorld)->getSpawnLocation());
-            }
+        if($player->getLevel()->getFolderName() == $this->plugin->getGameData()->get("arena")) {
+            $lobbyWorld = $this->plugin->getGameData()->get("lobby-world");
+            $player->teleport(Server::getInstance()->getLevelByName($lobbyWorld)->getSpawnLocation());
         }
     }
 

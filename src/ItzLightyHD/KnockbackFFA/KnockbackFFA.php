@@ -59,7 +59,7 @@ class KnockbackFFA extends PluginBase {
             $plugin = $this->getServer()->getPluginManager()->getPlugin($this->getName());
             $this->getServer()->getPluginManager()->disablePlugin($plugin);
         }
-        if($this->getGameData()->get("world-hander") == true) {
+        if(!($this->getServer()->getLevelByName($this->getGameData()->get("lobby-world")) instanceof Level)) {
             if(!($this->getServer()->getLevelByName($this->getGameData()->get("arena")) instanceof Level)) {
                 $this->getLogger()->alert("The world specified for the lobby in the configuration file doesn't exist. Change it or make sure it has the correct name!");
                 $plugin = $this->getServer()->getPluginManager()->getPlugin($this->getName());
