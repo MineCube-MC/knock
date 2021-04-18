@@ -3,11 +3,9 @@
     <b>The classic sumo minigame fun to play for PocketMine-MP.</b>
 </p>
 
-<p>
-    [![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/a75eNEAtrt)
-    [![License](https://img.shields.io/github/license/ApexieDevelopment/Knock)](https://github.com/ApexieDevelopment/Knock)
-    [![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3DItzLightyHD%26type%3Dpatrons&style=flat)](https://patreon.com/ItzLightyHD) <br>
-</p>
+[![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/a75eNEAtrt)
+[![License](https://img.shields.io/github/license/ApexieDevelopment/Knock)](https://github.com/ApexieDevelopment/Knock)
+[![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3DItzLightyHD%26type%3Dpatrons&style=flat)](https://patreon.com/ItzLightyHD) <br>
 
 ### Features
 - Easy to setup
