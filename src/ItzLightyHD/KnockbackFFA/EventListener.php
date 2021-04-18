@@ -14,7 +14,9 @@ use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Effect;
+use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\level\sound\PopSound;
@@ -52,6 +54,24 @@ class EventListener implements Listener {
         $this->lastDmg[$name] = "none";
         $this->killstreak[$name] = 0;
         $this->lastWorld[$name] = $player->getLevel()->getFolderName();
+        if($this->plugin->getGameData()->get("world-handler") == true) {
+            if($player->getLevel()->getFolderName() == $this->plugin->getGameData()->get("arena")) {
+                $lobbyWorld = $this->plugin->getGameData()->get("lobby-world");
+                $player->teleport(Server::getInstance()->getLevelByName($lobbyWorld)->getSpawnLocation());
+            }
+        }
+    }
+
+    public function onQuit(PlayerQuitEvent $event): void {
+        $player = $event->getPlayer();
+        foreach(Server::getInstance()->getOnlinePlayers() as $p) {
+            $world = $p->getLevel()->getFolderName();
+            if($world == $this->plugin->getGameData()->get("arena")) {
+                if($this->lastDmg[strtolower($p->getName())] == strtolower($player->getName())) {
+                    $this->lastDmg[strtolower($p->getName())] = "none";
+                }
+            }
+        } 
     }
 
     public function getKillstreak($player) {
@@ -60,6 +80,13 @@ class EventListener implements Listener {
             return $this->killstreak[strtolower($target)];
         } else {
             return "None";
+        }
+    }
+
+    public function onBreak(BlockBreakEvent $event): void {
+        $player = $event->getPlayer();
+        if($player->getLevel()->getFolderName() == $this->plugin->getGameData()->get("arena")) {
+            $event->setCancelled();
         }
     }
 
@@ -73,6 +100,7 @@ class EventListener implements Listener {
                     $event->getEntity()->teleport(Server::getInstance()->getLevelByName(KnockbackFFA::getInstance()->getGameData()->get("arena"))->getSpawnLocation());
                     if($this->lastDmg[strtolower($player->getName())] === "none") {
                         $event->getEntity()->getLevel()->addSound(new AnvilFallSound($event->getEntity()));
+                        $this->killstreak[strtolower($player->getName())] = 0;
                         if(KnockbackFFA::getInstance()->scoretag == true) {
                             $event->getEntity()->setScoreTag(str_replace(["{kills}"], [$this->killstreak[strtolower($player->getName())]], KnockbackFFA::getInstance()->getGameData()->get("scoretag-format")));
                         }
@@ -172,6 +200,7 @@ class EventListener implements Listener {
         $player = $event->getEntity();
         if($player instanceof Player) {
             if($event->getTarget()->getFolderName() == KnockBackFFA::getInstance()->getGameData()->get("arena")) {
+                $this->lastworld[strtolower($player->getName())] = $event->getOrigin()->getName();
                 $this->killstreak[strtolower($player->getName())] = 0;
                 $player->setHealth(20);
                 $player->setFood(20);
@@ -191,7 +220,7 @@ class EventListener implements Listener {
                 if(KnockbackFFA::getInstance()->speed_level !== 0) {
                     $player->addEffect(new EffectInstance(Effect::getEffect(1), 99999, KnockbackFFA::getInstance()->speed_level, false));
                 }
-                if(KnockbackFFA::getInstance()->speed_level !== 0) {
+                if(KnockbackFFA::getInstance()->jump_boost_level !== 0) {
                     $player->addEffect(new EffectInstance(Effect::getEffect(8), 99999, KnockbackFFA::getInstance()->jump_boost_level, false));
                 }
 
@@ -199,11 +228,15 @@ class EventListener implements Listener {
                     $player->setScoreTag(str_replace(["{kills}"], [$this->killstreak[strtolower($player->getName())]], KnockbackFFA::getInstance()->getGameData()->get("scoretag-format")));
                 }
             } else {
-                $player->removeAllEffects();
-                $this->killstreak[strtolower($player->getName())] = "None";
-                if(KnockbackFFA::getInstance()->scoretag == true) {
-                    $player->setScoreTag("");
+                if ($event->getOrigin()->getName() == $this->plugin->getGameData()->get("arena")) {
+                    $player->getInventory()->clearAll();
+                    $player->removeAllEffects();
+                    $this->killstreak[strtolower($player->getName())] = "None";
+                    if(KnockbackFFA::getInstance()->scoretag == true) {
+                        $player->setScoreTag("");
+                    }
                 }
+                // $this->lastworld[strtolower($player->getName())] = $event->getTarget()->getFolderName();
             }
         }
     }

@@ -10,13 +10,28 @@ protection-radius: 5
 kills-scoretag: true
 scoretag-format: "§6{kills} §rkills"
 
+# Do you want to teleport players that left from the arena world to the main world?
+# This might be useful if you don't use any proxy, but you should disable it if you
+# use any type of proxy (like WaterdogPE)
+# If you disable the world handler, you won't 
+world-handler: true
+lobby-world: "world"
+
+# Should the players get teleported to the lobby world everytime they do
+# `/kbffa leave`? If the option is set to false, the players will get
+# teleported where they joined the minigame from
+leave-to-lobby: true
+
 # Change how the behaviour of the game is by changing some values here
 # If you want to have the recommended experience, leave these as default
 # If some values will return as 0, they'll be disabled
+# You can change these values in-game by typing `/kbffa settings` only
+# if you have the 'knockbackffa.customize' permission. After the server
+# restart, the values will be the same as below.
 massive-knockback: true # The game will have a slightly modified knockback
 enchant-level: 2 # Players will have a stick with the desired knockback level
-speed-level: 1 # Players will have the speed effect with the desired level
-jump-boost-level: 1 # Players will have the jump boost effect with the desired level
+speed-level: 2 # Players will have the speed effect with the desired level
+jump-boost-level: 2 # Players will have the jump boost effect with the desired level
 
 # Which prefix do you want to use for the messages?
 prefix: "§8[§5KBFFA§8] §r§7§l» "

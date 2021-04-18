@@ -26,7 +26,6 @@
 
 # PocketMine
 /build/*
-plugin.phar
 composer.json
 composer.lock
 .vscode
