@@ -8,6 +8,11 @@ use pocketmine\utils\Config;
 use JackMD\UpdateNotifier\UpdateNotifier;
 use CortexPE\Commando\PacketHooker;
 use ItzLightyHD\KnockbackFFA\command\KnockbackCommand;
+use ItzLightyHD\KnockbackFFA\listeners\DamageListener;
+use ItzLightyHD\KnockbackFFA\listeners\EssentialsListener;
+use ItzLightyHD\KnockbackFFA\listeners\LevelListener;
+use ItzLightyHD\KnockbackFFA\utils\GameSettings;
+use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
 use pocketmine\level\Level;
 
 class Loader extends PluginBase {
@@ -17,32 +22,16 @@ class Loader extends PluginBase {
     /** @var self $instance */
     protected static $instance;
 
-    # Game modifiers
-    public $massive_knockback;
-    public $enchant_level;
-    public $speed_level;
-    public $jump_boost_level;
-
-    # Scoretag?
-    public $scoretag;
-
     // What happens when plugin is enabled
     public function onEnable(): void {
         // Sets the instance
         self::$instance = $this;
         // Registers the event listeners
         $this->registerEvents();
-        // Creates the data folder for the plugin
-        @mkdir($this->getDataFolder());
-        // Saves the resource on the data folder
-        $this->saveResource("kbffa.yml");
+        // Register the game settings
+        new GameSettings($this);
         // Loads the arena that is wrote in the folder
-        $this->getServer()->loadLevel($this->getGameData()->get("arena"));
-        // Changes the game modifiers variables to the config ones
-        $this->massive_knockback = $this->getGameData()->get("massive-knockback");
-        $this->enchant_level = $this->getGameData()->get("enchant-level");
-        $this->speed_level = $this->getGameData()->get("speed-level");
-        $this->jump_boost_level = $this->getGameData()->get("jump-boost-level");
+        $this->getServer()->loadLevel(GameSettings::getInstance()->getConfig()->get("arena"));
         // Changes the scoretag variable to the config one
         $this->scoretag = $this->getGameData()->get("kills-scoretag");
         // Checking for a new update (new system)
@@ -69,7 +58,12 @@ class Loader extends PluginBase {
     }
 
     private function registerEvents() {
-        $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+        // Knockback player, used for getting the killstreak, the last damager, etc...
+        $this->getServer()->getPluginManager()->registerEvents(new KnockbackPlayer($this), $this);
+        // All the event listeners
+        $this->getServer()->getPluginManager()->registerEvents(new DamageListener($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new EssentialsListener($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new LevelListener($this), $this);
     }
 
     // Helpul to make an API for the plugin

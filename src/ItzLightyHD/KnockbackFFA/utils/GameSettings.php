@@ -22,6 +22,11 @@ class GameSettings {
         $this->prepare();
     }
 
+    public static function getInstance(): self
+    {
+        return self::$instance;
+    }
+
     public function prepare() {
         @mkdir(Loader::getInstance()->getDataFolder());
         Loader::getInstance()->saveResource("kbffa.yml");
