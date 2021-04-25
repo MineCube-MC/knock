@@ -37,7 +37,6 @@ class DamageListener implements Listener {
         $player = $event->getEntity();
         if($player instanceof Player) {
             if($event->getEntity()->getLevel()->getFolderName() === GameSettings::getInstance()->getConfig()->get("arena")) {
-                $cause = $event->getCause();
                 if($event->getCause() === EntityDamageEvent::CAUSE_VOID) {
                     $event->setCancelled();
                     $event->getEntity()->teleport(Server::getInstance()->getLevelByName(GameSettings::getInstance()->getConfig()->get("arena"))->getSpawnLocation());
