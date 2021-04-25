@@ -74,7 +74,7 @@ class SettingsCommand extends BaseSubCommand {
                 $player->removeAllEffects();
                 EventListener::getInstance()->killstreak[strtolower($player->getName())] = 0;
                 if($this->plugin->scoretag == true) {
-                    $player->setScoreTag(str_replace(["{kills}"], [$this->killstreak[strtolower($player->getName())]], $this->plugin->getGameData()->get("scoretag-format")));
+                    $player->setScoreTag(str_replace(["{kills}"], [EventListener::getInstance()->killstreak[strtolower($player->getName())]], $this->plugin->getGameData()->get("scoretag-format")));
                 }
                 $player->setHealth(20);
                 $player->setFood(20);

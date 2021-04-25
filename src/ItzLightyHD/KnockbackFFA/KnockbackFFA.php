@@ -30,8 +30,8 @@ class KnockbackFFA extends PluginBase {
     public function onEnable(): void {
         // Sets the instance
         self::$instance = $this;
-        // Registers the event listener
-        $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+        // Registers the event listeners
+        $this->registerEvents();
         // Creates the data folder for the plugin
         @mkdir($this->getDataFolder());
         // Saves the resource on the data folder
@@ -66,6 +66,10 @@ class KnockbackFFA extends PluginBase {
                 $this->getServer()->getPluginManager()->disablePlugin($plugin);
             }
         }
+    }
+
+    private function registerEvents() {
+        $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     }
 
     // Helpul to make an API for the plugin

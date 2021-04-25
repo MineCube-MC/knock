@@ -24,11 +24,7 @@
 /app/Config/database.php
 /vendors/*
 
-# PocketMine
-/build/*
+# Private things (for now)
 composer.json
 composer.lock
 .vscode
-
-# Nothing
-temp_changelogs.md
