@@ -24,10 +24,35 @@ class KnockbackKit {
 
         $stick = Item::get(280, 0, 1);
         if(GameSettings::getInstance()->enchant_level == 0) {
-            $player->getInventory()->setItem(0, $stick);    
+            $player->getInventory()->setItem(0, $stick);
         } else {
             $stick->addEnchantment(new EnchantmentInstance(Enchantment::getEnchantment(12), GameSettings::getInstance()->enchant_level));
             $player->getInventory()->setItem(0, $stick);
+        }
+
+        if(GameSettings::getInstance()->bow == true) {
+            $bow = Item::get(261, 0, 1);
+            $arrow = Item::get(262, 0, 1);
+            $bow->addEnchantment(new EnchantmentInstance(Enchantment::getEnchantment(22), 1));
+            if(GameSettings::getInstance()->knockback_level == 0) {
+                $player->getInventory()->addItem($bow);
+            } else {
+                $bow->addEnchantment(new EnchantmentInstance(Enchantment::getEnchantment(20), 1));
+                $player->getInventory()->addItem($bow);
+            }
+            $player->getInventory()->setItem(9, $arrow);
+        }
+
+        if(GameSettings::getInstance()->snowballs == true) {
+            $snowballs = Item::get(332, 0, 16);
+            $player->getInventory()->addItem($snowballs);
+        }
+
+        if(GameSettings::getInstance()->leap == true) {
+            $leap = Item::get(288, 0, 1);
+            $leap->setCustomName("§r§eLeap§r");
+            $leap->setLore(["§r§7Saves you from the danger..."]);
+            $player->getInventory()->addItem($leap);
         }
                 
         $player->removeAllEffects();

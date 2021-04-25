@@ -2,6 +2,7 @@
 
 namespace ItzLightyHD\KnockbackFFA\listeners;
 
+use ItzLightyHD\KnockbackFFA\AdditionalItems;
 use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackKit;

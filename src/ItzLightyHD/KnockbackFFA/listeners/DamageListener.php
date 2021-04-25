@@ -5,6 +5,7 @@ namespace ItzLightyHD\KnockbackFFA\listeners;
 use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
+use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\Player;
@@ -57,7 +58,7 @@ class DamageListener implements Listener {
                                 $players = $event->getEntity()->getLevel()->getPlayers();
             
                                 foreach ($players as $p) {
-                                    $p->getLevel()->addSound(new PopSound($p));
+                                    KnockbackPlayer::getInstance()->playSound("random.levelup", $p);
                                     $p->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§f" . Server::getInstance()->getPlayer(KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())])->getDisplayName() . "§r§6 is at §e" . KnockbackPlayer::getInstance()->killstreak[KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())]] . "§6 kills");
                                 }
                                 if(GameSettings::getInstance()->scoretag == true) {
@@ -69,9 +70,9 @@ class DamageListener implements Listener {
                                 }
                                 $killedBy->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§aYou killed §f" . $player->getDisplayName());
                             }
-                            $killedBy->getLevel()->addSound(new FizzSound($killedBy));
+                            KnockbackPlayer::getInstance()->playSound("note.pling", $killedBy);
                         }
-                        $event->getEntity()->getLevel()->addSound(new AnvilFallSound($event->getEntity()));
+                        KnockbackPlayer::getInstance()->playSound("random.glass", $event->getEntity());
                         if(GameSettings::getInstance()->scoretag == true) {
                             $event->getEntity()->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                         }
@@ -91,34 +92,68 @@ class DamageListener implements Listener {
         $damager = $event->getDamager();
 
         if($player instanceof Player) {
-            $player->setHealth(20);
-            $player->setSaturation(20);
+            if($player->getLevel()->getFolderName() == GameSettings::getInstance()->getConfig()->get("arena")) {
+                $player->setHealth(20);
+                $player->setSaturation(20);
 
-            if($damager instanceof Player) {
-                $x = $player->getX();
-                $y = $player->getY();
-                $z = $player->getZ();
-                $xx = $player->getLevel()->getSafeSpawn()->getX();
-                $yy = $player->getLevel()->getSafeSpawn()->getY();
-                $zz = $player->getLevel()->getSafeSpawn()->getZ();
-                $sr = GameSettings::getInstance()->getConfig()->get("protection-radius");
+                if($damager instanceof Player) {
+                    $x = $player->getX();
+                    $y = $player->getY();
+                    $z = $player->getZ();
+                    $xx = $player->getLevel()->getSafeSpawn()->getX();
+                    $yy = $player->getLevel()->getSafeSpawn()->getY();
+                    $zz = $player->getLevel()->getSafeSpawn()->getZ();
+                    $sr = GameSettings::getInstance()->getConfig()->get("protection-radius");
 
-                if (abs($xx - $x) < $sr && abs($yy - $y) < $sr && abs($zz - $z) < $sr) {
-                    $event->setCancelled();
-                    $damager->sendMessage("§cYou can't hit the players here!");
-                    return;
-                }
-
-                KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] = strtolower($damager->getName());
-
-                $item = $damager->getInventory()->getItemInHand()->getId();
-                if(GameSettings::getInstance()->massive_knockback == true) {
-                    if ($item == 280) {
-                        $x = $damager->getDirectionVector()->x;
-                        $z = $damager->getDirectionVector()->z;
-                        $player->knockBack($event->getEntity(), 0, $x, $z, 0.6);
+                    if (abs($xx - $x) < $sr && abs($yy - $y) < $sr && abs($zz - $z) < $sr) {
+                        $event->setCancelled();
+                        $damager->sendMessage("§cYou can't hit the players here!");
                         return;
                     }
+
+                    KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] = strtolower($damager->getName());
+
+                    $item = $damager->getInventory()->getItemInHand()->getId();
+                    if(GameSettings::getInstance()->massive_knockback == true) {
+                        if ($item == 280) {
+                            $x = $damager->getDirectionVector()->x;
+                            $z = $damager->getDirectionVector()->z;
+                            $player->knockBack($event->getEntity(), 0, $x, $z, 0.6);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public function projectileAttack(EntityDamageByChildEntityEvent $event) {
+        $player = $event->getEntity();
+        $damager = $event->getDamager();
+
+        if($player instanceof Player) {
+            if($player->getLevel()->getFolderName() == GameSettings::getInstance()->getConfig()->get("arena")) {
+                $player->setHealth(20);
+                $player->setSaturation(20);
+
+                if($damager instanceof Player) {
+                    $x = $player->getX();
+                    $y = $player->getY();
+                    $z = $player->getZ();
+                    $xx = $player->getLevel()->getSafeSpawn()->getX();
+                    $yy = $player->getLevel()->getSafeSpawn()->getY();
+                    $zz = $player->getLevel()->getSafeSpawn()->getZ();
+                    $sr = GameSettings::getInstance()->getConfig()->get("protection-radius");
+
+                    if (abs($xx - $x) < $sr && abs($yy - $y) < $sr && abs($zz - $z) < $sr) {
+                        $event->setCancelled();
+                        $damager->sendMessage("§cYou can't hit the players here!");
+                        return;
+                    }
+
+                    KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] = strtolower($damager->getName());
+
+                    KnockbackPlayer::getInstance()->playSound("random.orb", $event->getEntity());
                 }
             }
         }

@@ -53,15 +53,34 @@ class SettingsCommand extends BaseSubCommand {
             } else {
                 GameSettings::getInstance()->massive_knockback = false;
             }
-            GameSettings::getInstance()->enchant_level = intval($data[2]);
-            GameSettings::getInstance()->speed_level = intval($data[3]);
-            GameSettings::getInstance()->jump_boost_level = intval($data[4]);
+            if($data[2] == true) {
+                GameSettings::getInstance()->bow = true;
+            } else {
+                GameSettings::getInstance()->bow = false;
+            }
+            if($data[3] == true) {
+                GameSettings::getInstance()->snowballs = true;
+            } else {
+                GameSettings::getInstance()->snowballs = false;
+            }
+            if($data[4] == true) {
+                GameSettings::getInstance()->leap = true;
+            } else {
+                GameSettings::getInstance()->leap = false;
+            }
+            GameSettings::getInstance()->enchant_level = intval($data[5]);
+            GameSettings::getInstance()->speed_level = intval($data[6]);
+            GameSettings::getInstance()->jump_boost_level = intval($data[7]);
             $this->reloadGame(GameSettings::getInstance()->getConfig()->get("arena"));
         });
         $form->setTitle(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§8Settings");
         $form->addLabel("Customize the game options here. If a value is blank, the effect will be disabled. After the server restart, the values will be the same as those from the configuration file.");
         $form->addToggle("Massive knockback", $this->isMassiveKnockbackEnabled());
-        $form->addInput("Enchant level", GameSettings::getInstance()->enchant_level);
+        $form->addToggle("Bow", $this->isBowEnabled());
+        $form->addToggle("Snowballs", $this->isSnowballsEnabled());
+        $form->addToggle("Leap", $this->isLeapEnabled());
+        $form->addInput("Stick's knockback level", GameSettings::getInstance()->enchant_level);
+        $form->addInput("Bow's knockback level", GameSettings::getInstance()->knockback_level);
         $form->addInput("Speed level", GameSettings::getInstance()->speed_level);
         $form->addInput("Jump boost level", GameSettings::getInstance()->jump_boost_level);
         $player->sendForm($form);
@@ -77,9 +96,36 @@ class SettingsCommand extends BaseSubCommand {
         }
     }
 
-    public function isMassiveKnockbackEnabled(): bool
+    private function isMassiveKnockbackEnabled(): bool
     {
         if(GameSettings::getInstance()->massive_knockback == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function isBowEnabled(): bool
+    {
+        if(GameSettings::getInstance()->bow == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function isSnowballsEnabled(): bool
+    {
+        if(GameSettings::getInstance()->snowballs == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function isLeapEnabled(): bool
+    {
+        if(GameSettings::getInstance()->leap == true) {
             return true;
         } else {
             return false;

@@ -7,6 +7,8 @@ use pocketmine\event\Listener;
 use pocketmine\Server;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\network\mcpe\protocol\PlaySoundPacket;
+use pocketmine\Player;
 
 class KnockbackPlayer implements Listener {
 
@@ -48,6 +50,17 @@ class KnockbackPlayer implements Listener {
                 }
             }
         } 
+    }
+
+    public function playSound(string $soundName, Player $player) {
+        $pk = new PlaySoundPacket();
+        $pk->soundName = $soundName;
+        $pk->x = $player->getX();
+        $pk->y = $player->getY();
+        $pk->z = $player->getZ();
+        $pk->volume = 500;
+        $pk->pitch = 1;
+        Server::getInstance()->broadcastPacket($player->getLevel()->getPlayers(), $pk);
     }
 
 }
