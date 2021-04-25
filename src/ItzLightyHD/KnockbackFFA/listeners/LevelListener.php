@@ -63,7 +63,7 @@ class LevelListener implements Listener {
                     $player->setScoreTag(str_replace(["{kills}"], [$this->killstreak[strtolower($player->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                 }
             } else {
-                if ($event->getOrigin()->getName() == $this->plugin->getGameData()->get("arena")) {
+                if ($event->getOrigin()->getName() == GameSettings::getInstance()->getConfig()->get("arena")) {
                     $player->getInventory()->clearAll();
                     $player->removeAllEffects();
                     $this->killstreak[strtolower($player->getName())] = "None";

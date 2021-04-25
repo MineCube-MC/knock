@@ -3,7 +3,8 @@
 namespace ItzLightyHD\KnockbackFFA\command\subcommands;
 
 use ItzLightyHD\KnockbackFFA\Loader;
-use ItzLightyHD\KnockbackFFA\EventListener;
+use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
+use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use CortexPE\Commando\BaseSubCommand;
 use jojoe77777\FormAPI\CustomForm;
 use pocketmine\command\CommandSender;
@@ -54,9 +55,9 @@ class SettingsCommand extends BaseSubCommand {
             $this->plugin->enchant_level = intval($data[2]);
             $this->plugin->speed_level = intval($data[3]);
             $this->plugin->jump_boost_level = intval($data[4]);
-            $this->reloadGame($this->plugin->getGameData()->get("arena"));
+            $this->reloadGame(GameSettings::getInstance()->getConfig()->get("arena"));
         });
-        $form->setTitle($this->plugin->getGameData()->get("prefix") . "§r§8Settings");
+        $form->setTitle(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§8Settings");
         $form->addLabel("Customize the game options here. If a value is blank, the effect will be disabled. After the server restart, the values will be the same as those from the configuration file.");
         $form->addToggle("Massive knockback", $this->isMassiveKnockbackEnabled());
         $form->addInput("Enchant level", $this->plugin->enchant_level);
@@ -72,9 +73,9 @@ class SettingsCommand extends BaseSubCommand {
                 $player->teleport(Server::getInstance()->getLevelByName($world)->getSpawnLocation());
                 $player->getInventory()->clearAll();
                 $player->removeAllEffects();
-                EventListener::getInstance()->killstreak[strtolower($player->getName())] = 0;
+                KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
                 if($this->plugin->scoretag == true) {
-                    $player->setScoreTag(str_replace(["{kills}"], [EventListener::getInstance()->killstreak[strtolower($player->getName())]], $this->plugin->getGameData()->get("scoretag-format")));
+                    $player->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                 }
                 $player->setHealth(20);
                 $player->setFood(20);

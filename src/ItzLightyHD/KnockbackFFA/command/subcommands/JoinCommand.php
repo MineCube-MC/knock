@@ -30,7 +30,7 @@ class JoinCommand extends BaseSubCommand {
             $sender->sendMessage("§cOnly players are allowed to use this subcommand!");
             return;
         }
-        $world = $this->plugin->getGameData()->get("arena");
+        $world = GameSettings::getInstance()->getConfig()->get("arena");
         if(Server::getInstance()->getLevelByName($world) instanceof Level) {
             if($sender instanceof Player) {
                 $sender->teleport(Server::getInstance()->getLevelByName($world)->getSpawnLocation());

@@ -3,9 +3,10 @@
 namespace ItzLightyHD\KnockbackFFA\command\subcommands;
 
 use ItzLightyHD\KnockbackFFA\Loader;
-use ItzLightyHD\KnockbackFFA\EventListener;
+use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use CortexPE\Commando\BaseSubCommand;
 use CortexPE\Commando\args\RawStringArgument;
+use ItzLightyHD\KnockbackFFA\API;
 use pocketmine\command\CommandSender;
 use pocketmine\Server;
 
@@ -31,13 +32,13 @@ class KillsCommand extends BaseSubCommand {
         }
         $player = Server::getInstance()->getPlayer($args["player"]);
         if($player->isOnline()) {
-            if(EventListener::getInstance()->getKillstreak($player->getName()) === "None") {
-                $sender->sendMessage($this->plugin->getGameData()->get("prefix") . "§r§e" . $player->getDisplayName() . " §r§6isn't playing KnockbackFFA right now");
+            if(API::getKills($player) === "none") {
+                $sender->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§e" . $player->getDisplayName() . " §r§6isn't playing KnockbackFFA right now");
             } else {
-                $sender->sendMessage($this->plugin->getGameData()->get("prefix") . "§r§e" . $player->getDisplayName() . " §r§6is at §e" . EventListener::getInstance()->getKillstreak(Server::getInstance()->getPlayer($args["player"])->getName()) . " §6kills");
+                $sender->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§e" . $player->getDisplayName() . " §r§6is at §e" . API::getKills(Server::getInstance()->getPlayer($args["player"])) . " §6kills");
             }
         } else {
-            $sender->sendMessage($this->plugin->getGameData()->get("prefix") . "§r§c" . $args["player"] . " isn't online!");
+            $sender->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§c" . $args["player"] . " isn't online!");
         }
     }
 
