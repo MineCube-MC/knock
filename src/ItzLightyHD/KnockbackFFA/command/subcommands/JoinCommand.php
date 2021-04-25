@@ -2,7 +2,7 @@
 
 namespace ItzLightyHD\KnockbackFFA\command\subcommands;
 
-use ItzLightyHD\KnockbackFFA\KnockbackFFA;
+use ItzLightyHD\KnockbackFFA\Loader;
 use CortexPE\Commando\BaseSubCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\level\Level;
@@ -13,7 +13,7 @@ class JoinCommand extends BaseSubCommand {
 
     private $plugin;
 
-    public function __construct(KnockbackFFA $plugin)
+    public function __construct(Loader $plugin)
     {
         $this->plugin = $plugin;
         parent::__construct("join", "Join the minigame");

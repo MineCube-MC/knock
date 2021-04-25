@@ -2,7 +2,7 @@
 
 namespace ItzLightyHD\KnockbackFFA\command;
 
-use ItzLightyHD\KnockbackFFA\KnockbackFFA;
+use ItzLightyHD\KnockbackFFA\Loader;
 use CortexPE\Commando\BaseCommand;
 use ItzLightyHD\KnockbackFFA\command\subcommands\JoinCommand;
 use ItzLightyHD\KnockbackFFA\command\subcommands\LeaveCommand;
@@ -14,7 +14,7 @@ class KnockbackCommand extends BaseCommand {
 
     private $plugin;
 
-    public function __construct(KnockbackFFA $plugin) {
+    public function __construct(Loader $plugin) {
         $this->plugin = $plugin;
         parent::__construct($plugin, "kbffa", "Play an amazing sumo FFA minigame", ["knock"]);
     }

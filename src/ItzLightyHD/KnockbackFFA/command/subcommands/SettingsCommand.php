@@ -2,7 +2,7 @@
 
 namespace ItzLightyHD\KnockbackFFA\command\subcommands;
 
-use ItzLightyHD\KnockbackFFA\KnockbackFFA;
+use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\EventListener;
 use CortexPE\Commando\BaseSubCommand;
 use jojoe77777\FormAPI\CustomForm;
@@ -20,7 +20,7 @@ class SettingsCommand extends BaseSubCommand {
 
     private $plugin;
 
-    public function __construct(KnockbackFFA $plugin)
+    public function __construct(Loader $plugin)
     {
         $this->plugin = $plugin;
         parent::__construct("settings", "Customize the minigame directly from the game");
