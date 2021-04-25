@@ -1,6 +1,6 @@
 ---
 name: KnockbackFFA
-main: ItzLightyHD\KnockbackFFA\KnockbackFFA
+main: ItzLightyHD\KnockbackFFA\Loader
 api: 3.19.0
 mcpe-protocol: [431]
 version: 1.3-beta

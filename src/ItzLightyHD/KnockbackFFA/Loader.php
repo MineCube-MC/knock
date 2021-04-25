@@ -10,7 +10,7 @@ use CortexPE\Commando\PacketHooker;
 use ItzLightyHD\KnockbackFFA\command\KnockbackCommand;
 use pocketmine\level\Level;
 
-class KnockbackFFA extends PluginBase {
+class Loader extends PluginBase {
 
     /** @var Config $config */
     protected $config;
