@@ -5,7 +5,6 @@ namespace ItzLightyHD\KnockbackFFA\command\subcommands;
 use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use CortexPE\Commando\BaseSubCommand;
-use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
 use pocketmine\command\CommandSender;
 use pocketmine\level\Level;
 use pocketmine\Player;
@@ -32,23 +31,13 @@ class LeaveCommand extends BaseSubCommand {
             $sender->sendMessage("§cOnly players are allowed to use this subcommand!");
             return;
         }
-        if(GameSettings::getInstance()->getConfig()->get("leave-to-lobby") == true) {
-            $lobbyWorld = GameSettings::getInstance()->getConfig()->get("lobby-world");
-            if(Server::getInstance()->getLevelByName($lobbyWorld) instanceof Level) {
-                if($sender instanceof Player) {
-                    $sender->teleport(Server::getInstance()->getLevelByName($lobbyWorld)->getSpawnLocation());
-                }
-            } else {
-                $sender->sendMessage("§cThe lobby world doesn't exist. It was probably removed or unloaded. If you are the server administrator, load the level again and retry.");
+        $lobbyWorld = GameSettings::getInstance()->getConfig()->get("lobby-world");
+        if(Server::getInstance()->getLevelByName($lobbyWorld) instanceof Level) {
+            if($sender instanceof Player) {
+                $sender->teleport(Server::getInstance()->getLevelByName($lobbyWorld)->getSpawnLocation());
             }
         } else {
-            if(Server::getInstance()->getLevelByName(KnockbackPlayer::getInstance()->lastworld[strtolower($sender->getName())]) instanceof Level) {
-                if($sender instanceof Player) {
-                    $sender->teleport(Server::getInstance()->getLevelByName(KnockbackPlayer::getInstance()->lastworld[strtolower($sender->getName())])->getSpawnLocation());
-                }
-            } else {
-                $sender->sendMessage("§cThe world you joined the minigame from doesn't exist. It was probably removed or unloaded. If you are the server administrator, load the level again and retry.");
-            }
+            $sender->sendMessage("§cThe lobby world doesn't exist. It was probably removed or unloaded. If you are the server administrator, load the level again and retry.");
         }
     }
 

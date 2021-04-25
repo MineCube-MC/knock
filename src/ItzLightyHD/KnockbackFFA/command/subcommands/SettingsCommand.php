@@ -6,6 +6,7 @@ use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use CortexPE\Commando\BaseSubCommand;
+use ItzLightyHD\KnockbackFFA\utils\KnockbackKit;
 use jojoe77777\FormAPI\CustomForm;
 use pocketmine\command\CommandSender;
 use pocketmine\level\Level;
@@ -48,21 +49,21 @@ class SettingsCommand extends BaseSubCommand {
                 return;
             }
             if($data[1] == true) {
-                $this->plugin->massive_knockback = true;
+                GameSettings::getInstance()->massive_knockback = true;
             } else {
-                $this->plugin->massive_knockback = false;
+                GameSettings::getInstance()->massive_knockback = false;
             }
-            $this->plugin->enchant_level = intval($data[2]);
-            $this->plugin->speed_level = intval($data[3]);
-            $this->plugin->jump_boost_level = intval($data[4]);
+            GameSettings::getInstance()->enchant_level = intval($data[2]);
+            GameSettings::getInstance()->speed_level = intval($data[3]);
+            GameSettings::getInstance()->jump_boost_level = intval($data[4]);
             $this->reloadGame(GameSettings::getInstance()->getConfig()->get("arena"));
         });
         $form->setTitle(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§8Settings");
         $form->addLabel("Customize the game options here. If a value is blank, the effect will be disabled. After the server restart, the values will be the same as those from the configuration file.");
         $form->addToggle("Massive knockback", $this->isMassiveKnockbackEnabled());
-        $form->addInput("Enchant level", $this->plugin->enchant_level);
-        $form->addInput("Speed level", $this->plugin->speed_level);
-        $form->addInput("Jump boost level", $this->plugin->jump_boost_level);
+        $form->addInput("Enchant level", GameSettings::getInstance()->enchant_level);
+        $form->addInput("Speed level", GameSettings::getInstance()->speed_level);
+        $form->addInput("Jump boost level", GameSettings::getInstance()->jump_boost_level);
         $player->sendForm($form);
     }
 
@@ -71,40 +72,14 @@ class SettingsCommand extends BaseSubCommand {
         if(Server::getInstance()->getLevelByName($world) instanceof Level) {
             foreach(Server::getInstance()->getLevelByName($world)->getPlayers() as $player) {
                 $player->teleport(Server::getInstance()->getLevelByName($world)->getSpawnLocation());
-                $player->getInventory()->clearAll();
-                $player->removeAllEffects();
-                KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
-                if($this->plugin->scoretag == true) {
-                    $player->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
-                }
-                $player->setHealth(20);
-                $player->setFood(20);
-
-                $player->getInventory()->clearAll();
-                $player->getArmorInventory()->clearAll();
-
-                $stick = Item::get(280, 0, 1);
-                if($this->plugin->enchant_level == 0) {
-                    $player->getInventory()->setItem(0, $stick);    
-                } else {
-                    $stick->addEnchantment(new EnchantmentInstance(Enchantment::getEnchantment(12), $this->plugin->enchant_level));
-                    $player->getInventory()->setItem(0, $stick);
-                }
-                
-                $player->removeAllEffects();
-                if($this->plugin->speed_level !== 0) {
-                    $player->addEffect(new EffectInstance(Effect::getEffect(1), 99999, $this->plugin->speed_level, false));
-                }
-                if($this->plugin->speed_level !== 0) {
-                    $player->addEffect(new EffectInstance(Effect::getEffect(8), 99999, $this->plugin->jump_boost_level, false));
-                }
+                new KnockbackKit($player);
             }
         }
     }
 
     public function isMassiveKnockbackEnabled(): bool
     {
-        if($this->plugin->massive_knockback == true) {
+        if(GameSettings::getInstance()->massive_knockback == true) {
             return true;
         } else {
             return false;

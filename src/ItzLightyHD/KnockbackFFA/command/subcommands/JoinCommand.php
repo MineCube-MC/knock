@@ -3,6 +3,7 @@
 namespace ItzLightyHD\KnockbackFFA\command\subcommands;
 
 use ItzLightyHD\KnockbackFFA\Loader;
+use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use CortexPE\Commando\BaseSubCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\level\Level;
