@@ -5,14 +5,17 @@ namespace ItzLightyHD\KnockbackFFA\listeners;
 use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
+use ItzLightyHD\KnockbackFFA\event\{
+    PlayerKillEvent,
+    PlayerDeadEvent,
+    PlayerKilledEvent,
+    PlayerKillstreakEvent
+};
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\Player;
 use pocketmine\Server;
-use pocketmine\level\sound\PopSound;
-use pocketmine\level\sound\AnvilFallSound;
-use pocketmine\level\sound\FizzSound;
 use pocketmine\event\Listener;
 
 class DamageListener implements Listener {
@@ -42,6 +45,8 @@ class DamageListener implements Listener {
                     $event->setCancelled();
                     $event->getEntity()->teleport(Server::getInstance()->getLevelByName(GameSettings::getInstance()->getConfig()->get("arena"))->getSpawnLocation());
                     if(KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] === "none") {
+                        $deadevent = new PlayerDeadEvent($event->getEntity());
+                        $deadevent->call();
                         KnockbackPlayer::getInstance()->playSound("random.glass", $event->getEntity());
                         KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
                         if(GameSettings::getInstance()->scoretag == true) {
@@ -56,7 +61,10 @@ class DamageListener implements Listener {
                             $ks = [5, 10, 15, 20, 25, 30, 40, 50];
                             if (in_array(KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy->getName())], $ks)) {
                                 $players = $event->getEntity()->getLevel()->getPlayers();
-            
+                                $killevent = new PlayerKillEvent($killedBy);
+                                $killevent->call();
+                                $killstreakevent = new PlayerKillstreakEvent($killedBy);
+                                $killstreakevent->call();
                                 foreach ($players as $p) {
                                     KnockbackPlayer::getInstance()->playSound("random.levelup", $p);
                                     $p->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§f" . Server::getInstance()->getPlayer(KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())])->getDisplayName() . "§r§6 is at §e" . KnockbackPlayer::getInstance()->killstreak[KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())]] . "§6 kills");
@@ -68,10 +76,14 @@ class DamageListener implements Listener {
                                 if(GameSettings::getInstance()->scoretag == true) {
                                     $killedBy->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                                 }
+                                $killevent = new PlayerKillEvent($killedBy);
+                                $killevent->call();
                                 $killedBy->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§aYou killed §f" . $player->getDisplayName());
                             }
                             KnockbackPlayer::getInstance()->playSound("note.pling", $killedBy);
                         }
+                        $killedevent = new PlayerKilledEvent($event->getEntity());
+                        $killedevent->call();
                         KnockbackPlayer::getInstance()->playSound("random.glass", $event->getEntity());
                         if(GameSettings::getInstance()->scoretag == true) {
                             $event->getEntity()->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));

@@ -2,16 +2,12 @@
 
 namespace ItzLightyHD\KnockbackFFA\listeners;
 
-use ItzLightyHD\KnockbackFFA\AdditionalItems;
+use ItzLightyHD\KnockbackFFA\event\GameJoinEvent;
+use ItzLightyHD\KnockbackFFA\event\GameQuitEvent;
 use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackKit;
 use pocketmine\event\entity\EntityLevelChangeEvent;
-use pocketmine\item\enchantment\Enchantment;
-use pocketmine\item\enchantment\EnchantmentInstance;
-use pocketmine\entity\EffectInstance;
-use pocketmine\entity\Effect;
-use pocketmine\item\Item;
 use pocketmine\Player;
 use pocketmine\event\Listener;
 
@@ -37,9 +33,13 @@ class LevelListener implements Listener {
         $player = $event->getEntity();
         if($player instanceof Player) {
             if($event->getTarget()->getFolderName() == GameSettings::getInstance()->getConfig()->get("arena")) {
+                $ev = new GameJoinEvent($player);
+                $ev->call();
                 new KnockbackKit($player);
             } else {
                 if ($event->getOrigin()->getName() == GameSettings::getInstance()->getConfig()->get("arena")) {
+                    $ev = new GameQuitEvent($player);
+                    $ev->call();
                     $player->getInventory()->clearAll();
                     $player->removeAllEffects();
                     $this->killstreak[strtolower($player->getName())] = "None";
