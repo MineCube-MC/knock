@@ -42,7 +42,7 @@ class DamageListener implements Listener {
                     $event->setCancelled();
                     $event->getEntity()->teleport(Server::getInstance()->getLevelByName(GameSettings::getInstance()->getConfig()->get("arena"))->getSpawnLocation());
                     if(KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] === "none") {
-                        $event->getEntity()->getLevel()->addSound(new AnvilFallSound($event->getEntity()));
+                        KnockbackPlayer::getInstance()->playSound("random.glass", $event->getEntity());
                         KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
                         if(GameSettings::getInstance()->scoretag == true) {
                             $event->getEntity()->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));

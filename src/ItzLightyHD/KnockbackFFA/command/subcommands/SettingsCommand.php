@@ -3,18 +3,13 @@
 namespace ItzLightyHD\KnockbackFFA\command\subcommands;
 
 use ItzLightyHD\KnockbackFFA\Loader;
-use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
+use ItzLightyHD\KnockbackFFA\API;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use CortexPE\Commando\BaseSubCommand;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackKit;
 use jojoe77777\FormAPI\CustomForm;
 use pocketmine\command\CommandSender;
 use pocketmine\level\Level;
-use pocketmine\item\Item;
-use pocketmine\item\enchantment\Enchantment;
-use pocketmine\item\enchantment\EnchantmentInstance;
-use pocketmine\entity\Effect;
-use pocketmine\entity\EffectInstance;
 use pocketmine\Player;
 use pocketmine\Server;
 
@@ -75,10 +70,10 @@ class SettingsCommand extends BaseSubCommand {
         });
         $form->setTitle(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§8Settings");
         $form->addLabel("Customize the game options here. If a value is blank, the effect will be disabled. After the server restart, the values will be the same as those from the configuration file.");
-        $form->addToggle("Massive knockback", $this->isMassiveKnockbackEnabled());
-        $form->addToggle("Bow", $this->isBowEnabled());
-        $form->addToggle("Snowballs", $this->isSnowballsEnabled());
-        $form->addToggle("Leap", $this->isLeapEnabled());
+        $form->addToggle("Massive knockback", API::isMassiveKnockbackEnabled());
+        $form->addToggle("Bow", API::isBowEnabled());
+        $form->addToggle("Snowballs", API::isSnowballsEnabled());
+        $form->addToggle("Leap", API::isLeapEnabled());
         $form->addInput("Stick's knockback level", GameSettings::getInstance()->enchant_level);
         $form->addInput("Bow's knockback level", GameSettings::getInstance()->knockback_level);
         $form->addInput("Speed level", GameSettings::getInstance()->speed_level);
@@ -93,42 +88,6 @@ class SettingsCommand extends BaseSubCommand {
                 $player->teleport(Server::getInstance()->getLevelByName($world)->getSpawnLocation());
                 new KnockbackKit($player);
             }
-        }
-    }
-
-    private function isMassiveKnockbackEnabled(): bool
-    {
-        if(GameSettings::getInstance()->massive_knockback == true) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private function isBowEnabled(): bool
-    {
-        if(GameSettings::getInstance()->bow == true) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private function isSnowballsEnabled(): bool
-    {
-        if(GameSettings::getInstance()->snowballs == true) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private function isLeapEnabled(): bool
-    {
-        if(GameSettings::getInstance()->leap == true) {
-            return true;
-        } else {
-            return false;
         }
     }
 

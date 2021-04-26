@@ -29,4 +29,4 @@ speed-level: 2 # Players will have the speed effect with the desired level
 jump-boost-level: 2 # Players will have the jump boost effect with the desired level
 
 # Which prefix do you want to use for the messages?
-prefix: "§8[§5KBFFA§8] §r§7§l» "
+prefix: "§dKnock §r§7§l| §r"

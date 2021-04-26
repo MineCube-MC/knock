@@ -37,7 +37,7 @@ class KnockbackKit {
             if(GameSettings::getInstance()->knockback_level == 0) {
                 $player->getInventory()->addItem($bow);
             } else {
-                $bow->addEnchantment(new EnchantmentInstance(Enchantment::getEnchantment(20), 1));
+                $bow->addEnchantment(new EnchantmentInstance(Enchantment::getEnchantment(20), GameSettings::getInstance()->knockback_level));
                 $player->getInventory()->addItem($bow);
             }
             $player->getInventory()->setItem(9, $arrow);
