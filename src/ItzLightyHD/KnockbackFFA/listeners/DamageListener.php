@@ -2,6 +2,7 @@
 
 namespace ItzLightyHD\KnockbackFFA\listeners;
 
+use ItzLightyHD\KnockbackFFA\API;
 use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
@@ -11,12 +12,14 @@ use ItzLightyHD\KnockbackFFA\event\{
     PlayerKilledEvent,
     PlayerKillstreakEvent
 };
+use ItzLightyHD\KnockbackFFA\utils\KnockbackKit;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\event\Listener;
+use pocketmine\item\Item;
 
 class DamageListener implements Listener {
 
@@ -47,6 +50,7 @@ class DamageListener implements Listener {
                     if(KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] === "none") {
                         $deadevent = new PlayerDeadEvent($event->getEntity());
                         $deadevent->call();
+                        new KnockbackKit($event->getEntity());
                         KnockbackPlayer::getInstance()->playSound("random.glass", $event->getEntity());
                         KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
                         if(GameSettings::getInstance()->scoretag == true) {
@@ -84,6 +88,7 @@ class DamageListener implements Listener {
                         }
                         $killedevent = new PlayerKilledEvent($event->getEntity());
                         $killedevent->call();
+                        new KnockbackKit($event->getEntity());
                         KnockbackPlayer::getInstance()->playSound("random.glass", $event->getEntity());
                         if(GameSettings::getInstance()->scoretag == true) {
                             $event->getEntity()->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
@@ -96,6 +101,15 @@ class DamageListener implements Listener {
                     $event->setCancelled();
                 }
             }
+        }
+    }
+
+    public function kbffaKill(PlayerKillEvent $event) {
+        $player = $event->getPlayer();
+
+        if(API::isSnowballsEnabled() == true) {
+            $snowballs = Item::get(332, 0, 1);
+            $player->getInventory()->addItem($snowballs);
         }
     }
 

@@ -34,6 +34,7 @@ class KnockbackKit {
             $bow = Item::get(261, 0, 1);
             $arrow = Item::get(262, 0, 1);
             $bow->addEnchantment(new EnchantmentInstance(Enchantment::getEnchantment(22), 1));
+            $bow->addEnchantment(new EnchantmentInstance(Enchantment::getEnchantment(17), 10));
             if(GameSettings::getInstance()->knockback_level == 0) {
                 $player->getInventory()->addItem($bow);
             } else {
@@ -44,7 +45,7 @@ class KnockbackKit {
         }
 
         if(GameSettings::getInstance()->snowballs == true) {
-            $snowballs = Item::get(332, 0, 16);
+            $snowballs = Item::get(332, 0, 1);
             $player->getInventory()->addItem($snowballs);
         }
 
