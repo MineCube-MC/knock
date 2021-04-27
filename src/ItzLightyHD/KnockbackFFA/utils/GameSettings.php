@@ -9,6 +9,8 @@ class GameSettings {
 
     protected static $instance;
 
+    public $world;
+    public $lobby_world;
     public $massive_knockback;
     public $bow;
     public $snowballs;
@@ -34,6 +36,8 @@ class GameSettings {
     public function prepare() {
         @mkdir(Loader::getInstance()->getDataFolder());
         Loader::getInstance()->saveResource("kbffa.yml");
+        $this->world = $this->getConfig()->get("arena");
+        $this->lobby_world = $this->getConfig()->get("lobby-world");
         $this->massive_knockback = $this->getConfig()->get("massive-knockback");
         $this->bow = $this->getConfig()->get("bow");
         $this->snowballs = $this->getConfig()->get("snowballs");
