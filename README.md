@@ -1,5 +1,5 @@
 <p align="center">
-	<a href="https://github.com/ApexieDevelopment/Knock"><img src="https://raw.githubusercontent.com/ApexieDevelopment/Knock/main/Logo.png"></img></a><br>
+	<a href="https://github.com/ApexieDevelopment/Knock"><img src="https://raw.githubusercontent.com/ApexieDevelopment/Knock/main/assets/Logo.png"></img></a><br>
 	<b>The classic and fully customizable minigame fun to play for PocketMine-MP.</b>
 </p>
 
