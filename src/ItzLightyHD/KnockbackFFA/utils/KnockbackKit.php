@@ -4,6 +4,7 @@ namespace ItzLightyHD\KnockbackFFA\utils;
 
 use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
+use ItzLightyHD\KnockbackFFA\event\PlayerKitEvent;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\entity\EffectInstance;
@@ -15,6 +16,8 @@ class KnockbackKit {
 
     public function __construct(Player $player)
     {
+        $ev = new PlayerKitEvent($player);
+        $ev->call();
         KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
         $player->setHealth(20);
         $player->setFood(20);

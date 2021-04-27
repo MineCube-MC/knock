@@ -159,10 +159,10 @@ class DamageListener implements Listener {
 
         if($player instanceof Player) {
             if($player->getLevel()->getFolderName() == GameSettings::getInstance()->getConfig()->get("arena")) {
-                $player->setHealth(20);
-                $player->setSaturation(20);
-
                 if($damager instanceof Player) {
+                    $player->setHealth(20);
+                    $player->setSaturation(20);
+                    
                     $x = $player->getX();
                     $y = $player->getY();
                     $z = $player->getZ();
@@ -179,7 +179,7 @@ class DamageListener implements Listener {
 
                     KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] = strtolower($damager->getName());
 
-                    KnockbackPlayer::getInstance()->playSound("random.orb", $event->getEntity());
+                    KnockbackPlayer::getInstance()->playSound("random.orb", $damager);
                 }
             }
         }
