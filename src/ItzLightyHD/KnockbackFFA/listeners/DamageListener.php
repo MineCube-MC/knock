@@ -43,10 +43,10 @@ class DamageListener implements Listener {
     {
         $player = $event->getEntity();
         if($player instanceof Player) {
-            if($event->getEntity()->getLevel()->getFolderName() === GameSettings::getInstance()->getConfig()->get("arena")) {
+            if($event->getEntity()->getLevel()->getFolderName() === GameSettings::getInstance()->$world) {
                 if($event->getCause() === EntityDamageEvent::CAUSE_VOID) {
                     $event->setCancelled();
-                    $event->getEntity()->teleport(Server::getInstance()->getLevelByName(GameSettings::getInstance()->getConfig()->get("arena"))->getSpawnLocation());
+                    $event->getEntity()->teleport(Server::getInstance()->getLevelByName(GameSettings::getInstance()->$world)->getSpawnLocation());
                     if(KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] === "none") {
                         $deadevent = new PlayerDeadEvent($event->getEntity());
                         $deadevent->call();
@@ -118,7 +118,7 @@ class DamageListener implements Listener {
         $damager = $event->getDamager();
 
         if($player instanceof Player) {
-            if($player->getLevel()->getFolderName() == GameSettings::getInstance()->getConfig()->get("arena")) {
+            if($player->getLevel()->getFolderName() == GameSettings::getInstance()->$world) {
                 $player->setHealth(20);
                 $player->setSaturation(20);
 
@@ -158,11 +158,11 @@ class DamageListener implements Listener {
         $damager = $event->getDamager();
 
         if($player instanceof Player) {
-            if($player->getLevel()->getFolderName() == GameSettings::getInstance()->getConfig()->get("arena")) {
+            if($player->getLevel()->getFolderName() == GameSettings::getInstance()->$world) {
                 if($damager instanceof Player) {
                     $player->setHealth(20);
                     $player->setSaturation(20);
-                    
+
                     $x = $player->getX();
                     $y = $player->getY();
                     $z = $player->getZ();

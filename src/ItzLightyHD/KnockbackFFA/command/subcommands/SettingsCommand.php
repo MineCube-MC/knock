@@ -69,7 +69,7 @@ class SettingsCommand extends BaseSubCommand {
             GameSettings::getInstance()->enchant_level = intval($data[5]);
             GameSettings::getInstance()->speed_level = intval($data[6]);
             GameSettings::getInstance()->jump_boost_level = intval($data[7]);
-            $this->reloadGame(GameSettings::getInstance()->getConfig()->get("arena"));
+            $this->reloadGame(GameSettings::getInstance()->$world);
         });
         $form->setTitle(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§8Settings");
         $form->addLabel("Customize the game options here. If a value is blank, the effect will be disabled. After the server restart, the values will be the same as those from the configuration file.");

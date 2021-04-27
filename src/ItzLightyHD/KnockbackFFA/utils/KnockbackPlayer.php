@@ -34,8 +34,8 @@ class KnockbackPlayer implements Listener {
         $name = strtolower($player->getName());
         $this->lastDmg[$name] = "none";
         $this->killstreak[$name] = 0;
-        if($player->getLevel()->getFolderName() == GameSettings::getInstance()->getConfig()->get("arena")) {
-            $lobbyWorld = GameSettings::getInstance()->getConfig()->get("lobby-world");
+        if($player->getLevel()->getFolderName() == GameSettings::getInstance()->$world) {
+            $lobbyWorld = GameSettings::getInstance()->$lobby_world;
             $player->teleport(Server::getInstance()->getLevelByName($lobbyWorld)->getSpawnLocation());
         }
     }
@@ -44,7 +44,7 @@ class KnockbackPlayer implements Listener {
         $player = $event->getPlayer();
         foreach(Server::getInstance()->getOnlinePlayers() as $p) {
             $world = $p->getLevel()->getFolderName();
-            if($world == GameSettings::getInstance()->getConfig()->get("arena")) {
+            if($world == GameSettings::getInstance()->$world) {
                 if($this->lastDmg[strtolower($p->getName())] == strtolower($player->getName())) {
                     $this->lastDmg[strtolower($p->getName())] = "none";
                 }

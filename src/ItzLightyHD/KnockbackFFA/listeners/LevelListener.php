@@ -32,12 +32,12 @@ class LevelListener implements Listener {
     public function onEntityLevelChange(EntityLevelChangeEvent $event): void {
         $player = $event->getEntity();
         if($player instanceof Player) {
-            if($event->getTarget()->getFolderName() == GameSettings::getInstance()->getConfig()->get("arena")) {
+            if($event->getTarget()->getFolderName() == GameSettings::getInstance()->$world) {
                 $ev = new GameJoinEvent($player);
                 $ev->call();
                 new KnockbackKit($player);
             } else {
-                if ($event->getOrigin()->getName() == GameSettings::getInstance()->getConfig()->get("arena")) {
+                if ($event->getOrigin()->getName() == GameSettings::getInstance()->$world) {
                     $ev = new GameQuitEvent($player);
                     $ev->call();
                     $player->getInventory()->clearAll();

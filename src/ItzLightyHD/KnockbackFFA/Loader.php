@@ -31,7 +31,7 @@ class Loader extends PluginBase {
         // Register the game settings
         new GameSettings($this);
         // Loads the arena that is wrote in the folder
-        $this->getServer()->loadLevel(GameSettings::getInstance()->getConfig()->get("arena"));
+        $this->getServer()->loadLevel(GameSettings::getInstance()->$world);
         // Checking for a new update (new system)
         UpdateNotifier::checkUpdate($this->getDescription()->getName(), $this->getDescription()->getVersion());
         // Register the packet hooker for Commando (command framework)
@@ -41,13 +41,13 @@ class Loader extends PluginBase {
         // Registers the "kbffa" command
         $this->getServer()->getCommandMap()->register($this->getName(), new KnockbackCommand($this));
         // Check for world existance (if the world doesn't exist, it will instantly disable the plugin)
-        if(!($this->getServer()->getLevelByName(GameSettings::getInstance()->getConfig()->get("arena")) instanceof Level)) {
+        if(!($this->getServer()->getLevelByName(GameSettings::getInstance()->$world) instanceof Level)) {
             $this->getLogger()->alert("The world specified for the arena in the configuration file doesn't exist. Change it or make sure it has the correct name!");
             $plugin = $this->getServer()->getPluginManager()->getPlugin($this->getName());
             $this->getServer()->getPluginManager()->disablePlugin($plugin);
         }
-        if(!($this->getServer()->getLevelByName(GameSettings::getInstance()->getConfig()->get("lobby-world")) instanceof Level)) {
-            if(!($this->getServer()->getLevelByName(GameSettings::getInstance()->getConfig()->get("arena")) instanceof Level)) {
+        if(!($this->getServer()->getLevelByName(GameSettings::getInstance()->$lobby_world) instanceof Level)) {
+            if(!($this->getServer()->getLevelByName(GameSettings::getInstance()->$world) instanceof Level)) {
                 $this->getLogger()->alert("The world specified for the lobby in the configuration file doesn't exist. Change it or make sure it has the correct name!");
                 $plugin = $this->getServer()->getPluginManager()->getPlugin($this->getName());
                 $this->getServer()->getPluginManager()->disablePlugin($plugin);
