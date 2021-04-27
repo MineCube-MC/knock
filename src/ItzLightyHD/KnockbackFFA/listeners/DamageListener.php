@@ -131,9 +131,14 @@ class DamageListener implements Listener {
                     $zz = $player->getLevel()->getSafeSpawn()->getZ();
                     $sr = GameSettings::getInstance()->getConfig()->get("protection-radius");
 
+                    if($damager == $player) {
+                        $event->setCancelled();
+                        return;
+                    }
+
                     if (abs($xx - $x) < $sr && abs($yy - $y) < $sr && abs($zz - $z) < $sr) {
                         $event->setCancelled();
-                        $damager->sendMessage("§cYou can't hit the players here!");
+                        $damager->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou can't hit the players here!");
                         return;
                     }
 
@@ -160,26 +165,33 @@ class DamageListener implements Listener {
         if($player instanceof Player) {
             if($player->getLevel()->getFolderName() == GameSettings::getInstance()->world) {
                 if($damager instanceof Player) {
-                    $player->setHealth(20);
-                    $player->setSaturation(20);
-
-                    $x = $player->getX();
-                    $y = $player->getY();
-                    $z = $player->getZ();
-                    $xx = $player->getLevel()->getSafeSpawn()->getX();
-                    $yy = $player->getLevel()->getSafeSpawn()->getY();
-                    $zz = $player->getLevel()->getSafeSpawn()->getZ();
-                    $sr = GameSettings::getInstance()->getConfig()->get("protection-radius");
-
-                    if (abs($xx - $x) < $sr && abs($yy - $y) < $sr && abs($zz - $z) < $sr) {
+                    if($damager == $player) {
                         $event->setCancelled();
-                        $damager->sendMessage("§cYou can't hit the players here!");
+                        $damager->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou can't hit yourself.");
                         return;
+                    } else {
+                        $event->setBaseDamage(0);
+                        $player->setHealth(20);
+                        $player->setSaturation(20);
+
+                        $x = $player->getX();
+                        $y = $player->getY();
+                        $z = $player->getZ();
+                        $xx = $player->getLevel()->getSafeSpawn()->getX();
+                        $yy = $player->getLevel()->getSafeSpawn()->getY();
+                        $zz = $player->getLevel()->getSafeSpawn()->getZ();
+                        $sr = GameSettings::getInstance()->getConfig()->get("protection-radius");
+
+                        if (abs($xx - $x) < $sr && abs($yy - $y) < $sr && abs($zz - $z) < $sr) {
+                            $event->setCancelled();
+                            $damager->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou can't hit the players here!");
+                            return;
+                        }
+
+                        KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] = strtolower($damager->getName());
+
+                        KnockbackPlayer::getInstance()->playSound("random.orb", $damager);
                     }
-
-                    KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] = strtolower($damager->getName());
-
-                    KnockbackPlayer::getInstance()->playSound("random.orb", $damager);
                 }
             }
         }
