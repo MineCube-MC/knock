@@ -1,21 +1,22 @@
-<p>
-    <h1>Knock<img src="https://raw.githubusercontent.com/ApexieDevelopment/Knock/main/KnockbackFFA.gif" height="64" width="64" align="left" alt=""></h1><br>
-    <b>The classic sumo minigame fun to play for PocketMine-MP.</b>
+<p align="center">
+	<a href="https://github.com/ApexieDevelopment/Knock"><img src="https://raw.githubusercontent.com/ApexieDevelopment/Knock/main/Logo.png"></img></a><br>
+	<b>The classic and fully customizable minigame fun to play for PocketMine-MP.</b>
 </p>
 
-[![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/a75eNEAtrt)
-[![License](https://img.shields.io/github/license/ApexieDevelopment/Knock)](https://github.com/ApexieDevelopment/Knock)
-[![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3DItzLightyHD%26type%3Dpatrons&style=flat)](https://patreon.com/ItzLightyHD) <br>
+<p align="center">
+        <a href="https://poggit.pmmp.io/p/KnockbackFFA"><img src="https://poggit.pmmp.io/shield.state/KnockbackFFA" alt="Poggit Release"></a>
+	<a href="https://github.com/ApexieDevelopment/Knock/releases"><img src="https://img.shields.io/github/v/tag/ApexieDevelopment/Knock?label=release&logo=github" alt="GitHub tag (latest release)" /></a>
+	<a href="https://discord.gg/a75eNEAtrt"><img src="https://img.shields.io/discord/736977303539810365?label=discord&color=7289DA&logo=discord" alt="Discord" /></a>
+        <a href="https://patreon.com/itzlightyhd"><img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3DItzLightyHD%26type%3Dpatrons&style=flat" alt="Patreon"></a>
+</p>
 
 ### Features
 - Easy to setup
 - Customizable scoretag for the players
 - Arena map loading when starting the plugin
 - Ingame sounds, to make the gameplay alive
-- Customizable game behaviour (both in-game and in config file)
-- Random maps <b>(Coming soon)</b>
-- Permissions <b>(Coming soon)</b>
-- Scoreboard <b>(Coming soon)</b>
+- API to fully customize the game
+- Customize the game settings (in-game or in the config file)
 
 ### How to setup & play
 The plugin itself it's easy to setup. Follow the steps:
@@ -41,28 +42,4 @@ When you reload the server, the plugin will mess up. What you can do is to just 
 Why are you even using a PocketMine fork?
 
 ### Developers and API
-#### Getting a killstreak
-You can get the killstreak of any player from the event listener as in this example:
-```php
-use ItzLightyHD\KnockbackFFA\EventListener;
-use pocketmine\Player;
-
-class API {
-
-  protected static $instance;
-
-  public function __construct() {
-    self::$instance = $this;
-  }
-
-  public function getInstance(): self {
-    return self::$instance;
-  }
-
-  public function getKillstreak(Player $player): void {
-    EventListener::getInstance()->getKillstreak($player->getName());
-  }
-
-}
-```
-If the player isn't playing KnockbackFFA, the function will return as "None".
+The documentation is in my [GitHub Wiki](https://github.com/ApexieDevelopment/Knock/wiki): it explains how to use the API to check some settings or to get the kills and the last damager, how to edit some in-game settings and even how to listen for the plugin events.
