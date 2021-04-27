@@ -32,20 +32,20 @@ class EssentialsListener implements Listener {
 
     public function onBreak(BlockBreakEvent $event): void {
         $player = $event->getPlayer();
-        if($player->getLevel()->getFolderName() == GameSettings::getInstance()->$world) {
+        if($player->getLevel()->getFolderName() == GameSettings::getInstance()->world) {
             $event->setCancelled();
         }
     }
 
     public function onHunger(PlayerExhaustEvent $event) {
-        if($event->getPlayer()->getLevel()->getFolderName() === GameSettings::getInstance()->$world) {
+        if($event->getPlayer()->getLevel()->getFolderName() === GameSettings::getInstance()->world) {
             $event->setCancelled(true);
         }
     }
 
     public function onDrop(PlayerDropItemEvent $event): void {
         $player = $event->getPlayer();
-        if($player->getLevel()->getFolderName() === GameSettings::getInstance()->$world) {
+        if($player->getLevel()->getFolderName() === GameSettings::getInstance()->world) {
             $event->setCancelled();
         }
     }
@@ -53,7 +53,7 @@ class EssentialsListener implements Listener {
     public function onInteract(PlayerInteractEvent $event)
     {
         $player = $event->getPlayer();
-        if($player->getLevel()->getFolderName() === GameSettings::getInstance()->$world) {
+        if($player->getLevel()->getFolderName() === GameSettings::getInstance()->world) {
             if($event->getItem()->getCustomName() == "§r§eLeap§r") {
                 if(!isset($this->cooldown[$player->getName()])) $this->cooldown[$player->getName()] = 0;
                 if($this->cooldown[$player->getName()] <= time()) {

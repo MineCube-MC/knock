@@ -31,7 +31,7 @@ class LeaveCommand extends BaseSubCommand {
             $sender->sendMessage("§cOnly players are allowed to use this subcommand!");
             return;
         }
-        $lobbyWorld = GameSettings::getInstance()->$lobby_world;
+        $lobbyWorld = GameSettings::getInstance()->lobby_world;
         if(Server::getInstance()->getLevelByName($lobbyWorld) instanceof Level) {
             if($sender instanceof Player) {
                 $sender->teleport(Server::getInstance()->getLevelByName($lobbyWorld)->getSpawnLocation());
