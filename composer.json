@@ -12,5 +12,11 @@
             "email": "itzlightyhd@gmail.com"
         }
     ],
+    "repositories": [
+        {
+          "type": "vcs",
+          "url": "https://github.com/pmmp/PocketMine-MP.git"
+        }
+    ],
     "require": {}
 }
