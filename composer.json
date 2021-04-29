@@ -1,0 +1,16 @@
+{
+  "name": "apexiedev/knock",
+  "license": "MIT",
+  "description": "The classic sumo minigame fun to play for PocketMine-MP.",
+  "authors": [{"name": "ItzLightyHD"}, {"name": "ApexieDevelopment"}],
+  "require": {},
+  "require-dev": {
+    "pocketmine/pocketmine-mp": "3.*"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/pmmp/PocketMine-MP.git"
+    }
+  ]
+}

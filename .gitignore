@@ -25,6 +25,4 @@
 /vendors/*
 
 # Private things (for now)
-composer.json
-composer.lock
 .vscode

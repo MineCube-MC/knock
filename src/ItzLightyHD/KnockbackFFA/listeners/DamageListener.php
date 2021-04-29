@@ -131,7 +131,7 @@ class DamageListener implements Listener {
                     $zz = $player->getLevel()->getSafeSpawn()->getZ();
                     $sr = GameSettings::getInstance()->getConfig()->get("protection-radius");
 
-                    if($damager == $player) {
+                    if($damager->getName() == $player->getName()) {
                         $event->setCancelled();
                         return;
                     }
@@ -165,7 +165,7 @@ class DamageListener implements Listener {
         if($player instanceof Player) {
             if($player->getLevel()->getFolderName() == GameSettings::getInstance()->world) {
                 if($damager instanceof Player) {
-                    if($damager == $player) {
+                    if($damager->getName() == $player->getName()) {
                         $event->setCancelled();
                         $damager->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou can't hit yourself.");
                         return;
