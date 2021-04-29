@@ -1,7 +1,7 @@
 {
     "name": "itzlightyhd/knock",
     "description": "The classic and fully customizable minigame fun to play for PocketMine-MP.",
-    "type": "project",
+    "type": "library",
     "require-dev": {
         "pocketmine/pocketmine-mp": "3.*"
     },
