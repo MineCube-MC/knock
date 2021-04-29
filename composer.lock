@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2806643cbfae1b970bbce617f88eb57e",
+    "content-hash": "a77d3a577fd7f5577c58feddba8f8b1e",
     "packages": [],
     "packages-dev": [
         {
@@ -366,16 +366,16 @@
         },
         {
             "name": "pocketmine/pocketmine-mp",
-            "version": "3.19.0",
+            "version": "3.19.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/PocketMine-MP.git",
-                "reference": "b307cd0aa15b76cfe41d2a649d14b3aa6fb78f64"
+                "reference": "a7cd0810020af15fb3d79127c77cf576085cd4cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/PocketMine-MP/zipball/b307cd0aa15b76cfe41d2a649d14b3aa6fb78f64",
-                "reference": "b307cd0aa15b76cfe41d2a649d14b3aa6fb78f64",
+                "url": "https://api.github.com/repos/pmmp/PocketMine-MP/zipball/a7cd0810020af15fb3d79127c77cf576085cd4cc",
+                "reference": "a7cd0810020af15fb3d79127c77cf576085cd4cc",
                 "shasum": ""
             },
             "require": {
@@ -412,7 +412,7 @@
                 "pocketmine/spl": "^0.4.0"
             },
             "require-dev": {
-                "phpstan/phpstan": "0.12.83",
+                "phpstan/phpstan": "0.12.84",
                 "phpstan/phpstan-phpunit": "^0.12.6",
                 "phpstan/phpstan-strict-rules": "^0.12.2",
                 "phpunit/phpunit": "^9.2"
@@ -430,40 +430,27 @@
                     "src/pocketmine/VersionInfo.php"
                 ]
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "pocketmine\\": "tests/phpunit/"
-                }
-            },
-            "scripts": {
-                "make-devtools": [
-                    "@php -dphar.readonly=0 tests/plugins/DevTools/src/DevTools/ConsoleScript.php --make tests/plugins/DevTools --out plugins/DevTools.phar"
-                ],
-                "make-server": [
-                    "@composer install --no-dev --classmap-authoritative",
-                    "@php -dphar.readonly=0 build/server-phar.php"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "LGPL-3.0"
             ],
             "description": "A server software for Minecraft: Pocket Edition written in PHP",
             "homepage": "https://pmmp.io",
             "support": {
-                "source": "https://github.com/pmmp/PocketMine-MP/tree/3.19.0",
-                "issues": "https://github.com/pmmp/PocketMine-MP/issues"
+                "issues": "https://github.com/pmmp/PocketMine-MP/issues",
+                "source": "https://github.com/pmmp/PocketMine-MP/tree/3.19.1"
             },
             "funding": [
                 {
-                    "type": "patreon",
-                    "url": "https://www.patreon.com/pocketminemp"
+                    "url": "https://github.com/pmmp/PocketMine-MP#donate",
+                    "type": "custom"
                 },
                 {
-                    "type": "custom",
-                    "url": "https://github.com/pmmp/PocketMine-MP#donate"
+                    "url": "https://www.patreon.com/pocketminemp",
+                    "type": "patreon"
                 }
             ],
-            "time": "2021-04-07T18:03:36+00:00"
+            "time": "2021-04-25T19:34:13+00:00"
         },
         {
             "name": "pocketmine/raklib",
