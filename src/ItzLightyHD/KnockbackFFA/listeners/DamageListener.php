@@ -65,7 +65,7 @@ class DamageListener implements Listener {
                             $ks = [5, 10, 15, 20, 25, 30, 40, 50];
                             if (in_array(KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy->getName())], $ks)) {
                                 $players = $event->getEntity()->getLevel()->getPlayers();
-                                $killevent = new PlayerKillEvent($killedBy);
+                                $killevent = new PlayerKillEvent($killedBy, $event->getEntity());
                                 $killevent->call();
                                 $killstreakevent = new PlayerKillstreakEvent($killedBy);
                                 $killstreakevent->call();
@@ -80,13 +80,13 @@ class DamageListener implements Listener {
                                 if(GameSettings::getInstance()->scoretag == true) {
                                     $killedBy->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                                 }
-                                $killevent = new PlayerKillEvent($killedBy);
+                                $killevent = new PlayerKillEvent($killedBy, $event->getEntity());
                                 $killevent->call();
                                 $killedBy->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§aYou killed §f" . $player->getDisplayName());
                             }
                             KnockbackPlayer::getInstance()->playSound("note.pling", $killedBy);
                         }
-                        $killedevent = new PlayerKilledEvent($event->getEntity());
+                        $killedevent = new PlayerKilledEvent($event->getEntity(), $killedBy);
                         $killedevent->call();
                         new KnockbackKit($event->getEntity());
                         KnockbackPlayer::getInstance()->playSound("random.glass", $event->getEntity());

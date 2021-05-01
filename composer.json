@@ -3,7 +3,8 @@
     "description": "The classic and fully customizable minigame fun to play for PocketMine-MP.",
     "type": "library",
     "require-dev": {
-        "pocketmine/pocketmine-mp": "3.*"
+        "pocketmine/pocketmine-mp": "3.*",
+        "cortexpe/commando": "dev-master"
     },
     "license": "MIT",
     "authors": [

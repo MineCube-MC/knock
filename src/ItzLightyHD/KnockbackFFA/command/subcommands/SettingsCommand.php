@@ -44,6 +44,12 @@ class SettingsCommand extends BaseSubCommand {
             if($data == null) {
                 return;
             }
+            $ev = new SettingsChangeEvent($player);
+            $ev->call();
+            if($ev->isCancelled() == true) {
+                return;
+            }
+            
             if($data[1] == true) {
                 GameSettings::getInstance()->massive_knockback = true;
             } else {
@@ -64,8 +70,6 @@ class SettingsCommand extends BaseSubCommand {
             } else {
                 GameSettings::getInstance()->leap = false;
             }
-            $ev = new SettingsChangeEvent();
-            $ev->call();
             GameSettings::getInstance()->enchant_level = intval($data[5]);
             GameSettings::getInstance()->speed_level = intval($data[6]);
             GameSettings::getInstance()->jump_boost_level = intval($data[7]);

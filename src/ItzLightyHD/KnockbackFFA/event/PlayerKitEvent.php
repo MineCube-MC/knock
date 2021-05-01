@@ -3,10 +3,11 @@
 namespace ItzLightyHD\KnockbackFFA\event;
 
 use ItzLightyHD\KnockbackFFA\Loader;
+use pocketmine\event\Cancellable;
 use pocketmine\event\Event;
 use pocketmine\Player;
 
-class PlayerKitEvent extends Event {
+class PlayerKitEvent extends Event implements Cancellable {
 
     protected $plugin;
     protected $player;

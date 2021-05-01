@@ -16,9 +16,13 @@ class KnockbackKit {
 
     public function __construct(Player $player)
     {
+        KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
         $ev = new PlayerKitEvent($player);
         $ev->call();
-        KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
+        if($ev->isCancelled()) {
+            return;
+        }
+        
         $player->setHealth(20);
         $player->setFood(20);
 
