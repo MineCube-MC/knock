@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace ItzLightyHD\KnockbackFFA;
 
@@ -30,8 +29,8 @@ class Loader extends PluginBase {
         $this->registerEvents();
         // Register the game settings
         new GameSettings($this);
-        // Loads the arena that is wrote in the folder
-        $this->getServer()->loadLevel(GameSettings::getInstance()->world);
+        // Loads the arena that is wrote in the folder and upgrades it to the PM 4 world format
+        $this->getServer()->getWorldManager()->loadWorld(GameSettings::getInstance()->world, true);
         // Checking for a new update (new system)
         UpdateNotifier::checkUpdate($this->getDescription()->getName(), $this->getDescription()->getVersion());
         // Register the packet hooker for Commando (command framework)

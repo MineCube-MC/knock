@@ -1,5 +1,5 @@
 # First, let's get the world which will be used for the minigame
-arena: "kbffa"
+arena: "kbffa1"
 
 # How many blocks of radius should the player get protected from spawn?
 protection-radius: 5

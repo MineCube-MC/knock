@@ -6,12 +6,10 @@ use ItzLightyHD\KnockbackFFA\API;
 use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
-use ItzLightyHD\KnockbackFFA\event\{
-    PlayerKillEvent,
-    PlayerDeadEvent,
-    PlayerKilledEvent,
-    PlayerKillstreakEvent
-};
+use ItzLightyHD\KnockbackFFA\event\PlayerKillEvent;
+use ItzLightyHD\KnockbackFFA\event\PlayerDeadEvent;
+use ItzLightyHD\KnockbackFFA\event\PlayerKilledEvent;
+use ItzLightyHD\KnockbackFFA\event\PlayerKillstreakEvent;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackKit;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
