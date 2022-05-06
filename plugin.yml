@@ -4,4 +4,7 @@ main: ItzLightyHD\KnockbackFFA\Loader
 api: 4.0.0
 version: 1.5.3-beta
 author: ItzLightyHD
+permissions:
+  knockbackffa.customize:
+    default: op
 ---
