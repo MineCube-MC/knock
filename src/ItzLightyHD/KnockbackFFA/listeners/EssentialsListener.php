@@ -9,7 +9,7 @@ use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\event\player\PlayerDropItemEvent;
 use pocketmine\event\Listener;
 
-use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\event\player\PlayerItemUseEvent;
 use pocketmine\math\Vector3;
 
 class EssentialsListener implements Listener {
@@ -32,28 +32,28 @@ class EssentialsListener implements Listener {
 
     public function onBreak(BlockBreakEvent $event): void {
         $player = $event->getPlayer();
-        if($player->getLevel()->getFolderName() == GameSettings::getInstance()->world) {
-            $event->setCancelled();
+        if($player->getWorld()->getFolderName() == GameSettings::getInstance()->world) {
+            $event->cancel();
         }
     }
 
     public function onHunger(PlayerExhaustEvent $event) {
-        if($event->getPlayer()->getLevel()->getFolderName() === GameSettings::getInstance()->world) {
-            $event->setCancelled(true);
+        if($event->getPlayer()->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
+            $event->cancel(true);
         }
     }
 
     public function onDrop(PlayerDropItemEvent $event): void {
         $player = $event->getPlayer();
-        if($player->getLevel()->getFolderName() === GameSettings::getInstance()->world) {
-            $event->setCancelled();
+        if($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
+            $event->cancel();
         }
     }
 
-    public function onInteract(PlayerInteractEvent $event)
+    public function onItemUse(PlayerItemUseEvent $event)
     {
         $player = $event->getPlayer();
-        if($player->getLevel()->getFolderName() === GameSettings::getInstance()->world) {
+        if($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
             if($event->getItem()->getCustomName() == "§r§eLeap§r") {
                 if(!isset($this->cooldown[$player->getName()])) $this->cooldown[$player->getName()] = 0;
                 if($this->cooldown[$player->getName()] <= time()) {

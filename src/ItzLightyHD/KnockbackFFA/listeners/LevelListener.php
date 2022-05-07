@@ -9,6 +9,7 @@ use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackKit;
 use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\Listener;
+use pocketmine\player\Player;
 
 class LevelListener implements Listener {
 
@@ -40,7 +41,7 @@ class LevelListener implements Listener {
 					$ev = new GameQuitEvent($player);
 					$ev->call();
 					$player->getInventory()->clearAll();
-					$player->removeAllEffects();
+					$player->getEffects()->clear();
 					$this->killstreak[strtolower($player->getName())] = "None";
 					if(GameSettings::getInstance()->scoretag == true) {
 						$player->setScoreTag("");

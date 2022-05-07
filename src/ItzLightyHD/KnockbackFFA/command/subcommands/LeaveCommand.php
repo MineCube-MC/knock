@@ -6,8 +6,8 @@ use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use CortexPE\Commando\BaseSubCommand;
 use pocketmine\command\CommandSender;
-use pocketmine\level\Level;
-use pocketmine\Player;
+use pocketmine\world\World;
+use pocketmine\player\Player;
 use pocketmine\Server;
 
 class LeaveCommand extends BaseSubCommand {
@@ -22,7 +22,7 @@ class LeaveCommand extends BaseSubCommand {
 
     protected function prepare(): void
     {
-        
+
     }
 
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
@@ -32,9 +32,9 @@ class LeaveCommand extends BaseSubCommand {
             return;
         }
         $lobbyWorld = GameSettings::getInstance()->lobby_world;
-        if(Server::getInstance()->getLevelByName($lobbyWorld) instanceof Level) {
+        if(Server::getInstance()->getWorldManager()->getWorldByName($lobbyWorld) instanceof World) {
             if($sender instanceof Player) {
-                $sender->teleport(Server::getInstance()->getLevelByName($lobbyWorld)->getSpawnLocation());
+                $sender->teleport(Server::getInstance()->getWorldManager()->getWorldByName($lobbyWorld)->getSpawnLocation());
             }
         } else {
             $sender->sendMessage("§cThe lobby world doesn't exist. It was probably removed or unloaded. If you are the server administrator, load the level again and retry.");

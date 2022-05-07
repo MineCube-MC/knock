@@ -4,7 +4,7 @@ namespace ItzLightyHD\KnockbackFFA\event;
 
 use ItzLightyHD\KnockbackFFA\Loader;
 use pocketmine\event\Event;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class GameQuitEvent extends Event {
 

@@ -8,7 +8,7 @@ use pocketmine\Server;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class KnockbackPlayer implements Listener {
 
@@ -34,33 +34,33 @@ class KnockbackPlayer implements Listener {
         $name = strtolower($player->getName());
         $this->lastDmg[$name] = "none";
         $this->killstreak[$name] = 0;
-        if($player->getLevel()->getFolderName() == GameSettings::getInstance()->world) {
+        if($player->getWorld()->getFolderName() == GameSettings::getInstance()->world) {
             $lobbyWorld = GameSettings::getInstance()->lobby_world;
-            $player->teleport(Server::getInstance()->getLevelByName($lobbyWorld)->getSpawnLocation());
+            $player->teleport(Server::getInstance()->getWorldManager()->getWorldByName($lobbyWorld)->getSpawnLocation());
         }
     }
 
     public function onQuit(PlayerQuitEvent $event): void {
         $player = $event->getPlayer();
         foreach(Server::getInstance()->getOnlinePlayers() as $p) {
-            $world = $p->getLevel()->getFolderName();
+            $world = $p->getWorld()->getFolderName();
             if($world == GameSettings::getInstance()->world) {
                 if($this->lastDmg[strtolower($p->getName())] == strtolower($player->getName())) {
                     $this->lastDmg[strtolower($p->getName())] = "none";
                 }
             }
-        } 
+        }
     }
 
     public function playSound(string $soundName, Player $player) {
         $pk = new PlaySoundPacket();
         $pk->soundName = $soundName;
-        $pk->x = $player->getX();
-        $pk->y = $player->getY();
-        $pk->z = $player->getZ();
+        $pk->x = $player->getLocation()->getX();
+        $pk->y = $player->getLocation()->getY();
+        $pk->z = $player->getLocation()->getZ();
         $pk->volume = 500;
         $pk->pitch = 1;
-        Server::getInstance()->broadcastPacket($player->getLevel()->getPlayers(), $pk);
+        Server::getInstance()->broadcastPackets($player->getWorld()->getPlayers(), [$pk]);
     }
 
 }

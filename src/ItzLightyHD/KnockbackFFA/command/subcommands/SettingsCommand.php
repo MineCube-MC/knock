@@ -10,8 +10,8 @@ use CortexPE\Commando\BaseSubCommand;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackKit;
 use jojoe77777\FormAPI\CustomForm;
 use pocketmine\command\CommandSender;
-use pocketmine\level\Level;
-use pocketmine\Player;
+use pocketmine\world\World;
+use pocketmine\player\Player;
 use pocketmine\Server;
 
 class SettingsCommand extends BaseSubCommand {
@@ -49,7 +49,7 @@ class SettingsCommand extends BaseSubCommand {
             if($ev->isCancelled() == true) {
                 return;
             }
-            
+
             if($data[1] == true) {
                 GameSettings::getInstance()->massive_knockback = true;
             } else {
@@ -90,9 +90,9 @@ class SettingsCommand extends BaseSubCommand {
 
     public function reloadGame(string $world): void
     {
-        if(Server::getInstance()->getLevelByName($world) instanceof Level) {
-            foreach(Server::getInstance()->getLevelByName($world)->getPlayers() as $player) {
-                $player->teleport(Server::getInstance()->getLevelByName($world)->getSpawnLocation());
+        if(Server::getInstance()->getWorldManager()->getWorldByName($world) instanceof World) {
+            foreach(Server::getInstance()->getWorldManager()->getWorldByName($world)->getPlayers() as $player) {
+                $player->teleport(Server::getInstance()->getWorldManager()->getWorldByName($world)->getSpawnLocation());
                 new KnockbackKit($player);
             }
         }
