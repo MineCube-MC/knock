@@ -30,12 +30,12 @@ class KillsCommand extends BaseSubCommand {
         if(!isset($args["player"])) {
             $this->sendUsage();
         }
-        $player = Server::getInstance()->getPlayer($args["player"]);
+        $player = Server::getInstance()->getPlayerByPrefix($args["player"]);
         if($player->isOnline()) {
             if(API::getKills($player) === "none") {
                 $sender->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§e" . $player->getDisplayName() . " §r§6isn't playing KnockbackFFA right now");
             } else {
-                $sender->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§e" . $player->getDisplayName() . " §r§6is at §e" . API::getKills(Server::getInstance()->getPlayer($args["player"])) . " §6kills");
+                $sender->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§e" . $player->getDisplayName() . " §r§6is at §e" . API::getKills(Server::getInstance()->getPlayerByPrefix($args["player"])) . " §6kills");
             }
         } else {
             $sender->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§c" . $args["player"] . " isn't online!");

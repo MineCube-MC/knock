@@ -6,8 +6,8 @@ use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use CortexPE\Commando\BaseSubCommand;
 use pocketmine\command\CommandSender;
-use pocketmine\level\Level;
-use pocketmine\Player;
+use pocketmine\world\World;
+use pocketmine\player\Player;
 use pocketmine\Server;
 
 class JoinCommand extends BaseSubCommand {
@@ -32,9 +32,9 @@ class JoinCommand extends BaseSubCommand {
             return;
         }
         $world = GameSettings::getInstance()->world;
-        if(Server::getInstance()->getLevelByName($world) instanceof Level) {
+        if(Server::getInstance()->getWorldManager()->getWorldByName($world) instanceof World) {
             if($sender instanceof Player) {
-                $sender->teleport(Server::getInstance()->getLevelByName($world)->getSpawnLocation());
+                $sender->teleport(Server::getInstance()->getWorldManager()->getWorldByName($world)->getSpawnLocation());
             }
         } else {
             $sender->sendMessage("§cCouldn't teleport you to the minigame. This is because the level is either not loaded or it doesn't even exist. If you are the server administrator, try to change the world in the configuration file to make it work.");

@@ -4,7 +4,7 @@ namespace ItzLightyHD\KnockbackFFA;
 
 use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\Server;
 
 class API {
@@ -24,7 +24,7 @@ class API {
         $playername = strtolower($player->getName());
         if(isset(KnockbackPlayer::getInstance()->lastDmg[$playername])) {
             if(!KnockbackPlayer::getInstance()->lastDmg[$playername] == "none") {
-                $lastDmg = Server::getInstance()->getPlayer(KnockbackPlayer::getInstance()->lastDmg[$playername]);
+                $lastDmg = Server::getInstance()->getPlayerExact(KnockbackPlayer::getInstance()->lastDmg[$playername]);
                 return $lastDmg;
             } else {
                 return "none";
