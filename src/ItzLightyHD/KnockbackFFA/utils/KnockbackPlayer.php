@@ -11,6 +11,7 @@ use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\player\Player;
+use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
 
 class KnockbackPlayer implements Listener
@@ -19,6 +20,7 @@ class KnockbackPlayer implements Listener
     /** @var self $instance */
     protected static KnockbackPlayer $instance;
     public array $jumpcount = [];
+    public array $jumptask = [];
     public array $lastDmg = [];
     public array $killstreak = [];
     /** @var Loader $plugin */
@@ -72,7 +74,10 @@ class KnockbackPlayer implements Listener
         }
         if (EssentialsListener::$cooldown[$player->getName()] <= time()) {
             if (($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) && isset($this->jumpcount[strtolower($player->getName())])) {
-                $this->jumpcount[$player->getName()]++;
+                $this->jumpcount[strtolower($player->getName())]++;
+                $this->jumptask[strtolower($player->getName())] = Loader::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
+                    $this->jumpcount[strtolower($player->getName())] = 0;
+                }), 50);
                 if ($this->jumpcount[$player->getName()] === 2) {
                     $directionvector = $player->getDirectionVector()->multiply(4 / 2);
                     $dx = $directionvector->getX();
@@ -80,6 +85,7 @@ class KnockbackPlayer implements Listener
                     $player->setMotion(new Vector3($dx, 1, $dz));
                     EssentialsListener::$cooldown[$player->getName()] = time() + 10;
                     $this->jumpcount[strtolower($player->getName())] = 0;
+                    unset($this->jumptask[strtolower($player->getName())]);
                 }
             }
         } else {
