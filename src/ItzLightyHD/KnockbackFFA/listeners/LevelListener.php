@@ -9,10 +9,8 @@ use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackKit;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
 use pocketmine\entity\projectile\Arrow;
-use pocketmine\entity\projectile\Snowball;
 use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\entity\ProjectileHitBlockEvent;
-use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\event\Listener;
 use pocketmine\player\Player;
 
