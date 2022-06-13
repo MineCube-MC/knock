@@ -45,6 +45,9 @@ class KnockbackPlayer implements Listener
         $name = strtolower($player->getName());
         $this->lastDmg[$name] = "none";
         $this->killstreak[$name] = 0;
+        if(!isset($this->jumps[$player->getName()])) {
+            $this->jumps[$player->getName()] = 0;
+        }
         if ($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
             $lobbyWorld = GameSettings::getInstance()->lobby_world;
             $player->teleport(Server::getInstance()->getWorldManager()->getWorldByName($lobbyWorld)?->getSpawnLocation());
@@ -65,16 +68,13 @@ class KnockbackPlayer implements Listener
     public function onPlayerJump(PlayerJumpEvent $event): void
     {
         $player = $event->getPlayer();
-        if(!isset($this->jumps[$player->getName()])) {
-            $this->jumps[$player->getName()] = 0;
-        }
-        $jumps = $this->jumps[$player->getName()];
-        $jumps++;
-        if($jumps === 1) {
+        $this->jumps[$player->getName()];
+        $this->jumps[$player->getName()]++;
+        if($this->jumps[$player->getName()] === 1) {
             // Create scheduled task to reset jump count
             $this->plugin->getScheduler()->scheduleDelayedTask(new ResetJumpCount($player), 30);
         }
-        if($jumps === 2) {
+        if($this->jumps[$player->getName()] === 2) {
             if ($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
                 if (EssentialsListener::$cooldown[$player->getName()] <= time()) {
                     $directionvector = $player->getDirectionVector()->multiply(4 / 2);
@@ -86,6 +86,7 @@ class KnockbackPlayer implements Listener
                     $player->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cWait §e" . (10 - ((time() + 10) - EssentialsListener::$cooldown[$player->getName()])) . "§c seconds before using your leap/double jump again.");
                 }
             }
+            $this->jumps[$player->getName()] = 0;
         }
     }
 

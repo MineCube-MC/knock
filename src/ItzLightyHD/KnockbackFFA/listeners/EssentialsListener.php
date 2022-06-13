@@ -92,17 +92,17 @@ class EssentialsListener implements Listener {
             }
         }
         if(($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) && $event->getItem()->getCustomName() === "§r§eLeap§r") {
-            if(!isset($this->cooldown[$player->getName()])) {
-                $this->cooldown[$player->getName()] = 0;
+            if(!isset(EssentialsListener::$cooldown[$player->getName()])) {
+                EssentialsListener::$cooldown[$player->getName()] = 0;
             }
-            if($this->cooldown[$player->getName()] <= time()) {
+            if(EssentialsListener::$cooldown[$player->getName()] <= time()) {
                 $directionvector = $player->getDirectionVector()->multiply(4 / 2);
                 $dx = $directionvector->getX();
                 $dz = $directionvector->getZ();
                 $player->setMotion(new Vector3($dx, 1, $dz));
-                $this->cooldown[$player->getName()] = time() + 10;
+                EssentialsListener::$cooldown[$player->getName()] = time() + 10;
             } else {
-                $player->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cWait §e" . (10 - ((time() + 10) - $this->cooldown[$player->getName()])) . "§c seconds before using your leap again.");
+                $player->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cWait §e" . (10 - ((time() + 10) - EssentialsListener::$cooldown[$player->getName()])) . "§c seconds before using your leap again.");
             }
         }
     }
