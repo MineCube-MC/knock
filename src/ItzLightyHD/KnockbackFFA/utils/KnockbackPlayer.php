@@ -65,6 +65,9 @@ class KnockbackPlayer implements Listener
     public function onPlayerJump(PlayerJumpEvent $event): void
     {
         $player = $event->getPlayer();
+        if(!isset($this->jumps[$player->getName()])) {
+            $this->jumps[$player->getName()] = 0;
+        }
         $jumps = $this->jumps[$player->getName()];
         $jumps++;
         if($jumps === 1) {
