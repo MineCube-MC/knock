@@ -12,8 +12,8 @@ class SettingsChangeEvent extends Event implements Cancellable {
 
     use CancellableTrait;
 
-    protected $plugin;
-    protected $player;
+    protected Loader $plugin;
+    protected Player $player;
 
     public function __construct(Player $player)
     {

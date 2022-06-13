@@ -17,9 +17,9 @@ use pocketmine\world\World;
 class Loader extends PluginBase {
 
     /** @var Config $config */
-    protected $config;
+    protected Config $config;
     /** @var self $instance */
-    protected static $instance;
+    protected static Loader $instance;
 
     // What happens when plugin is enabled
     public function onEnable(): void {
@@ -45,16 +45,15 @@ class Loader extends PluginBase {
             $plugin = $this->getServer()->getPluginManager()->getPlugin($this->getName());
             $this->getServer()->getPluginManager()->disablePlugin($plugin);
         }
-        if(!($this->getServer()->getWorldManager()->getWorldByName(GameSettings::getInstance()->lobby_world) instanceof World)) {
-            if(!($this->getServer()->getWorldManager()->getWorldByName(GameSettings::getInstance()->world) instanceof World)) {
-                $this->getLogger()->alert("The world specified for the lobby in the configuration file doesn't exist. Change it or make sure it has the correct name!");
-                $plugin = $this->getServer()->getPluginManager()->getPlugin($this->getName());
-                $this->getServer()->getPluginManager()->disablePlugin($plugin);
-            }
+        if(!($this->getServer()->getWorldManager()->getWorldByName(GameSettings::getInstance()->lobby_world) instanceof World) && !($this->getServer()->getWorldManager()->getWorldByName(GameSettings::getInstance()->world) instanceof World)) {
+            $this->getLogger()->alert("The world specified for the lobby in the configuration file doesn't exist. Change it or make sure it has the correct name!");
+            $plugin = $this->getServer()->getPluginManager()->getPlugin($this->getName());
+            $this->getServer()->getPluginManager()->disablePlugin($plugin);
         }
     }
 
-    private function registerEvents() {
+    private function registerEvents(): void
+    {
         // Knockback player, used for getting the killstreak, the last damager, etc...
         $this->getServer()->getPluginManager()->registerEvents(new KnockbackPlayer($this), $this);
         // All the event listeners

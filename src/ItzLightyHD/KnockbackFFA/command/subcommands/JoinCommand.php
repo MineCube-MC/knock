@@ -33,9 +33,7 @@ class JoinCommand extends BaseSubCommand {
         }
         $world = GameSettings::getInstance()->world;
         if(Server::getInstance()->getWorldManager()->getWorldByName($world) instanceof World) {
-            if($sender instanceof Player) {
-                $sender->teleport(Server::getInstance()->getWorldManager()->getWorldByName($world)->getSpawnLocation());
-            }
+            $sender->teleport(Server::getInstance()->getWorldManager()->getWorldByName($world)->getSpawnLocation());
         } else {
             $sender->sendMessage("§cCouldn't teleport you to the minigame. This is because the level is either not loaded or it doesn't even exist. If you are the server administrator, try to change the world in the configuration file to make it work.");
         }

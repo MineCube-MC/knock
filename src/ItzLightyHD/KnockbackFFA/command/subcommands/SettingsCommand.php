@@ -41,31 +41,31 @@ class SettingsCommand extends BaseSubCommand {
     public function customizeGame(Player $player): void
     {
         $form = new CustomForm(function (Player $player, $data) {
-            if($data == null) {
+            if($data === null) {
                 return;
             }
             $ev = new SettingsChangeEvent($player);
             $ev->call();
-            if($ev->isCancelled() == true) {
+            if($ev->isCancelled() === true) {
                 return;
             }
 
-            if($data[1] == true) {
+            if($data[1] === true) {
                 GameSettings::getInstance()->massive_knockback = true;
             } else {
                 GameSettings::getInstance()->massive_knockback = false;
             }
-            if($data[2] == true) {
+            if($data[2] === true) {
                 GameSettings::getInstance()->bow = true;
             } else {
                 GameSettings::getInstance()->bow = false;
             }
-            if($data[3] == true) {
+            if($data[3] === true) {
                 GameSettings::getInstance()->snowballs = true;
             } else {
                 GameSettings::getInstance()->snowballs = false;
             }
-            if($data[4] == true) {
+            if($data[4] === true) {
                 GameSettings::getInstance()->leap = true;
             } else {
                 GameSettings::getInstance()->leap = false;
@@ -85,7 +85,7 @@ class SettingsCommand extends BaseSubCommand {
         $form->addInput("Bow's knockback level", GameSettings::getInstance()->knockback_level);
         $form->addInput("Speed level", GameSettings::getInstance()->speed_level);
         $form->addInput("Jump boost level", GameSettings::getInstance()->jump_boost_level);
-        $player->sendForm($form);
+        $form->sendToPlayer($player);
     }
 
     public function reloadGame(string $world): void
