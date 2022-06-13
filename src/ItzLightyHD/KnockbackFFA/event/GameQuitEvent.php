@@ -6,7 +6,8 @@ use ItzLightyHD\KnockbackFFA\Loader;
 use pocketmine\event\Event;
 use pocketmine\player\Player;
 
-class GameQuitEvent extends Event {
+class GameQuitEvent extends Event
+{
 
     protected Loader $plugin;
     protected Player $player;

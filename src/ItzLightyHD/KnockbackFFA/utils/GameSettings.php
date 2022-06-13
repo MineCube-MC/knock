@@ -5,7 +5,8 @@ namespace ItzLightyHD\KnockbackFFA\utils;
 use ItzLightyHD\KnockbackFFA\Loader;
 use pocketmine\utils\Config;
 
-class GameSettings {
+class GameSettings
+{
 
     protected static GameSettings $instance;
 
@@ -27,11 +28,6 @@ class GameSettings {
         $this->prepare();
     }
 
-    public static function getInstance(): self
-    {
-        return self::$instance;
-    }
-
     public function prepare(): void
     {
         @mkdir(Loader::getInstance()->getDataFolder());
@@ -47,6 +43,11 @@ class GameSettings {
         $this->speed_level = $this->getConfig()->get("speed-level");
         $this->jump_boost_level = $this->getConfig()->get("jump-boost-level");
         $this->scoretag = $this->getConfig()->get("kills-scoretag");
+    }
+
+    public static function getInstance(): self
+    {
+        return self::$instance;
     }
 
     public function getConfig(): Config

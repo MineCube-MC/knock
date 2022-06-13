@@ -3,12 +3,13 @@
 namespace ItzLightyHD\KnockbackFFA\event;
 
 use ItzLightyHD\KnockbackFFA\Loader;
-use pocketmine\event\CancellableTrait;
 use pocketmine\event\Cancellable;
+use pocketmine\event\CancellableTrait;
 use pocketmine\event\Event;
 use pocketmine\player\Player;
 
-class PlayerKitEvent extends Event implements Cancellable {
+class PlayerKitEvent extends Event implements Cancellable
+{
 
     use CancellableTrait;
 

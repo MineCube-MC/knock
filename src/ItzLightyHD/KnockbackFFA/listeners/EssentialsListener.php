@@ -19,7 +19,7 @@ class EssentialsListener implements Listener {
 
     /** @var Loader $plugin */
     private Loader $plugin;
-    public static array $cooldown = [];
+    public array $cooldown = [];
     /** @var self $instance */
     protected static EssentialsListener $instance;
 

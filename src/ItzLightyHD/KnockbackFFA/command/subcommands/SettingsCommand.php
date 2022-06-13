@@ -2,19 +2,20 @@
 
 namespace ItzLightyHD\KnockbackFFA\command\subcommands;
 
-use ItzLightyHD\KnockbackFFA\Loader;
+use CortexPE\Commando\BaseSubCommand;
 use ItzLightyHD\KnockbackFFA\API;
 use ItzLightyHD\KnockbackFFA\event\SettingsChangeEvent;
+use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
-use CortexPE\Commando\BaseSubCommand;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackKit;
 use jojoe77777\FormAPI\CustomForm;
 use pocketmine\command\CommandSender;
-use pocketmine\world\World;
 use pocketmine\player\Player;
 use pocketmine\Server;
+use pocketmine\world\World;
 
-class SettingsCommand extends BaseSubCommand {
+class SettingsCommand extends BaseSubCommand
+{
 
     private $plugin;
 
@@ -24,14 +25,9 @@ class SettingsCommand extends BaseSubCommand {
         parent::__construct("settings", "Customize the minigame directly from the game");
     }
 
-    protected function prepare(): void
-    {
-        $this->setPermission("knockbackffa.customize");
-    }
-
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
-        if(!$sender instanceof Player) {
+        if (!$sender instanceof Player) {
             $sender->sendMessage("§cOnly players are allowed to use this subcommand!");
             return;
         }
@@ -41,31 +37,31 @@ class SettingsCommand extends BaseSubCommand {
     public function customizeGame(Player $player): void
     {
         $form = new CustomForm(function (Player $player, $data) {
-            if($data === null) {
+            if ($data === null) {
                 return;
             }
             $ev = new SettingsChangeEvent($player);
             $ev->call();
-            if($ev->isCancelled() === true) {
+            if ($ev->isCancelled() === true) {
                 return;
             }
 
-            if($data[1] === true) {
+            if ($data[1] === true) {
                 GameSettings::getInstance()->massive_knockback = true;
             } else {
                 GameSettings::getInstance()->massive_knockback = false;
             }
-            if($data[2] === true) {
+            if ($data[2] === true) {
                 GameSettings::getInstance()->bow = true;
             } else {
                 GameSettings::getInstance()->bow = false;
             }
-            if($data[3] === true) {
+            if ($data[3] === true) {
                 GameSettings::getInstance()->snowballs = true;
             } else {
                 GameSettings::getInstance()->snowballs = false;
             }
-            if($data[4] === true) {
+            if ($data[4] === true) {
                 GameSettings::getInstance()->leap = true;
             } else {
                 GameSettings::getInstance()->leap = false;
@@ -90,12 +86,17 @@ class SettingsCommand extends BaseSubCommand {
 
     public function reloadGame(string $world): void
     {
-        if(Server::getInstance()->getWorldManager()->getWorldByName($world) instanceof World) {
-            foreach(Server::getInstance()->getWorldManager()->getWorldByName($world)->getPlayers() as $player) {
+        if (Server::getInstance()->getWorldManager()->getWorldByName($world) instanceof World) {
+            foreach (Server::getInstance()->getWorldManager()->getWorldByName($world)->getPlayers() as $player) {
                 $player->teleport(Server::getInstance()->getWorldManager()->getWorldByName($world)->getSpawnLocation());
                 new KnockbackKit($player);
             }
         }
+    }
+
+    protected function prepare(): void
+    {
+        $this->setPermission("knockbackffa.customize");
     }
 
 }

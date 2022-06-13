@@ -3,40 +3,35 @@
 namespace ItzLightyHD\KnockbackFFA\listeners;
 
 use ItzLightyHD\KnockbackFFA\API;
-use ItzLightyHD\KnockbackFFA\Loader;
-use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
-use ItzLightyHD\KnockbackFFA\utils\GameSettings;
-use ItzLightyHD\KnockbackFFA\event\PlayerKillEvent;
 use ItzLightyHD\KnockbackFFA\event\PlayerDeadEvent;
 use ItzLightyHD\KnockbackFFA\event\PlayerKilledEvent;
+use ItzLightyHD\KnockbackFFA\event\PlayerKillEvent;
 use ItzLightyHD\KnockbackFFA\event\PlayerKillstreakEvent;
+use ItzLightyHD\KnockbackFFA\Loader;
+use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackKit;
+use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
-use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\Listener;
 use pocketmine\item\ItemIds;
+use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
 use pocketmine\Server;
-use pocketmine\event\Listener;
-use pocketmine\item\VanillaItems;
 
 class DamageListener implements Listener
 {
 
-    /** @var Loader $plugin */
-    private Loader $plugin;
     /** @var self $instance */
     protected static DamageListener $instance;
+    /** @var Loader $plugin */
+    private Loader $plugin;
 
     public function __construct(Loader $plugin)
     {
         $this->plugin = $plugin;
         self::$instance = $this;
-    }
-
-    public static function getInstance(): self
-    {
-        return self::$instance;
     }
 
     public function onEntityDamage(EntityDamageEvent $event): void
@@ -55,7 +50,7 @@ class DamageListener implements Listener
                     if (GameSettings::getInstance()->scoretag === true) {
                         $event->getEntity()->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                     }
-                    EssentialsListener::$cooldown[$player->getName()] = 0;
+                    EssentialsListener::getInstance()->cooldown[$player->getName()] = 0;
                     $player->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou died");
                 } else {
                     KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
@@ -93,7 +88,7 @@ class DamageListener implements Listener
                     if (GameSettings::getInstance()->scoretag === true) {
                         $event->getEntity()->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                     }
-                    EssentialsListener::$cooldown[$player->getName()] = 0;
+                    EssentialsListener::getInstance()->cooldown[$player->getName()] = 0;
                     $player->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou were killed by §f" . $killedBy?->getDisplayName());
                 }
                 KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] = "none";
@@ -102,6 +97,11 @@ class DamageListener implements Listener
                 $event->cancel();
             }
         }
+    }
+
+    public static function getInstance(): self
+    {
+        return self::$instance;
     }
 
     public function kbffaKill(PlayerKillEvent $event): void
