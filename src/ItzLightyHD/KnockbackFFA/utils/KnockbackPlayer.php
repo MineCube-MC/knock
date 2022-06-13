@@ -7,6 +7,7 @@ use ItzLightyHD\KnockbackFFA\Loader;
 use pocketmine\event\Listener;
 use pocketmine\Server;
 use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerJumpEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\math\Vector3;
@@ -63,14 +64,17 @@ class KnockbackPlayer implements Listener
     {
         $player = $event->getOrigin()->getPlayer();
         $packet = $event->getPacket();
-        if(!$player->getWorld() === null) return;
-        if ($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
-            if (!$packet instanceof PlayerAuthInputPacket) return;
-            if ($player === null) return;
-            if (!$packet->hasFlag(PlayerAuthInputFlags::JUMP_DOWN)) return;
-            if (!isset(EssentialsListener::$cooldown[$player->getName()])) EssentialsListener::$cooldown[$player->getName()] = 0;
+        if (!$packet instanceof PlayerAuthInputPacket) return;
+        if ($player === null) return;
+        if (!$packet->hasFlag(PlayerAuthInputFlags::JUMP_DOWN)) return;
+        if (!isset(EssentialsListener::$cooldown[$player->getName()])) EssentialsListener::$cooldown[$player->getName()] = 0;
+    }
 
-            if(EssentialsListener::$cooldown[$player->getName()] <= time()) {
+    public function onPlayerJump(PlayerJumpEvent $event): void
+    {
+        $player = $event->getPlayer();
+        if ($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
+            if (EssentialsListener::$cooldown[$player->getName()] <= time()) {
                 $directionvector = $player->getDirectionVector()->multiply(4 / 2);
                 $dx = $directionvector->getX();
                 $dz = $directionvector->getZ();
