@@ -50,15 +50,14 @@ class DamageListener implements Listener
                     if (GameSettings::getInstance()->scoretag === true) {
                         $event->getEntity()->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                     }
-                    EssentialsListener::getInstance()->cooldown[$player->getName()] = 0;
+                    EssentialsListener::$cooldown[$player->getName()] = 0;
                     $player->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou died");
                 } else {
                     KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
                     $killedBy = Server::getInstance()->getPlayerExact(KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())]);
                     if ($killedBy?->isOnline()) {
                         KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy?->getName())]++;
-                        $ks = [5, 10, 15, 20, 25, 30, 40, 50];
-                        if (in_array(KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy?->getName())], $ks, true)) {
+                        if (KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy?->getName())] % 5 === 0) {
                             $players = $event->getEntity()->getWorld()->getPlayers();
                             $killevent = new PlayerKillEvent($killedBy, $event->getEntity());
                             $killevent->call();
@@ -88,7 +87,7 @@ class DamageListener implements Listener
                     if (GameSettings::getInstance()->scoretag === true) {
                         $event->getEntity()->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                     }
-                    EssentialsListener::getInstance()->cooldown[$player->getName()] = 0;
+                    EssentialsListener::$cooldown[$player->getName()] = 0;
                     $player->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou were killed by §f" . $killedBy?->getDisplayName());
                 }
                 KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] = "none";
