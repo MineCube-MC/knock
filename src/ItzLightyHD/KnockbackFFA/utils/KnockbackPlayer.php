@@ -71,7 +71,7 @@ class KnockbackPlayer implements Listener
             $this->jumpcount[strtolower($player->getName())] = 0;
         }
         if (EssentialsListener::$cooldown[$player->getName()] <= time()) {
-            if (($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) && isset($this->jumpcount[$player->getName()])) {
+            if (($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) && isset($this->jumpcount[strtolower($player->getName())])) {
                 $this->jumpcount[$player->getName()]++;
                 if ($this->jumpcount[$player->getName()] === 2) {
                     $directionvector = $player->getDirectionVector()->multiply(4 / 2);
@@ -79,7 +79,7 @@ class KnockbackPlayer implements Listener
                     $dz = $directionvector->getZ();
                     $player->setMotion(new Vector3($dx, 1, $dz));
                     EssentialsListener::$cooldown[$player->getName()] = time() + 10;
-                    $this->jumpcount[$player->getName()] = 0;
+                    $this->jumpcount[strtolower($player->getName())] = 0;
                 }
             }
         } else {
