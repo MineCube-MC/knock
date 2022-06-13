@@ -34,9 +34,9 @@ class LevelListener implements Listener {
 
     public function onProjectileHitBlock(ProjectileHitBlockEvent $event): void
     {
-        $event = $event->getEntity();
-        if ($event instanceof Arrow && $event->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
-            $event->flagForDespawn();
+        $entity = $event->getEntity();
+        if ($entity instanceof Arrow && $entity->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
+            $entity->flagForDespawn();
         }
     }
 

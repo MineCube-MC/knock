@@ -5,12 +5,15 @@ namespace ItzLightyHD\KnockbackFFA\listeners;
 use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use pocketmine\event\block\BlockBreakEvent;
+use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\event\player\PlayerDropItemEvent;
 use pocketmine\event\Listener;
 
 use pocketmine\event\player\PlayerItemUseEvent;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
+use pocketmine\player\Player;
 
 class EssentialsListener implements Listener {
 
@@ -52,9 +55,42 @@ class EssentialsListener implements Listener {
         }
     }
 
+    public function onEntityShootBow(EntityShootBowEvent $event): void
+    {
+        $entity = $event->getEntity();
+        if (($entity instanceof Player) && $entity->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
+            $x = $entity->getLocation()->getX();
+            $y = $entity->getLocation()->getY();
+            $z = $entity->getLocation()->getZ();
+            $xx = $entity->getWorld()->getSafeSpawn()->getX();
+            $yy = $entity->getWorld()->getSafeSpawn()->getY();
+            $zz = $entity->getWorld()->getSafeSpawn()->getZ();
+            $sr = GameSettings::getInstance()->getConfig()->get("protection-radius");
+
+            if (abs($xx - $x) < $sr && abs($yy - $y) < $sr && abs($zz - $z) < $sr) {
+                $event->cancel();
+                $entity->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou can't use that item here!");
+            }
+        }
+    }
+
     public function onItemUse(PlayerItemUseEvent $event): void
     {
         $player = $event->getPlayer();
+        if (($event->getItem()->getId() === ItemIds::SNOWBALL) && $player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
+            $x = $player->getLocation()->getX();
+            $y = $player->getLocation()->getY();
+            $z = $player->getLocation()->getZ();
+            $xx = $player->getWorld()->getSafeSpawn()->getX();
+            $yy = $player->getWorld()->getSafeSpawn()->getY();
+            $zz = $player->getWorld()->getSafeSpawn()->getZ();
+            $sr = GameSettings::getInstance()->getConfig()->get("protection-radius");
+
+            if (abs($xx - $x) < $sr && abs($yy - $y) < $sr && abs($zz - $z) < $sr) {
+                $event->cancel();
+                $player->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou can't use that item here!");
+            }
+        }
         if(($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) && $event->getItem()->getCustomName() === "§r§eLeap§r") {
             if(!isset($this->cooldown[$player->getName()])) {
                 $this->cooldown[$player->getName()] = 0;
