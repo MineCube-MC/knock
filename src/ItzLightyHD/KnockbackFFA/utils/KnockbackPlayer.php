@@ -45,6 +45,9 @@ class KnockbackPlayer implements Listener
         $name = strtolower($player->getName());
         $this->lastDmg[$name] = "none";
         $this->killstreak[$name] = 0;
+        if(!isset(EssentialsListener::$cooldown[$player->getName()])) {
+            EssentialsListener::$cooldown[$player->getName()] = 0;
+        }
         if(!isset($this->jumps[$player->getName()])) {
             $this->jumps[$player->getName()] = 0;
         }
