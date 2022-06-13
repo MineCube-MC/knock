@@ -24,7 +24,6 @@ class KnockbackPlayer implements Listener
     private Loader $plugin;
     public array $lastDmg = [];
     public array $killstreak = [];
-    public array $jumps = [];
     /** @var self $instance */
     protected static KnockbackPlayer $instance;
 
@@ -48,9 +47,6 @@ class KnockbackPlayer implements Listener
         if(!isset(EssentialsListener::$cooldown[$player->getName()])) {
             EssentialsListener::$cooldown[$player->getName()] = 0;
         }
-        if(!isset($this->jumps[$player->getName()])) {
-            $this->jumps[$player->getName()] = 0;
-        }
         if ($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
             $lobbyWorld = GameSettings::getInstance()->lobby_world;
             $player->teleport(Server::getInstance()->getWorldManager()->getWorldByName($lobbyWorld)?->getSpawnLocation());
@@ -65,31 +61,6 @@ class KnockbackPlayer implements Listener
             if (($world === GameSettings::getInstance()->world) && $this->lastDmg[strtolower($p->getName())] === strtolower($player->getName())) {
                 $this->lastDmg[strtolower($p->getName())] = "none";
             }
-        }
-    }
-
-    public function onPlayerJump(PlayerJumpEvent $event): void
-    {
-        $player = $event->getPlayer();
-        $this->jumps[$player->getName()];
-        $this->jumps[$player->getName()]++;
-        if($this->jumps[$player->getName()] === 1) {
-            // Create scheduled task to reset jump count
-            $this->plugin->getScheduler()->scheduleDelayedTask(new ResetJumpCount($player), 30);
-        }
-        if($this->jumps[$player->getName()] === 2) {
-            if ($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
-                if (EssentialsListener::$cooldown[$player->getName()] <= time()) {
-                    $directionvector = $player->getDirectionVector()->multiply(4 / 2);
-                    $dx = $directionvector->getX();
-                    $dz = $directionvector->getZ();
-                    $player->setMotion(new Vector3($dx, 1, $dz));
-                    EssentialsListener::$cooldown[$player->getName()] = time() + 10;
-                } else {
-                    $player->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cWait §e" . (10 - ((time() + 10) - EssentialsListener::$cooldown[$player->getName()])) . "§c seconds before using your leap/double jump again.");
-                }
-            }
-            $this->jumps[$player->getName()] = 0;
         }
     }
 
