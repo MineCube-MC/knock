@@ -72,13 +72,13 @@ class KnockbackPlayer implements Listener
         if (!isset($this->jumpcount[strtolower($player->getName())])) {
             $this->jumpcount[strtolower($player->getName())] = 0;
         }
-        if (EssentialsListener::$cooldown[$player->getName()] <= time()) {
-            if (($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) && isset($this->jumpcount[strtolower($player->getName())])) {
-                $this->jumpcount[strtolower($player->getName())]++;
-                $this->jumptask[strtolower($player->getName())] = Loader::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
-                    $this->jumpcount[strtolower($player->getName())] = 0;
-                }), 60);
-                if ($this->jumpcount[strtolower($player->getName())] === 2) {
+        if (($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) && isset($this->jumpcount[strtolower($player->getName())])) {
+            $this->jumpcount[strtolower($player->getName())]++;
+            $this->jumptask[strtolower($player->getName())] = Loader::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
+                $this->jumpcount[strtolower($player->getName())] = 0;
+            }), 60);
+            if ($this->jumpcount[strtolower($player->getName())] === 2) {
+                if (EssentialsListener::$cooldown[$player->getName()] <= time()) {
                     $directionvector = $player->getDirectionVector()->multiply(4 / 2);
                     $dx = $directionvector->getX();
                     $dz = $directionvector->getZ();
@@ -86,10 +86,10 @@ class KnockbackPlayer implements Listener
                     EssentialsListener::$cooldown[$player->getName()] = time() + 10;
                     $this->jumpcount[strtolower($player->getName())] = 0;
                     unset($this->jumptask[strtolower($player->getName())]);
+                } else {
+                    $player->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cWait §e" . (10 - ((time() + 10) - EssentialsListener::$cooldown[$player->getName()])) . "§c seconds before using your leap/double jump again.");
                 }
             }
-        } else {
-            $player->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cWait §e" . (10 - ((time() + 10) - EssentialsListener::$cooldown[$player->getName()])) . "§c seconds before using your leap/double jump again.");
         }
     }
 
