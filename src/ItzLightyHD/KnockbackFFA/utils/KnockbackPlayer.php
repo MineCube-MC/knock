@@ -63,6 +63,7 @@ class KnockbackPlayer implements Listener
     {
         $player = $event->getOrigin()->getPlayer();
         $packet = $event->getPacket();
+        if(!$player->getWorld() === null) return;
         if ($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
             if (!$packet instanceof PlayerAuthInputPacket) return;
             if ($player === null) return;
