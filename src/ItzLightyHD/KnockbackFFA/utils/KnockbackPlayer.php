@@ -81,9 +81,9 @@ class KnockbackPlayer implements Listener
                     EssentialsListener::$cooldown[$player->getName()] = time() + 10;
                     $this->jumpcount[$player->getName()] = 0;
                 }
-            } else {
-                $player->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cWait §e" . (10 - ((time() + 10) - EssentialsListener::$cooldown[$player->getName()])) . "§c seconds before using your leap/double jump again.");
             }
+        } else {
+            $player->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cWait §e" . (10 - ((time() + 10) - EssentialsListener::$cooldown[$player->getName()])) . "§c seconds before using your leap/double jump again.");
         }
     }
 
