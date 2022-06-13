@@ -9,8 +9,10 @@ use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackKit;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
 use pocketmine\entity\projectile\Arrow;
+use pocketmine\entity\projectile\Snowball;
 use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\entity\ProjectileHitBlockEvent;
+use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\event\Listener;
 use pocketmine\player\Player;
 
@@ -34,9 +36,9 @@ class LevelListener implements Listener {
 
     public function onProjectileHitBlock(ProjectileHitBlockEvent $event): void
     {
-        $event = $event->getEntity();
-        if ($event instanceof Arrow && $event->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
-            $event->flagForDespawn();
+        $entity = $event->getEntity();
+        if ($entity instanceof Arrow && $entity->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
+            $entity->flagForDespawn();
         }
     }
 
