@@ -4,6 +4,7 @@ namespace ItzLightyHD\KnockbackFFA\utils;
 
 use ItzLightyHD\KnockbackFFA\listeners\EssentialsListener;
 use ItzLightyHD\KnockbackFFA\Loader;
+use ItzLightyHD\KnockbackFFA\tasks\ResetJumpCount;
 use pocketmine\event\Listener;
 use pocketmine\Server;
 use pocketmine\event\player\PlayerJoinEvent;
@@ -23,6 +24,7 @@ class KnockbackPlayer implements Listener
     private Loader $plugin;
     public array $lastDmg = [];
     public array $killstreak = [];
+    public array $jumps = [];
     /** @var self $instance */
     protected static KnockbackPlayer $instance;
 
@@ -60,28 +62,26 @@ class KnockbackPlayer implements Listener
         }
     }
 
-    public function onDataPacketReceive(DataPacketReceiveEvent $event): void
-    {
-        $player = $event->getOrigin()->getPlayer();
-        $packet = $event->getPacket();
-        if (!$packet instanceof PlayerAuthInputPacket) return;
-        if ($player === null) return;
-        if (!$packet->hasFlag(PlayerAuthInputFlags::JUMP_DOWN)) return;
-        if (!isset(EssentialsListener::$cooldown[$player->getName()])) EssentialsListener::$cooldown[$player->getName()] = 0;
-    }
-
     public function onPlayerJump(PlayerJumpEvent $event): void
     {
         $player = $event->getPlayer();
-        if ($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
-            if (EssentialsListener::$cooldown[$player->getName()] <= time()) {
-                $directionvector = $player->getDirectionVector()->multiply(4 / 2);
-                $dx = $directionvector->getX();
-                $dz = $directionvector->getZ();
-                $player->setMotion(new Vector3($dx, 1, $dz));
-                EssentialsListener::$cooldown[$player->getName()] = time() + 10;
-            } else {
-                $player->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cWait §e" . (10 - ((time() + 10) - EssentialsListener::$cooldown[$player->getName()])) . "§c seconds before using your leap/double jump again.");
+        $jumps = $this->jumps[$player->getName()];
+        $jumps++;
+        if($jumps === 1) {
+            // Create scheduled task to reset jump count
+            $this->plugin->getScheduler()->scheduleDelayedTask(new ResetJumpCount($player), 30);
+        }
+        if($jumps === 2) {
+            if ($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
+                if (EssentialsListener::$cooldown[$player->getName()] <= time()) {
+                    $directionvector = $player->getDirectionVector()->multiply(4 / 2);
+                    $dx = $directionvector->getX();
+                    $dz = $directionvector->getZ();
+                    $player->setMotion(new Vector3($dx, 1, $dz));
+                    EssentialsListener::$cooldown[$player->getName()] = time() + 10;
+                } else {
+                    $player->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cWait §e" . (10 - ((time() + 10) - EssentialsListener::$cooldown[$player->getName()])) . "§c seconds before using your leap/double jump again.");
+                }
             }
         }
     }
