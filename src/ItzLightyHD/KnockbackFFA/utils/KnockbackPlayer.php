@@ -74,10 +74,12 @@ class KnockbackPlayer implements Listener
         }
         if (($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) && isset($this->jumpcount[strtolower($player->getName())])) {
             $this->jumpcount[strtolower($player->getName())]++;
-            $this->jumptask[strtolower($player->getName())] = Loader::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
-                $this->jumpcount[strtolower($player->getName())] = 0;
-                unset($this->jumptask[strtolower($player->getName())]);
-            }), 30);
+            if (!isset($this->jumptask[strtolower($player->getName())])) {
+                $this->jumptask[strtolower($player->getName())] = Loader::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
+                    $this->jumpcount[strtolower($player->getName())] = 0;
+                    unset($this->jumptask[strtolower($player->getName())]);
+                }), 30);
+            }
             if ($this->jumpcount[strtolower($player->getName())] === 2) {
                 if (EssentialsListener::$cooldown[$player->getName()] <= time()) {
                     $directionvector = $player->getDirectionVector()->multiply(4 / 2);
