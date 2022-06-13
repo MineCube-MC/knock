@@ -76,7 +76,7 @@ class KnockbackPlayer implements Listener
             $this->jumpcount[strtolower($player->getName())]++;
             $this->jumptask[strtolower($player->getName())] = Loader::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
                 $this->jumpcount[strtolower($player->getName())] = 0;
-            }), 60);
+            }), 30);
             if ($this->jumpcount[strtolower($player->getName())] === 2) {
                 if (EssentialsListener::$cooldown[$player->getName()] <= time()) {
                     $directionvector = $player->getDirectionVector()->multiply(4 / 2);
