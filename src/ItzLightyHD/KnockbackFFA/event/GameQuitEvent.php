@@ -8,8 +8,8 @@ use pocketmine\player\Player;
 
 class GameQuitEvent extends Event {
 
-    protected $plugin;
-    protected $player;
+    protected Loader $plugin;
+    protected Player $player;
 
     public function __construct(Player $player)
     {

@@ -7,20 +7,19 @@ use pocketmine\utils\Config;
 
 class GameSettings {
 
-    protected static $instance;
+    protected static GameSettings $instance;
 
-    public $world;
-    public $lobby_world;
-    public $massive_knockback;
-    public $bow;
-    public $snowballs;
-    public $leap;
-    public $enchant_level;
-    public $knockback_level;
-    public $speed_level;
-    public $jump_boost_level;
-
-    public $scoretag;
+    public string $world;
+    public string $lobby_world;
+    public bool $massive_knockback;
+    public bool $bow;
+    public bool $snowballs;
+    public bool $leap;
+    public int $enchant_level;
+    public int $knockback_level;
+    public int $speed_level;
+    public int $jump_boost_level;
+    public bool $scoretag;
 
     public function __construct(Loader $plugin)
     {
@@ -33,7 +32,8 @@ class GameSettings {
         return self::$instance;
     }
 
-    public function prepare() {
+    public function prepare(): void
+    {
         @mkdir(Loader::getInstance()->getDataFolder());
         Loader::getInstance()->saveResource("kbffa.yml");
         $this->world = $this->getConfig()->get("arena");
@@ -49,9 +49,9 @@ class GameSettings {
         $this->scoretag = $this->getConfig()->get("kills-scoretag");
     }
 
-    public function getConfig() {
-        $data = new Config(Loader::getInstance()->getDataFolder() . "kbffa.yml", Config::YAML);
-        return $data;
+    public function getConfig(): Config
+    {
+        return new Config(Loader::getInstance()->getDataFolder() . "kbffa.yml", Config::YAML);
     }
 
 }

@@ -8,9 +8,9 @@ use pocketmine\player\Player;
 
 class PlayerKilledEvent extends Event {
 
-    protected $plugin;
-    protected $player;
-    protected $damager;
+    protected Loader $plugin;
+    protected Player $player;
+    protected Player $damager;
 
     public function __construct(Player $player, Player $damager)
     {

@@ -33,9 +33,7 @@ class LeaveCommand extends BaseSubCommand {
         }
         $lobbyWorld = GameSettings::getInstance()->lobby_world;
         if(Server::getInstance()->getWorldManager()->getWorldByName($lobbyWorld) instanceof World) {
-            if($sender instanceof Player) {
-                $sender->teleport(Server::getInstance()->getWorldManager()->getWorldByName($lobbyWorld)->getSpawnLocation());
-            }
+            $sender->teleport(Server::getInstance()->getWorldManager()->getWorldByName($lobbyWorld)->getSpawnLocation());
         } else {
             $sender->sendMessage("§cThe lobby world doesn't exist. It was probably removed or unloaded. If you are the server administrator, load the level again and retry.");
         }

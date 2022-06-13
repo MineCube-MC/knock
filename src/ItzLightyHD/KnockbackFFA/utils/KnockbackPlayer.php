@@ -13,9 +13,11 @@ use pocketmine\player\Player;
 class KnockbackPlayer implements Listener {
 
     /** @var Loader $plugin */
-    private $plugin;
+    private Loader $plugin;
+    public array $lastDmg = [];
+    public array $killstreak = [];
     /** @var self $instance */
-    protected static $instance;
+    protected static KnockbackPlayer $instance;
 
     public function __construct(Loader $plugin)
     {
@@ -28,15 +30,15 @@ class KnockbackPlayer implements Listener {
         return self::$instance;
     }
 
-    public function onJoin(PlayerJoinEvent $event)
+    public function onJoin(PlayerJoinEvent $event): void
     {
         $player = $event->getPlayer();
         $name = strtolower($player->getName());
         $this->lastDmg[$name] = "none";
         $this->killstreak[$name] = 0;
-        if($player->getWorld()->getFolderName() == GameSettings::getInstance()->world) {
+        if($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
             $lobbyWorld = GameSettings::getInstance()->lobby_world;
-            $player->teleport(Server::getInstance()->getWorldManager()->getWorldByName($lobbyWorld)->getSpawnLocation());
+            $player->teleport(Server::getInstance()->getWorldManager()->getWorldByName($lobbyWorld)?->getSpawnLocation());
         }
     }
 
@@ -44,23 +46,22 @@ class KnockbackPlayer implements Listener {
         $player = $event->getPlayer();
         foreach(Server::getInstance()->getOnlinePlayers() as $p) {
             $world = $p->getWorld()->getFolderName();
-            if($world == GameSettings::getInstance()->world) {
-                if($this->lastDmg[strtolower($p->getName())] == strtolower($player->getName())) {
-                    $this->lastDmg[strtolower($p->getName())] = "none";
-                }
+            if(($world === GameSettings::getInstance()->world) && $this->lastDmg[strtolower($p->getName())] === strtolower($player->getName())) {
+                $this->lastDmg[strtolower($p->getName())] = "none";
             }
         }
     }
 
-    public function playSound(string $soundName, Player $player) {
+    public function playSound(string $soundName, ?Player $player): void
+    {
         $pk = new PlaySoundPacket();
         $pk->soundName = $soundName;
-        $pk->x = $player->getLocation()->getX();
-        $pk->y = $player->getLocation()->getY();
-        $pk->z = $player->getLocation()->getZ();
+        $pk->x = $player?->getLocation()->getX();
+        $pk->y = $player?->getLocation()->getY();
+        $pk->z = $player?->getLocation()->getZ();
         $pk->volume = 500;
         $pk->pitch = 1;
-        Server::getInstance()->broadcastPackets($player->getWorld()->getPlayers(), [$pk]);
+        Server::getInstance()->broadcastPackets($player?->getWorld()->getPlayers(), [$pk]);
     }
 
 }
