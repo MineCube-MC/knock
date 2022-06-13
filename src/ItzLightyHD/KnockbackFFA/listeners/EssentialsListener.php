@@ -19,7 +19,7 @@ class EssentialsListener implements Listener {
 
     /** @var Loader $plugin */
     private Loader $plugin;
-    private array $cooldown = [];
+    public static array $cooldown = [];
     /** @var self $instance */
     protected static EssentialsListener $instance;
 
@@ -98,7 +98,6 @@ class EssentialsListener implements Listener {
             if($this->cooldown[$player->getName()] <= time()) {
                 $directionvector = $player->getDirectionVector()->multiply(4 / 2);
                 $dx = $directionvector->getX();
-                $dy = $directionvector->getY();
                 $dz = $directionvector->getZ();
                 $player->setMotion(new Vector3($dx, 1, $dz));
                 $this->cooldown[$player->getName()] = time() + 10;

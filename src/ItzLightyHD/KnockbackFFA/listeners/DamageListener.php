@@ -20,7 +20,8 @@ use pocketmine\Server;
 use pocketmine\event\Listener;
 use pocketmine\item\VanillaItems;
 
-class DamageListener implements Listener {
+class DamageListener implements Listener
+{
 
     /** @var Loader $plugin */
     private Loader $plugin;
@@ -41,24 +42,25 @@ class DamageListener implements Listener {
     public function onEntityDamage(EntityDamageEvent $event): void
     {
         $player = $event->getEntity();
-        if(($player instanceof Player) && $event->getEntity()->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
-            if($event->getCause() === EntityDamageEvent::CAUSE_VOID) {
+        if (($player instanceof Player) && $event->getEntity()->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
+            if ($event->getCause() === EntityDamageEvent::CAUSE_VOID) {
                 $event->cancel();
                 $event->getEntity()->teleport(Server::getInstance()->getWorldManager()->getWorldByName(GameSettings::getInstance()->world)?->getSpawnLocation());
-                if(KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] === "none") {
+                if (KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] === "none") {
                     $deadevent = new PlayerDeadEvent($event->getEntity());
                     $deadevent->call();
                     new KnockbackKit($event->getEntity());
                     KnockbackPlayer::getInstance()->playSound("random.glass", $event->getEntity());
                     KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
-                    if(GameSettings::getInstance()->scoretag === true) {
+                    if (GameSettings::getInstance()->scoretag === true) {
                         $event->getEntity()->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                     }
+                    EssentialsListener::$cooldown[$player->getName()] = 0;
                     $player->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou died");
                 } else {
                     KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
                     $killedBy = Server::getInstance()->getPlayerExact(KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())]);
-                    if($killedBy?->isOnline()) {
+                    if ($killedBy?->isOnline()) {
                         KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy?->getName())]++;
                         $ks = [5, 10, 15, 20, 25, 30, 40, 50];
                         if (in_array(KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy?->getName())], $ks, true)) {
@@ -71,11 +73,11 @@ class DamageListener implements Listener {
                                 KnockbackPlayer::getInstance()->playSound("random.levelup", $p);
                                 $p->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§f" . Server::getInstance()->getPlayerExact(KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())])?->getDisplayName() . "§r§6 is at §e" . KnockbackPlayer::getInstance()->killstreak[KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())]] . "§6 kills");
                             }
-                            if(GameSettings::getInstance()->scoretag === true) {
+                            if (GameSettings::getInstance()->scoretag === true) {
                                 $killedBy?->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy?->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                             }
                         } else {
-                            if(GameSettings::getInstance()->scoretag === true) {
+                            if (GameSettings::getInstance()->scoretag === true) {
                                 $killedBy?->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy?->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                             }
                             $killevent = new PlayerKillEvent($killedBy, $event->getEntity());
@@ -88,14 +90,15 @@ class DamageListener implements Listener {
                     $killedevent->call();
                     new KnockbackKit($event->getEntity());
                     KnockbackPlayer::getInstance()->playSound("random.glass", $event->getEntity());
-                    if(GameSettings::getInstance()->scoretag === true) {
+                    if (GameSettings::getInstance()->scoretag === true) {
                         $event->getEntity()->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                     }
+                    EssentialsListener::$cooldown[$player->getName()] = 0;
                     $player->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou were killed by §f" . $killedBy?->getDisplayName());
                 }
                 KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] = "none";
             }
-            if($event->getCause() === EntityDamageEvent::CAUSE_FALL) {
+            if ($event->getCause() === EntityDamageEvent::CAUSE_FALL) {
                 $event->cancel();
             }
         }
@@ -105,7 +108,7 @@ class DamageListener implements Listener {
     {
         $player = $event->getPlayer();
 
-        if(API::isSnowballsEnabled() === true) {
+        if (API::isSnowballsEnabled() === true) {
             $snowballs = VanillaItems::SNOWBALL();
             $player->getInventory()->addItem($snowballs);
         }
@@ -116,11 +119,11 @@ class DamageListener implements Listener {
         $player = $event->getEntity();
         $damager = $event->getDamager();
 
-        if(($player instanceof Player) && $player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
+        if (($player instanceof Player) && $player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
             $player->setHealth(20);
             $player->getHungerManager()->setSaturation(20);
 
-            if($damager instanceof Player) {
+            if ($damager instanceof Player) {
                 $x = $player->getLocation()->getX();
                 $y = $player->getLocation()->getY();
                 $z = $player->getLocation()->getZ();
@@ -129,7 +132,7 @@ class DamageListener implements Listener {
                 $zz = $player->getWorld()->getSafeSpawn()->getZ();
                 $sr = GameSettings::getInstance()->getConfig()->get("protection-radius");
 
-                if($damager->getName() === $player->getName()) {
+                if ($damager->getName() === $player->getName()) {
                     $event->cancel();
                     return;
                 }
@@ -141,7 +144,7 @@ class DamageListener implements Listener {
                 }
                 KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] = strtolower($damager->getName());
                 $item = $damager->getInventory()->getItemInHand()->getId();
-                if((GameSettings::getInstance()->massive_knockback === true) && $item === ItemIds::STICK) {
+                if ((GameSettings::getInstance()->massive_knockback === true) && $item === ItemIds::STICK) {
                     $x = $damager->getDirectionVector()->x;
                     $z = $damager->getDirectionVector()->z;
                     $player->knockBack($x, $z, 0.6);
@@ -155,8 +158,8 @@ class DamageListener implements Listener {
         $player = $event->getEntity();
         $damager = $event->getDamager();
 
-        if(($player instanceof Player) && ($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) && $damager instanceof Player) {
-            if($damager->getName() === $player->getName()) {
+        if (($player instanceof Player) && ($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) && $damager instanceof Player) {
+            if ($damager->getName() === $player->getName()) {
                 $event->cancel();
                 $damager->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou can't hit yourself.");
                 return;
@@ -180,5 +183,4 @@ class DamageListener implements Listener {
             KnockbackPlayer::getInstance()->playSound("random.orb", $damager);
         }
     }
-
 }
