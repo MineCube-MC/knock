@@ -57,4 +57,12 @@ class API
         return false;
     }
 
+    public static function isDoubleJumpEnabled(): bool
+    {
+        if (GameSettings::getInstance()->doublejump) {
+            return true;
+        }
+        return false;
+    }
+
 }
