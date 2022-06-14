@@ -36,8 +36,6 @@ The plugin itself it's easy to setup. Follow the steps:
 - knockbackffa.customize -> Customize the minigame settings
 
 ### Troubleshooting
-#### The server crashes
-When you reload the server, the plugin will mess up. What you can do is to just restart the server every time you changed a configuration file.
 #### Why the plugin won't work fine on X fork of PocketMine?
 Why are you even using a PocketMine fork?
 
