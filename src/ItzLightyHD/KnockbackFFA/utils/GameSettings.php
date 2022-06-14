@@ -5,7 +5,8 @@ namespace ItzLightyHD\KnockbackFFA\utils;
 use ItzLightyHD\KnockbackFFA\Loader;
 use pocketmine\utils\Config;
 
-class GameSettings {
+class GameSettings
+{
 
     protected static GameSettings $instance;
 
@@ -20,16 +21,12 @@ class GameSettings {
     public int $speed_level;
     public int $jump_boost_level;
     public bool $scoretag;
+    public bool $doublejump;
 
     public function __construct(Loader $plugin)
     {
         self::$instance = $this;
         $this->prepare();
-    }
-
-    public static function getInstance(): self
-    {
-        return self::$instance;
     }
 
     public function prepare(): void
@@ -47,11 +44,16 @@ class GameSettings {
         $this->speed_level = $this->getConfig()->get("speed-level");
         $this->jump_boost_level = $this->getConfig()->get("jump-boost-level");
         $this->scoretag = $this->getConfig()->get("kills-scoretag");
+        $this->doublejump = $this->getConfig()->get("double-jump");
+    }
+
+    public static function getInstance(): self
+    {
+        return self::$instance;
     }
 
     public function getConfig(): Config
     {
         return new Config(Loader::getInstance()->getDataFolder() . "kbffa.yml", Config::YAML);
     }
-
 }

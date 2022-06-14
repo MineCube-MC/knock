@@ -3,40 +3,35 @@
 namespace ItzLightyHD\KnockbackFFA\listeners;
 
 use ItzLightyHD\KnockbackFFA\API;
-use ItzLightyHD\KnockbackFFA\Loader;
-use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
-use ItzLightyHD\KnockbackFFA\utils\GameSettings;
-use ItzLightyHD\KnockbackFFA\event\PlayerKillEvent;
 use ItzLightyHD\KnockbackFFA\event\PlayerDeadEvent;
 use ItzLightyHD\KnockbackFFA\event\PlayerKilledEvent;
+use ItzLightyHD\KnockbackFFA\event\PlayerKillEvent;
 use ItzLightyHD\KnockbackFFA\event\PlayerKillstreakEvent;
+use ItzLightyHD\KnockbackFFA\Loader;
+use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackKit;
+use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
-use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\Listener;
 use pocketmine\item\ItemIds;
+use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
 use pocketmine\Server;
-use pocketmine\event\Listener;
-use pocketmine\item\VanillaItems;
 
 class DamageListener implements Listener
 {
 
-    /** @var Loader $plugin */
-    private Loader $plugin;
     /** @var self $instance */
     protected static DamageListener $instance;
+    /** @var Loader $plugin */
+    private Loader $plugin;
 
     public function __construct(Loader $plugin)
     {
         $this->plugin = $plugin;
         self::$instance = $this;
-    }
-
-    public static function getInstance(): self
-    {
-        return self::$instance;
     }
 
     public function onEntityDamage(EntityDamageEvent $event): void
@@ -62,8 +57,7 @@ class DamageListener implements Listener
                     $killedBy = Server::getInstance()->getPlayerExact(KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())]);
                     if ($killedBy?->isOnline()) {
                         KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy?->getName())]++;
-                        $ks = [5, 10, 15, 20, 25, 30, 40, 50];
-                        if (in_array(KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy?->getName())], $ks, true)) {
+                        if (KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy?->getName())] % 5 === 0) {
                             $players = $event->getEntity()->getWorld()->getPlayers();
                             $killevent = new PlayerKillEvent($killedBy, $event->getEntity());
                             $killevent->call();
@@ -102,6 +96,11 @@ class DamageListener implements Listener
                 $event->cancel();
             }
         }
+    }
+
+    public static function getInstance(): self
+    {
+        return self::$instance;
     }
 
     public function kbffaKill(PlayerKillEvent $event): void

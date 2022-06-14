@@ -2,9 +2,6 @@
 
 namespace ItzLightyHD\KnockbackFFA;
 
-use pocketmine\plugin\PluginBase;
-use pocketmine\utils\Config;
-use JackMD\UpdateNotifier\UpdateNotifier;
 use CortexPE\Commando\PacketHooker;
 use ItzLightyHD\KnockbackFFA\command\KnockbackCommand;
 use ItzLightyHD\KnockbackFFA\listeners\DamageListener;
@@ -12,17 +9,26 @@ use ItzLightyHD\KnockbackFFA\listeners\EssentialsListener;
 use ItzLightyHD\KnockbackFFA\listeners\LevelListener;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
+use JackMD\UpdateNotifier\UpdateNotifier;
+use pocketmine\plugin\PluginBase;
+use pocketmine\utils\Config;
 use pocketmine\world\World;
 
-class Loader extends PluginBase {
+class Loader extends PluginBase
+{
 
-    /** @var Config $config */
-    protected Config $config;
     /** @var self $instance */
     protected static Loader $instance;
+    /** @var Config $config */
+    protected Config $config;
 
     // What happens when plugin is enabled
-    public function onEnable(): void {
+
+    /**
+     * @throws \CortexPE\Commando\exception\HookAlreadyRegistered
+     */
+    public function onEnable(): void
+    {
         // Sets the instance
         self::$instance = $this;
         // Registers the event listeners
@@ -34,18 +40,18 @@ class Loader extends PluginBase {
         // Checking for a new update (new system)
         UpdateNotifier::checkUpdate($this->getDescription()->getName(), $this->getDescription()->getVersion());
         // Register the packet hooker for Commando (command framework)
-        if(!PacketHooker::isRegistered()) {
+        if (!PacketHooker::isRegistered()) {
             PacketHooker::register($this);
         }
         // Registers the "kbffa" command
         $this->getServer()->getCommandMap()->register($this->getName(), new KnockbackCommand($this));
         // Check for world existance (if the world doesn't exist, it will instantly disable the plugin)
-        if(!($this->getServer()->getWorldManager()->getWorldByName(GameSettings::getInstance()->world) instanceof World)) {
+        if (!($this->getServer()->getWorldManager()->getWorldByName(GameSettings::getInstance()->world) instanceof World)) {
             $this->getLogger()->alert("The world specified for the arena in the configuration file doesn't exist. Change it or make sure it has the correct name!");
             $plugin = $this->getServer()->getPluginManager()->getPlugin($this->getName());
             $this->getServer()->getPluginManager()->disablePlugin($plugin);
         }
-        if(!($this->getServer()->getWorldManager()->getWorldByName(GameSettings::getInstance()->lobby_world) instanceof World) && !($this->getServer()->getWorldManager()->getWorldByName(GameSettings::getInstance()->world) instanceof World)) {
+        if (!($this->getServer()->getWorldManager()->getWorldByName(GameSettings::getInstance()->lobby_world) instanceof World) && !($this->getServer()->getWorldManager()->getWorldByName(GameSettings::getInstance()->world) instanceof World)) {
             $this->getLogger()->alert("The world specified for the lobby in the configuration file doesn't exist. Change it or make sure it has the correct name!");
             $plugin = $this->getServer()->getPluginManager()->getPlugin($this->getName());
             $this->getServer()->getPluginManager()->disablePlugin($plugin);
