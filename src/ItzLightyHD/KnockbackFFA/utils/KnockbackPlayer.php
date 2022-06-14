@@ -65,7 +65,7 @@ class KnockbackPlayer implements Listener
 
     public function onPlayerJump(PlayerJumpEvent $event): void
     {
-        if(GameSettings::getInstance()->doublejump) return;
+        if (GameSettings::getInstance()->doublejump) return;
         $player = $event->getPlayer();
         if (!isset(EssentialsListener::$cooldown[$player->getName()])) {
             EssentialsListener::$cooldown[$player->getName()] = 0;
