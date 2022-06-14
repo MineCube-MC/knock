@@ -66,6 +66,11 @@ class SettingsCommand extends BaseSubCommand
             } else {
                 GameSettings::getInstance()->leap = false;
             }
+            if ($data[5] === true) {
+                GameSettings::getInstance()->doublejump = true;
+            } else {
+                GameSettings::getInstance()->doublejump = false;
+            }
             GameSettings::getInstance()->enchant_level = intval($data[5]);
             GameSettings::getInstance()->speed_level = intval($data[6]);
             GameSettings::getInstance()->jump_boost_level = intval($data[7]);
@@ -77,6 +82,7 @@ class SettingsCommand extends BaseSubCommand
         $form->addToggle("Bow", API::isBowEnabled());
         $form->addToggle("Snowballs", API::isSnowballsEnabled());
         $form->addToggle("Leap", API::isLeapEnabled());
+        $form->addToggle("Double-Jump", API::isDoubleJumpEnabled());
         $form->addInput("Stick's knockback level", GameSettings::getInstance()->enchant_level);
         $form->addInput("Bow's knockback level", GameSettings::getInstance()->knockback_level);
         $form->addInput("Speed level", GameSettings::getInstance()->speed_level);
