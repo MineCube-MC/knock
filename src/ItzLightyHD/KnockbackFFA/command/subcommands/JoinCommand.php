@@ -13,12 +13,9 @@ use pocketmine\world\World;
 class JoinCommand extends BaseSubCommand
 {
 
-    private $plugin;
-
     public function __construct(Loader $plugin)
     {
-        $this->plugin = $plugin;
-        parent::__construct("join", "Join the minigame");
+        parent::__construct($plugin, "join", "Join the minigame", []);
     }
 
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void

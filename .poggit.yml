@@ -9,12 +9,12 @@ projects:
     lint:
       phpstan: false
     libs:
-    - src: "CortexPE/Commando/Commando"
-      branch: "PM4"
+    - src: "Paroxity/Commando/Commando"
+      branch: "master"
       version: ^3.0.0
     - src: "WolvesFortress/FormAPI/libFormAPI"
       version: ^1.3.0
     - src: "ifera-mc/UpdateNotifier/UpdateNotifier"
-      branch: "API-4.0.0"
-      version: ^2.2.0
+      branch: "master"
+      version: ^3.0.0
 ...

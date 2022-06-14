@@ -26,3 +26,10 @@
 
 # Private things (for now)
 .vscode
+
+# Building stuff
+PocketMine-DevTools.phar
+DEVirion.phar
+Knock.phar
+build
+virions

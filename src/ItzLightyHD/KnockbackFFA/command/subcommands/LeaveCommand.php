@@ -13,12 +13,9 @@ use pocketmine\world\World;
 class LeaveCommand extends BaseSubCommand
 {
 
-    private $plugin;
-
     public function __construct(Loader $plugin)
     {
-        $this->plugin = $plugin;
-        parent::__construct("leave", "Leave the minigame");
+        parent::__construct($plugin, "leave", "Leave the minigame", []);
     }
 
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void

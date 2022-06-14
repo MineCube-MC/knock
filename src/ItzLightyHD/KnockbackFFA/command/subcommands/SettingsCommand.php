@@ -17,12 +17,9 @@ use pocketmine\world\World;
 class SettingsCommand extends BaseSubCommand
 {
 
-    private $plugin;
-
     public function __construct(Loader $plugin)
     {
-        $this->plugin = $plugin;
-        parent::__construct("settings", "Customize the minigame directly from the game");
+        parent::__construct($plugin, "settings", "Customize the minigame directly from the game", []);
     }
 
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void

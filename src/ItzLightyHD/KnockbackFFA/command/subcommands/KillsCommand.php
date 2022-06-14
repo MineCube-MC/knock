@@ -13,12 +13,9 @@ use pocketmine\Server;
 class KillsCommand extends BaseSubCommand
 {
 
-    private $plugin;
-
     public function __construct(Loader $plugin)
     {
-        $this->plugin = $plugin;
-        parent::__construct("kills", "Get the kills of an online player");
+        parent::__construct($plugin, "kills", "Get the kills of an online player", []);
     }
 
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
