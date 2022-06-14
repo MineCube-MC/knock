@@ -23,6 +23,7 @@ massive-knockback: true # The game will have a slightly modified knockback
 bow: true # The game will also include bows
 snowballs: true # The game will also include snowballs
 leap: true # The game will also include a leap
+double-jump: true # The game will also include a double-jump
 enchant-level: 2 # Players will have a stick with the desired knockback level
 knockback-level: 3 # Players will have a bow with the desired power level
 speed-level: 2 # Players will have the speed effect with the desired level
