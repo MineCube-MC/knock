@@ -74,14 +74,14 @@ class KnockbackPlayer implements Listener
 
     public function onPlayerJump(PlayerJumpEvent $event): void
     {
-        if (GameSettings::getInstance()->doublejump) return;
+        if (!GameSettings::getInstance()->doublejump) return;
         $player = $event->getPlayer();
         if ($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) $this->jumpQueue[$player->getName()] = microtime(true);
     }
 
     public function onDataPacketReceive(DataPacketReceiveEvent $event): void
     {
-        if (GameSettings::getInstance()->doublejump) return;
+        if (!GameSettings::getInstance()->doublejump) return;
         $player = $event->getOrigin()->getPlayer();
         $packet = $event->getPacket();
         if (!$packet instanceof PlayerAuthInputPacket) {
