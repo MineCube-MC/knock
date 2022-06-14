@@ -92,6 +92,7 @@ class EssentialsListener implements Listener {
             }
         }
         if(($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) && $event->getItem()->getCustomName() === "§r§eLeap§r") {
+
             if(!isset(self::$cooldown[$player->getName()])) {
                 self::$cooldown[$player->getName()] = 0;
             }

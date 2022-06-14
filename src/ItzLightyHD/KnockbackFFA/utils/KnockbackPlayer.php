@@ -4,6 +4,7 @@ namespace ItzLightyHD\KnockbackFFA\utils;
 
 use ItzLightyHD\KnockbackFFA\listeners\EssentialsListener;
 use ItzLightyHD\KnockbackFFA\Loader;
+use ItzLightyHD\KnockbackFFA\tasks\ResetJumpCount;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerJumpEvent;
@@ -39,6 +40,9 @@ class KnockbackPlayer implements Listener
         $this->lastDmg[$name] = "none";
         $this->jumpcount[$name] = 0;
         $this->killstreak[$name] = 0;
+        if(!isset(EssentialsListener::$cooldown[$player->getName()])) {
+            EssentialsListener::$cooldown[$player->getName()] = 0;
+        }
         if ($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
             $lobbyWorld = GameSettings::getInstance()->lobby_world;
             $player->teleport(Server::getInstance()->getWorldManager()->getWorldByName($lobbyWorld)?->getSpawnLocation());
@@ -96,7 +100,7 @@ class KnockbackPlayer implements Listener
             }
         }
     }
-
+  
     public function playSound(string $soundName, ?Player $player): void
     {
         $pk = new PlaySoundPacket();
