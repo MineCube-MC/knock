@@ -2,7 +2,7 @@
 name: KnockbackFFA
 main: ItzLightyHD\KnockbackFFA\Loader
 api: 4.0.0
-version: 1.5.4-beta
+version: 1.6-beta
 author: ItzLightyHD
 permissions:
   knockbackffa.customize:

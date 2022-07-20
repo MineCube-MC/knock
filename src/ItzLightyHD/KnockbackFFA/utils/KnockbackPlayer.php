@@ -2,6 +2,7 @@
 
 namespace ItzLightyHD\KnockbackFFA\utils;
 
+use ItzLightyHD\KnockbackFFA\event\PlayerDoubleJumpEvent;
 use ItzLightyHD\KnockbackFFA\listeners\EssentialsListener;
 use ItzLightyHD\KnockbackFFA\Loader;
 use pocketmine\event\Listener;
@@ -80,6 +81,9 @@ class KnockbackPlayer implements Listener
     {
         if (GameSettings::getInstance()->doublejump === false) return;
         $player = $event->getOrigin()->getPlayer();
+        $ev = new PlayerDoubleJumpEvent($player);
+        $ev->call();
+        if ($ev->isCancelled()) return;
         $packet = $event->getPacket();
         if (!$packet instanceof PlayerAuthInputPacket) {
             return;

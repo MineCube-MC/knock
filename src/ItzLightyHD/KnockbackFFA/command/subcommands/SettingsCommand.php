@@ -37,11 +37,10 @@ class SettingsCommand extends BaseSubCommand
             if ($data === null) {
                 return;
             }
+            
             $ev = new SettingsChangeEvent($player);
             $ev->call();
-            if ($ev->isCancelled() === true) {
-                return;
-            }
+            if ($ev->isCancelled()) return;
 
             if ($data[1] === true) {
                 GameSettings::getInstance()->massive_knockback = true;

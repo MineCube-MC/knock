@@ -2,6 +2,7 @@
 
 namespace ItzLightyHD\KnockbackFFA\listeners;
 
+use ItzLightyHD\KnockbackFFA\event\PlayerDoubleJumpEvent;
 use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
@@ -93,7 +94,9 @@ class EssentialsListener implements Listener {
             }
         }
         if(($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) && $event->getItem()->getCustomName() === "§r§eLeap§r") {
-
+            $ev = new PlayerDoubleJumpEvent($player);
+            $ev->call();
+            if($ev->isCancelled()) return;
             if(!isset(self::$cooldown[$player->getName()])) {
                 self::$cooldown[$player->getName()] = 0;
             }
