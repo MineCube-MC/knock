@@ -4,6 +4,7 @@ namespace ItzLightyHD\KnockbackFFA\listeners;
 
 use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
+use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\player\PlayerExhaustEvent;
@@ -101,6 +102,7 @@ class EssentialsListener implements Listener {
                 $dx = $directionvector->getX();
                 $dz = $directionvector->getZ();
                 $player->setMotion(new Vector3($dx, 1, $dz));
+                KnockbackPlayer::getInstance()->playSound("mob.enderdragon.flap", $player);
                 self::$cooldown[$player->getName()] = time() + 10;
             } else {
                 $player->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cWait §e" . (10 - ((time() + 10) - self::$cooldown[$player->getName()])) . "§c seconds before using your leap/double jump again.");

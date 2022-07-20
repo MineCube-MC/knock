@@ -4,7 +4,6 @@ namespace ItzLightyHD\KnockbackFFA\utils;
 
 use ItzLightyHD\KnockbackFFA\listeners\EssentialsListener;
 use ItzLightyHD\KnockbackFFA\Loader;
-use ItzLightyHD\KnockbackFFA\tasks\ResetJumpCount;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerJumpEvent;
@@ -15,7 +14,6 @@ use pocketmine\network\mcpe\protocol\PlayerAuthInputPacket;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\network\mcpe\protocol\types\PlayerAuthInputFlags;
 use pocketmine\player\Player;
-use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
 use function microtime;
 
@@ -64,8 +62,9 @@ class KnockbackPlayer implements Listener
         unset($this->lastDmg[$name], $this->killstreak[$name], EssentialsListener::$cooldown[$name], $this->jumpcount[$name]);
         foreach (Server::getInstance()->getOnlinePlayers() as $p) {
             $world = $p->getWorld()->getFolderName();
-            if (($world === GameSettings::getInstance()->world) && $this->lastDmg[$p->getName()] === $name) {
-                $this->lastDmg[$p->getName()] = "none";
+            if ($world === GameSettings::getInstance()->world && isset($this->lastDmg[$name])) {
+                // $this->lastDmg[$p->getName()] === $name;
+                $this->lastDmg[$name] = "none";
             }
         }
     }
@@ -110,6 +109,7 @@ class KnockbackPlayer implements Listener
             $dx = $directionvector->getX();
             $dz = $directionvector->getZ();
             $player->setMotion(new Vector3($dx, 1, $dz));
+            $this->playSound("mob.enderdragon.flap", $player);
             EssentialsListener::$cooldown[$player->getName()] = time() + 10;
         } else {
             $player->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cWait §e" . (10 - ((time() + 10) - EssentialsListener::$cooldown[$player->getName()])) . "§c seconds before using your leap/double jump again.");

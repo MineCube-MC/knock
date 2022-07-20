@@ -68,9 +68,10 @@ class SettingsCommand extends BaseSubCommand
             } else {
                 GameSettings::getInstance()->doublejump = false;
             }
-            GameSettings::getInstance()->enchant_level = intval($data[5]);
-            GameSettings::getInstance()->speed_level = intval($data[6]);
-            GameSettings::getInstance()->jump_boost_level = intval($data[7]);
+            GameSettings::getInstance()->enchant_level = intval($data[6]);
+            GameSettings::getInstance()->knockback_level = intval($data[7]);
+            GameSettings::getInstance()->speed_level = intval($data[8]);
+            GameSettings::getInstance()->jump_boost_level = intval($data[9]);
             $this->reloadGame(GameSettings::getInstance()->world);
         });
         $form->setTitle(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§8Settings");
