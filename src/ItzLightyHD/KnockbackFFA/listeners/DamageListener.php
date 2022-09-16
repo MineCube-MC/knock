@@ -55,7 +55,7 @@ class DamageListener implements Listener
                 } else {
                     KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
                     $killedBy = Server::getInstance()->getPlayerExact(KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())]);
-                    if ($killedBy?->isOnline()) {
+                    if ($killedBy instanceof Player) {
                         KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy?->getName())]++;
                         if (KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy?->getName())] % 5 === 0) {
                             $players = $event->getEntity()->getWorld()->getPlayers();
@@ -81,8 +81,6 @@ class DamageListener implements Listener
                             $killedBy?->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§aYou killed §f" . $player->getDisplayName());
                         }
                         KnockbackPlayer::getInstance()->playSound("note.pling", $killedBy);
-                    }
-                    if ($killedBy instanceof Player) {
                         $killedevent = new PlayerKilledEvent($event->getEntity(), $killedBy);
                         $killedevent->call();
                     }
