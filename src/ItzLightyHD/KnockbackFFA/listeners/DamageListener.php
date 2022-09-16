@@ -59,10 +59,12 @@ class DamageListener implements Listener
                         KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy?->getName())]++;
                         if (KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy?->getName())] % 5 === 0) {
                             $players = $event->getEntity()->getWorld()->getPlayers();
-                            $killevent = new PlayerKillEvent($killedBy, $event->getEntity());
-                            $killevent->call();
-                            $killstreakevent = new PlayerKillstreakEvent($killedBy);
-                            $killstreakevent->call();
+                            if ($killedBy instanceof Player) {
+                                $killevent = new PlayerKillEvent($killedBy, $event->getEntity());
+                                $killevent->call();
+                                $killstreakevent = new PlayerKillstreakEvent($killedBy);
+                                $killstreakevent->call();
+                            }
                             foreach ($players as $p) {
                                 KnockbackPlayer::getInstance()->playSound("random.levelup", $p);
                                 $p->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§f" . Server::getInstance()->getPlayerExact(KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())])?->getDisplayName() . "§r§6 is at §e" . KnockbackPlayer::getInstance()->killstreak[KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())]] . "§6 kills");
