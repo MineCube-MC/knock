@@ -80,8 +80,10 @@ class DamageListener implements Listener
                         }
                         KnockbackPlayer::getInstance()->playSound("note.pling", $killedBy);
                     }
-                    $killedevent = new PlayerKilledEvent($event->getEntity(), $killedBy);
-                    $killedevent->call();
+                    if ($killedBy instanceof Player) {
+                        $killedevent = new PlayerKilledEvent($event->getEntity(), $killedBy);
+                        $killedevent->call();
+                    }
                     new KnockbackKit($event->getEntity());
                     KnockbackPlayer::getInstance()->playSound("random.glass", $event->getEntity());
                     if (GameSettings::getInstance()->scoretag === true) {
