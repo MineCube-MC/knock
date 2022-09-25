@@ -39,7 +39,7 @@ class DamageListener implements Listener
         $player = $event->getEntity();
         if (($player instanceof Player) && $event->getEntity()->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
             if ($event->getCause() === EntityDamageEvent::CAUSE_VOID) {
-                $event->cancel();
+                $event->getEntity()->setHealth($event->getEntity()->getMaxHealth());
                 $event->getEntity()->teleport(Server::getInstance()->getWorldManager()->getWorldByName(GameSettings::getInstance()->world)?->getSpawnLocation());
                 if (KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] === "none") {
                     $deadevent = new PlayerDeadEvent($event->getEntity());
