@@ -23,17 +23,14 @@ class KnockbackKit
         }
         $player->setHealth(20);
         $player->getHungerManager()->setFood(20);
-
         $player->getInventory()->clearAll();
         $player->getArmorInventory()->clearAll();
-
         $stick = VanillaItems::STICK();
         if (GameSettings::getInstance()->enchant_level !== 0) {
             $stick->addEnchantment(new EnchantmentInstance(VanillaEnchantments::KNOCKBACK(), GameSettings::getInstance()->enchant_level));
         }
         $player->getInventory()->setItem(0, $stick);
-
-        if (GameSettings::getInstance()->bow === true) {
+        if (GameSettings::getInstance()->bow) {
             $bow = VanillaItems::BOW();
             $arrow = VanillaItems::ARROW();
             $bow->addEnchantment(new EnchantmentInstance(VanillaEnchantments::INFINITY(), 1));
@@ -44,11 +41,11 @@ class KnockbackKit
             $player->getInventory()->addItem($bow);
             $player->getInventory()->setItem(9, $arrow);
         }
-        if (GameSettings::getInstance()->snowballs === true) {
+        if (GameSettings::getInstance()->snowballs) {
             $snowballs = VanillaItems::SNOWBALL();
             $player->getInventory()->addItem($snowballs);
         }
-        if (GameSettings::getInstance()->leap === true) {
+        if (GameSettings::getInstance()->leap) {
             $leap = VanillaItems::FEATHER();
             $leap->setCustomName("§r§eLeap§r");
             $leap->setLore(["§r§7Saves you from the danger..."]);
@@ -61,7 +58,7 @@ class KnockbackKit
         if (GameSettings::getInstance()->jump_boost_level !== 0) {
             $player->getEffects()->add(new EffectInstance(VanillaEffects::JUMP_BOOST(), 99999, GameSettings::getInstance()->jump_boost_level, false));
         }
-        if (GameSettings::getInstance()->scoretag === true) {
+        if (GameSettings::getInstance()->scoretag) {
             $player->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
         }
     }

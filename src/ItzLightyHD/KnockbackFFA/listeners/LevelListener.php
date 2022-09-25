@@ -55,7 +55,7 @@ class LevelListener implements Listener
                 $player->getInventory()->clearAll();
                 $player->getEffects()->clear();
                 KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = "None";
-                if (GameSettings::getInstance()->scoretag === true) {
+                if (GameSettings::getInstance()->scoretag) {
                     $player->setScoreTag("");
                 }
             }

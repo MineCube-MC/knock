@@ -47,7 +47,7 @@ class DamageListener implements Listener
                     new KnockbackKit($event->getEntity());
                     KnockbackPlayer::getInstance()->playSound("random.glass", $event->getEntity());
                     KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
-                    if (GameSettings::getInstance()->scoretag === true) {
+                    if (GameSettings::getInstance()->scoretag) {
                         $event->getEntity()->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                     }
                     EssentialsListener::$cooldown[$player->getName()] = 0;
@@ -67,11 +67,11 @@ class DamageListener implements Listener
                                 KnockbackPlayer::getInstance()->playSound("random.levelup", $p);
                                 $p->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§f" . Server::getInstance()->getPlayerExact(KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())])?->getDisplayName() . "§r§6 is at §e" . KnockbackPlayer::getInstance()->killstreak[KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())]] . "§6 kills");
                             }
-                            if (GameSettings::getInstance()->scoretag === true) {
+                            if (GameSettings::getInstance()->scoretag) {
                                 $killedBy->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                             }
                         } else {
-                            if (GameSettings::getInstance()->scoretag === true) {
+                            if (GameSettings::getInstance()->scoretag) {
                                 $killedBy->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                             }
                             $killevent = new PlayerKillEvent($killedBy, $event->getEntity());
@@ -84,15 +84,14 @@ class DamageListener implements Listener
                     }
                     new KnockbackKit($event->getEntity());
                     KnockbackPlayer::getInstance()->playSound("random.glass", $event->getEntity());
-                    if (GameSettings::getInstance()->scoretag === true) {
+                    if (GameSettings::getInstance()->scoretag) {
                         $event->getEntity()->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                     }
                     EssentialsListener::$cooldown[$player->getName()] = 0;
                     $player->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou were killed by §f" . $killedBy?->getDisplayName());
                 }
                 KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] = "none";
-            }
-            if ($event->getCause() === EntityDamageEvent::CAUSE_FALL) {
+            } elseif ($event->getCause() === EntityDamageEvent::CAUSE_FALL) {
                 $event->cancel();
             }
         }
@@ -106,8 +105,7 @@ class DamageListener implements Listener
     public function kbffaKill(PlayerKillEvent $event): void
     {
         $player = $event->getPlayer();
-
-        if (API::isSnowballsEnabled() === true) {
+        if (API::isSnowballsEnabled()) {
             $snowballs = VanillaItems::SNOWBALL();
             $player->getInventory()->addItem($snowballs);
         }
@@ -121,7 +119,6 @@ class DamageListener implements Listener
         if (($player instanceof Player) && $player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
             $player->setHealth(20);
             $player->getHungerManager()->setSaturation(20);
-
             if ($damager instanceof Player) {
                 $x = $player->getLocation()->getX();
                 $y = $player->getLocation()->getY();
@@ -130,12 +127,10 @@ class DamageListener implements Listener
                 $yy = $player->getWorld()->getSafeSpawn()->getY();
                 $zz = $player->getWorld()->getSafeSpawn()->getZ();
                 $sr = GameSettings::getInstance()->getConfig()->get("protection-radius");
-
                 if ($damager->getName() === $player->getName()) {
                     $event->cancel();
                     return;
                 }
-
                 if (abs($xx - $x) < $sr && abs($yy - $y) < $sr && abs($zz - $z) < $sr) {
                     $event->cancel();
                     $damager->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou can't hit the players here!");
@@ -143,7 +138,7 @@ class DamageListener implements Listener
                 }
                 KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] = strtolower($damager->getName());
                 $item = $damager->getInventory()->getItemInHand()->getId();
-                if ((GameSettings::getInstance()->massive_knockback === true) && $item === ItemIds::STICK) {
+                if (GameSettings::getInstance()->massive_knockback && $item === ItemIds::STICK) {
                     $x = $damager->getDirectionVector()->x;
                     $z = $damager->getDirectionVector()->z;
                     $player->knockBack($x, $z, 0.6);
