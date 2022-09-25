@@ -16,7 +16,7 @@ class API
         return KnockbackPlayer::getInstance()->killstreak[$playername] ?? "none";
     }
 
-    public static function getLastDmg(?Player $player)
+    public static function getLastDmg(?Player $player): Player|string|null
     {
         $playername = strtolower($player?->getName());
         if (isset(KnockbackPlayer::getInstance()->lastDmg[$playername]) && !KnockbackPlayer::getInstance()->lastDmg[$playername] === "none") {

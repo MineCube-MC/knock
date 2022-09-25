@@ -56,8 +56,8 @@ class DamageListener implements Listener
                     KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
                     $killedBy = Server::getInstance()->getPlayerExact(KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())]);
                     if ($killedBy instanceof Player) {
-                        KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy?->getName())]++;
-                        if (KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy?->getName())] % 5 === 0) {
+                        KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy->getName())]++;
+                        if ((int)KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy->getName())] % 5 === 0) {
                             $players = $event->getEntity()->getWorld()->getPlayers();
                             $killevent = new PlayerKillEvent($killedBy, $event->getEntity());
                             $killevent->call();
@@ -68,15 +68,15 @@ class DamageListener implements Listener
                                 $p->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§f" . Server::getInstance()->getPlayerExact(KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())])?->getDisplayName() . "§r§6 is at §e" . KnockbackPlayer::getInstance()->killstreak[KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())]] . "§6 kills");
                             }
                             if (GameSettings::getInstance()->scoretag === true) {
-                                $killedBy?->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy?->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
+                                $killedBy->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                             }
                         } else {
                             if (GameSettings::getInstance()->scoretag === true) {
-                                $killedBy?->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy?->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
+                                $killedBy->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                             }
                             $killevent = new PlayerKillEvent($killedBy, $event->getEntity());
                             $killevent->call();
-                            $killedBy?->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§aYou killed §f" . $player->getDisplayName());
+                            $killedBy->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§aYou killed §f" . $player->getDisplayName());
                         }
                         KnockbackPlayer::getInstance()->playSound("note.pling", $killedBy);
                         $killedevent = new PlayerKilledEvent($event->getEntity(), $killedBy);

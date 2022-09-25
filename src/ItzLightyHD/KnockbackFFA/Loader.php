@@ -2,6 +2,7 @@
 
 namespace ItzLightyHD\KnockbackFFA;
 
+use CortexPE\Commando\exception\HookAlreadyRegistered;
 use CortexPE\Commando\PacketHooker;
 use ItzLightyHD\KnockbackFFA\command\KnockbackCommand;
 use ItzLightyHD\KnockbackFFA\listeners\DamageListener;
@@ -25,7 +26,7 @@ class Loader extends PluginBase
     // What happens when plugin is enabled
 
     /**
-     * @throws \CortexPE\Commando\exception\HookAlreadyRegistered
+     * @throws HookAlreadyRegistered
      */
     public function onEnable(): void
     {

@@ -54,7 +54,6 @@ class LevelListener implements Listener
                 $ev->call();
                 $player->getInventory()->clearAll();
                 $player->getEffects()->clear();
-                unset(KnockbackPlayer::getInstance()->jumptask[strtolower($player->getName())], KnockbackPlayer::getInstance()->jumpcount[strtolower($player->getName())]);
                 KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = "None";
                 if (GameSettings::getInstance()->scoretag === true) {
                     $player->setScoreTag("");

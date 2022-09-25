@@ -60,7 +60,7 @@ class KnockbackPlayer implements Listener
     {
         $player = $event->getPlayer();
         $name = strtolower($player->getName());
-        unset($this->lastDmg[$name], $this->killstreak[$name], EssentialsListener::$cooldown[$name], $this->jumpcount[$name]);
+        unset($this->lastDmg[$name], $this->killstreak[$name], EssentialsListener::$cooldown[$name]);
         foreach (Server::getInstance()->getOnlinePlayers() as $p) {
             $world = $p->getWorld()->getFolderName();
             if ($world === GameSettings::getInstance()->world && isset($this->lastDmg[$name])) {
@@ -85,26 +85,11 @@ class KnockbackPlayer implements Listener
         $ev->call();
         if ($ev->isCancelled()) return;
         $packet = $event->getPacket();
-        if (!$packet instanceof PlayerAuthInputPacket) {
-            return;
-        }
-        if ($player === null) {
-            return;
-        }
-        if (!$packet->hasFlag(PlayerAuthInputFlags::JUMP_DOWN)) {
-            return;
-        }
-        if (!isset($this->jump_queue[$player->getName()])) {
-            return;
-        }
-        if (microtime(true) - $this->jump_queue[$player->getName()] < 0.05) {
+        if ($player === null || !$packet instanceof PlayerAuthInputPacket || !$packet->hasFlag(PlayerAuthInputFlags::JUMP_DOWN) || !isset($this->jump_queue[$player->getName()]) || microtime(true) - $this->jump_queue[$player->getName()] < 0.05 || (isset($this->double_jump_queue[$player->getName()]) && microtime(true) - $this->jump_queue[$player->getName()] < 0.3)) {
             return;
         }
         if (!isset(EssentialsListener::$cooldown[$player->getName()])) {
             EssentialsListener::$cooldown[$player->getName()] = 0;
-        }
-        if (isset($this->double_jump_queue[$player->getName()]) && microtime(true) - $this->jump_queue[$player->getName()] < 0.3) {
-            return;
         }
         $this->double_jump_queue[$player->getName()] = microtime(true);
         unset($this->jump_queue[$player->getName()]);
