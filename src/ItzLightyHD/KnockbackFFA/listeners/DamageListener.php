@@ -39,7 +39,7 @@ class DamageListener implements Listener
         $player = $event->getEntity();
         if (($player instanceof Player) && $event->getEntity()->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
             if ($event->getCause() === EntityDamageEvent::CAUSE_VOID) {
-                $event->getEntity()->setHealth($event->getEntity()->getMaxHealth());
+                $event->cancel();
                 $event->getEntity()->teleport(Server::getInstance()->getWorldManager()->getWorldByName(GameSettings::getInstance()->world)?->getSpawnLocation());
                 if (KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] === "none") {
                     $deadevent = new PlayerDeadEvent($event->getEntity());
@@ -91,7 +91,8 @@ class DamageListener implements Listener
                     $player->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou were killed by §f" . $killedBy?->getDisplayName());
                 }
                 KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] = "none";
-            } elseif ($event->getCause() === EntityDamageEvent::CAUSE_FALL) {
+            }
+            if ($event->getCause() === EntityDamageEvent::CAUSE_FALL) {
                 $event->cancel();
             }
         }
