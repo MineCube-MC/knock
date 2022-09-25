@@ -36,7 +36,7 @@ class Loader extends PluginBase
         $this->registerEvents();
         // Register the game settings
         new GameSettings($this);
-        // Loads the arena that is wrote in the folder and upgrades it to the PM 4 world format
+        // Loads the arena that is written in the folder and upgrades it to the PM 4 world format
         $this->getServer()->getWorldManager()->loadWorld(GameSettings::getInstance()->world, true);
         // Checking for a new update (new system)
         UpdateNotifier::checkUpdate($this->getDescription()->getName(), $this->getDescription()->getVersion());
