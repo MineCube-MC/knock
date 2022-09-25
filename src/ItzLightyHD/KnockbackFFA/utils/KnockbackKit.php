@@ -15,7 +15,7 @@ class KnockbackKit
 
     public function __construct(Player $player)
     {
-        KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
+        //KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
         $ev = new PlayerKitEvent($player);
         $ev->call();
         if ($ev->isCancelled()) {
