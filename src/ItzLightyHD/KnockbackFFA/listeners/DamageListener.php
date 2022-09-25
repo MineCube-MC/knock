@@ -46,14 +46,14 @@ class DamageListener implements Listener
                     $deadevent->call();
                     new KnockbackKit($event->getEntity());
                     KnockbackPlayer::getInstance()->playSound("random.glass", $event->getEntity());
-                    KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
+                    //KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
                     if (GameSettings::getInstance()->scoretag) {
                         $event->getEntity()->setScoreTag(str_replace(["{kills}"], [KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())]], GameSettings::getInstance()->getConfig()->get("scoretag-format")));
                     }
                     EssentialsListener::$cooldown[$player->getName()] = 0;
                     $player->sendPopup(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou died");
                 } else {
-                    KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
+                    //KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;
                     $killedBy = Server::getInstance()->getPlayerExact(KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())]);
                     if ($killedBy instanceof Player) {
                         KnockbackPlayer::getInstance()->killstreak[strtolower($killedBy->getName())]++;
