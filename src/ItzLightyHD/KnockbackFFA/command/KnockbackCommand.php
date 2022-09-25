@@ -13,7 +13,7 @@ use pocketmine\command\CommandSender;
 class KnockbackCommand extends BaseCommand
 {
 
-    protected Loader $plugin;
+    protected $plugin;
 
     public function __construct(Loader $plugin)
     {
