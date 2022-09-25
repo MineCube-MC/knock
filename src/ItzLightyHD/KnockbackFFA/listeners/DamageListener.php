@@ -154,11 +154,11 @@ class DamageListener implements Listener
         $damager = $event->getDamager();
 
         if (($player instanceof Player) && ($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) && $damager instanceof Player) {
-            if ($damager->getName() === $player->getName()) {
+            /*if ($damager->getName() === $player->getName()) {
                 $event->cancel();
                 $damager->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou can't hit yourself.");
                 return;
-            }
+            }*/
             $event->setBaseDamage(0);
             $player->setHealth(20);
             $player->getHungerManager()->setSaturation(20);
