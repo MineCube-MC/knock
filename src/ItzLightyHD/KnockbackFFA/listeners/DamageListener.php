@@ -116,7 +116,6 @@ class DamageListener implements Listener
     {
         $player = $event->getEntity();
         $damager = $event->getDamager();
-
         if (($player instanceof Player) && $player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
             $player->setHealth(20);
             $player->getHungerManager()->setSaturation(20);
@@ -152,7 +151,6 @@ class DamageListener implements Listener
     {
         $player = $event->getEntity();
         $damager = $event->getDamager();
-
         if (($player instanceof Player) && ($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) && $damager instanceof Player) {
             if ($damager->getName() === $player->getName()) {
                 $event->cancel();
