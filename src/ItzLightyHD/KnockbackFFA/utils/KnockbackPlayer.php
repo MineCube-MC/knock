@@ -81,6 +81,7 @@ class KnockbackPlayer implements Listener
     {
         if (!GameSettings::getInstance()->doublejump) return;
         $player = $event->getOrigin()->getPlayer();
+        if($player == null) return;
         $ev = new PlayerDoubleJumpEvent($player);
         $ev->call();
         if ($ev->isCancelled()) return;
