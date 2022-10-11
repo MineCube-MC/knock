@@ -42,27 +42,27 @@ class SettingsCommand extends BaseSubCommand
             $ev->call();
             if ($ev->isCancelled()) return;
 
-            if ($data[1] === true) {
+            if ($data[1]) {
                 GameSettings::getInstance()->massive_knockback = true;
             } else {
                 GameSettings::getInstance()->massive_knockback = false;
             }
-            if ($data[2] === true) {
+            if ($data[2]) {
                 GameSettings::getInstance()->bow = true;
             } else {
                 GameSettings::getInstance()->bow = false;
             }
-            if ($data[3] === true) {
+            if ($data[3]) {
                 GameSettings::getInstance()->snowballs = true;
             } else {
                 GameSettings::getInstance()->snowballs = false;
             }
-            if ($data[4] === true) {
+            if ($data[4]) {
                 GameSettings::getInstance()->leap = true;
             } else {
                 GameSettings::getInstance()->leap = false;
             }
-            if ($data[5] === true) {
+            if ($data[5]) {
                 GameSettings::getInstance()->doublejump = true;
             } else {
                 GameSettings::getInstance()->doublejump = false;

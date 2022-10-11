@@ -68,7 +68,6 @@ class EssentialsListener implements Listener {
             $yy = $entity->getWorld()->getSafeSpawn()->getY();
             $zz = $entity->getWorld()->getSafeSpawn()->getZ();
             $sr = GameSettings::getInstance()->getConfig()->get("protection-radius");
-
             if (abs($xx - $x) < $sr && abs($yy - $y) < $sr && abs($zz - $z) < $sr) {
                 $event->cancel();
                 $entity->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou can't use that item here!");
@@ -87,7 +86,6 @@ class EssentialsListener implements Listener {
             $yy = $player->getWorld()->getSafeSpawn()->getY();
             $zz = $player->getWorld()->getSafeSpawn()->getZ();
             $sr = GameSettings::getInstance()->getConfig()->get("protection-radius");
-
             if (abs($xx - $x) < $sr && abs($yy - $y) < $sr && abs($zz - $z) < $sr) {
                 $event->cancel();
                 $player->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou can't use that item here!");
@@ -112,5 +110,4 @@ class EssentialsListener implements Listener {
             }
         }
     }
-
 }

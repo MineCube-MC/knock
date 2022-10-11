@@ -16,10 +16,10 @@ class API
         return KnockbackPlayer::getInstance()->killstreak[$playername] ?? "none";
     }
 
-    public static function getLastDmg(?Player $player)
+    public static function getLastDmg(?Player $player): Player|string|null
     {
         $playername = strtolower($player?->getName());
-        if (isset(KnockbackPlayer::getInstance()->lastDmg[$playername]) && !KnockbackPlayer::getInstance()->lastDmg[$playername] === "none") {
+        if (isset(KnockbackPlayer::getInstance()->lastDmg[$playername]) && !KnockbackPlayer::getInstance()->lastDmg[$playername] == "none") {
             return Server::getInstance()->getPlayerExact(KnockbackPlayer::getInstance()->lastDmg[$playername]);
         }
         return "none";
@@ -64,5 +64,4 @@ class API
         }
         return false;
     }
-
 }

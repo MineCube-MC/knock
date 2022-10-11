@@ -2,6 +2,7 @@
 
 namespace ItzLightyHD\KnockbackFFA;
 
+use CortexPE\Commando\exception\HookAlreadyRegistered;
 use CortexPE\Commando\PacketHooker;
 use ItzLightyHD\KnockbackFFA\command\KnockbackCommand;
 use ItzLightyHD\KnockbackFFA\listeners\DamageListener;
@@ -25,7 +26,7 @@ class Loader extends PluginBase
     // What happens when plugin is enabled
 
     /**
-     * @throws \CortexPE\Commando\exception\HookAlreadyRegistered
+     * @throws HookAlreadyRegistered
      */
     public function onEnable(): void
     {
@@ -35,7 +36,7 @@ class Loader extends PluginBase
         $this->registerEvents();
         // Register the game settings
         new GameSettings($this);
-        // Loads the arena that is wrote in the folder and upgrades it to the PM 4 world format
+        // Loads the arena that is written in the folder and upgrades it to the PM 4 world format
         $this->getServer()->getWorldManager()->loadWorld(GameSettings::getInstance()->world, true);
         // Checking for a new update (new system)
         UpdateNotifier::checkUpdate($this->getDescription()->getName(), $this->getDescription()->getVersion());
