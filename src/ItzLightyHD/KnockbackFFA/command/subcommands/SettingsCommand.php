@@ -84,7 +84,7 @@ class SettingsCommand extends BaseSubCommand
         $form->addInput("Bow's knockback level", GameSettings::getInstance()->knockback_level);
         $form->addInput("Speed level", GameSettings::getInstance()->speed_level);
         $form->addInput("Jump boost level", GameSettings::getInstance()->jump_boost_level);
-        $form->sendToPlayer($player);
+        $player->sendForm($form);
     }
 
     public function reloadGame(string $world): void
