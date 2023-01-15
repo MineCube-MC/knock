@@ -16,7 +16,6 @@ use pocketmine\world\World;
 
 class SettingsCommand extends BaseSubCommand
 {
-
     public function __construct(Loader $plugin)
     {
         parent::__construct($plugin, "settings", "Customize the minigame directly from the game", []);
@@ -118,5 +117,4 @@ class SettingsCommand extends BaseSubCommand
     {
         $this->setPermission("knockbackffa.customize");
     }
-
 }

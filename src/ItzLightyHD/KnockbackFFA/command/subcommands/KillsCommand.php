@@ -13,7 +13,6 @@ use pocketmine\Server;
 
 class KillsCommand extends BaseSubCommand
 {
-
     public function __construct(Loader $plugin)
     {
         parent::__construct($plugin, "kills", "Get the kills of an online player", []);
@@ -51,5 +50,4 @@ class KillsCommand extends BaseSubCommand
     {
         $this->registerArgument(0, new RawStringArgument("player", false));
     }
-
 }
