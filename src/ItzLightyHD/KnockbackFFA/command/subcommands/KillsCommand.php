@@ -6,15 +6,17 @@ use CortexPE\Commando\args\RawStringArgument;
 use CortexPE\Commando\BaseSubCommand;
 use CortexPE\Commando\exception\ArgumentOrderException;
 use ItzLightyHD\KnockbackFFA\API;
+use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use pocketmine\command\CommandSender;
 use pocketmine\Server;
 
 class KillsCommand extends BaseSubCommand
 {
-    public function __construct()
+
+    public function __construct(Loader $plugin)
     {
-        parent::__construct("kills", "Get the kills of an online player");
+        parent::__construct($plugin, "kills", "Get the kills of an online player", []);
     }
 
     /**
@@ -49,4 +51,5 @@ class KillsCommand extends BaseSubCommand
     {
         $this->registerArgument(0, new RawStringArgument("player", false));
     }
+
 }

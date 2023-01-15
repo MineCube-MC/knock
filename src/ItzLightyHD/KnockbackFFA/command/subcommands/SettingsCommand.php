@@ -5,6 +5,7 @@ namespace ItzLightyHD\KnockbackFFA\command\subcommands;
 use CortexPE\Commando\BaseSubCommand;
 use ItzLightyHD\KnockbackFFA\API;
 use ItzLightyHD\KnockbackFFA\event\SettingsChangeEvent;
+use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackKit;
 use jojoe77777\FormAPI\CustomForm;
@@ -15,9 +16,10 @@ use pocketmine\world\World;
 
 class SettingsCommand extends BaseSubCommand
 {
-    public function __construct()
+
+    public function __construct(Loader $plugin)
     {
-        parent::__construct("settings", "Customize the minigame directly from the game");
+        parent::__construct($plugin, "settings", "Customize the minigame directly from the game", []);
     }
 
     /**
@@ -35,6 +37,10 @@ class SettingsCommand extends BaseSubCommand
         $this->customizeGame($sender);
     }
 
+    /**
+     * @param Player $player
+     * @return void
+     */
     public function customizeGame(Player $player): void
     {
         $form = new CustomForm(function (Player $player, $data) {
@@ -46,7 +52,6 @@ class SettingsCommand extends BaseSubCommand
             if ($ev->isCancelled()) {
                 return;
             }
-
             if ($data[1]) {
                 GameSettings::getInstance()->massive_knockback = true;
             } else {
@@ -92,6 +97,10 @@ class SettingsCommand extends BaseSubCommand
         $player->sendForm($form);
     }
 
+    /**
+     * @param string $world
+     * @return void
+     */
     public function reloadGame(string $world): void
     {
         if (Server::getInstance()->getWorldManager()->getWorldByName($world) instanceof World) {
@@ -109,4 +118,5 @@ class SettingsCommand extends BaseSubCommand
     {
         $this->setPermission("knockbackffa.customize");
     }
+
 }

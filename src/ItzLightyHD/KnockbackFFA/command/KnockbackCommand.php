@@ -12,6 +12,7 @@ use pocketmine\command\CommandSender;
 
 class KnockbackCommand extends BaseCommand
 {
+
     /** @var Loader */
     protected $plugin;
 
@@ -37,9 +38,9 @@ class KnockbackCommand extends BaseCommand
      */
     protected function prepare(): void
     {
-        $this->registerSubCommand(new JoinCommand());
-        $this->registerSubCommand(new LeaveCommand());
-        $this->registerSubCommand(new KillsCommand());
-        $this->registerSubCommand(new SettingsCommand());
+        $this->registerSubCommand(new JoinCommand($this->plugin));
+        $this->registerSubCommand(new LeaveCommand($this->plugin));
+        $this->registerSubCommand(new KillsCommand($this->plugin));
+        $this->registerSubCommand(new SettingsCommand($this->plugin));
     }
 }
