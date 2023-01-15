@@ -12,12 +12,17 @@ use pocketmine\world\World;
 
 class LeaveCommand extends BaseSubCommand
 {
-
-    public function __construct(Loader $plugin)
+    public function __construct()
     {
-        parent::__construct($plugin, "leave", "Leave the minigame", []);
+        parent::__construct("leave", "Leave the minigame");
     }
 
+    /**
+     * @param CommandSender $sender
+     * @param string $aliasUsed
+     * @param array $args
+     * @return void
+     */
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
         if (!$sender instanceof Player) {
@@ -32,9 +37,10 @@ class LeaveCommand extends BaseSubCommand
         }
     }
 
+    /**
+     * @return void
+     */
     protected function prepare(): void
     {
-
     }
-
 }

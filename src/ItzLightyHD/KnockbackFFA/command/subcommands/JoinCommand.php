@@ -3,7 +3,6 @@
 namespace ItzLightyHD\KnockbackFFA\command\subcommands;
 
 use CortexPE\Commando\BaseSubCommand;
-use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
@@ -12,12 +11,17 @@ use pocketmine\world\World;
 
 class JoinCommand extends BaseSubCommand
 {
-
-    public function __construct(Loader $plugin)
+    public function __construct()
     {
-        parent::__construct($plugin, "join", "Join the minigame", []);
+        parent::__construct("join", "Join the minigame");
     }
 
+    /**
+     * @param CommandSender $sender
+     * @param string $aliasUsed
+     * @param array $args
+     * @return void
+     */
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
         if (!$sender instanceof Player) {
@@ -32,9 +36,10 @@ class JoinCommand extends BaseSubCommand
         }
     }
 
+    /**
+     * @return void
+     */
     protected function prepare(): void
     {
-
     }
-
 }

@@ -15,9 +15,8 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\world\World;
 
-class Loader extends PluginBase
+final class Loader extends PluginBase
 {
-
     /** @var self $instance */
     protected static Loader $instance;
     /** @var Config $config */
@@ -35,7 +34,7 @@ class Loader extends PluginBase
         // Registers the event listeners
         $this->registerEvents();
         // Register the game settings
-        new GameSettings($this);
+        new GameSettings();
         // Loads the arena that is written in the folder and upgrades it to the PM 4 world format
         $this->getServer()->getWorldManager()->loadWorld(GameSettings::getInstance()->world, true);
         // Checking for a new update (new system)
@@ -49,27 +48,31 @@ class Loader extends PluginBase
         // Check for world existance (if the world doesn't exist, it will instantly disable the plugin)
         if (!($this->getServer()->getWorldManager()->getWorldByName(GameSettings::getInstance()->world) instanceof World)) {
             $this->getLogger()->alert("The world specified for the arena in the configuration file doesn't exist. Change it or make sure it has the correct name!");
-            $plugin = $this->getServer()->getPluginManager()->getPlugin($this->getName());
-            $this->getServer()->getPluginManager()->disablePlugin($plugin);
+            $this->getServer()->getPluginManager()->disablePlugin($this);
         }
         if (!($this->getServer()->getWorldManager()->getWorldByName(GameSettings::getInstance()->lobby_world) instanceof World) && !($this->getServer()->getWorldManager()->getWorldByName(GameSettings::getInstance()->world) instanceof World)) {
             $this->getLogger()->alert("The world specified for the lobby in the configuration file doesn't exist. Change it or make sure it has the correct name!");
-            $plugin = $this->getServer()->getPluginManager()->getPlugin($this->getName());
-            $this->getServer()->getPluginManager()->disablePlugin($plugin);
+            $this->getServer()->getPluginManager()->disablePlugin($this);
         }
     }
 
+    /**
+     * @return void
+     */
     private function registerEvents(): void
     {
         // Knockback player, used for getting the killstreak, the last damager, etc...
-        $this->getServer()->getPluginManager()->registerEvents(new KnockbackPlayer($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new KnockbackPlayer(), $this);
         // All the event listeners
-        $this->getServer()->getPluginManager()->registerEvents(new DamageListener($this), $this);
-        $this->getServer()->getPluginManager()->registerEvents(new EssentialsListener($this), $this);
-        $this->getServer()->getPluginManager()->registerEvents(new LevelListener($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new DamageListener(), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new EssentialsListener(), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new LevelListener(), $this);
     }
 
-    // Helpul to make an API for the plugin
+    /**
+     * @return self
+     * Helpful to make an API for the plugin
+     */
     public static function getInstance(): self
     {
         return self::$instance;

@@ -7,15 +7,22 @@ use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
 use pocketmine\player\Player;
 use pocketmine\Server;
 
-class API
+final class API
 {
-
-    public static function getKills(?Player $player)
+    /**
+     * @param Player $player
+     * @return string
+     */
+    public static function getKills(Player $player): string
     {
-        $playername = strtolower($player?->getName());
-        return KnockbackPlayer::getInstance()->killstreak[$playername] ?? "none";
+        $kills = (string)KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())];
+        return $kills ?? "none";
     }
 
+    /**
+     * @param Player|null $player
+     * @return Player|string|null
+     */
     public static function getLastDmg(?Player $player): Player|string|null
     {
         $playername = strtolower($player?->getName());
@@ -25,6 +32,9 @@ class API
         return "none";
     }
 
+    /**
+     * @return bool
+     */
     public static function isMassiveKnockbackEnabled(): bool
     {
         if (GameSettings::getInstance()->massive_knockback) {
@@ -33,6 +43,9 @@ class API
         return false;
     }
 
+    /**
+     * @return bool
+     */
     public static function isBowEnabled(): bool
     {
         if (GameSettings::getInstance()->bow) {
@@ -41,6 +54,9 @@ class API
         return false;
     }
 
+    /**
+     * @return bool
+     */
     public static function isSnowballsEnabled(): bool
     {
         if (GameSettings::getInstance()->snowballs) {
@@ -49,6 +65,9 @@ class API
         return false;
     }
 
+    /**
+     * @return bool
+     */
     public static function isLeapEnabled(): bool
     {
         if (GameSettings::getInstance()->leap) {
@@ -57,6 +76,9 @@ class API
         return false;
     }
 
+    /**
+     * @return bool
+     */
     public static function isDoubleJumpEnabled(): bool
     {
         if (GameSettings::getInstance()->doublejump) {

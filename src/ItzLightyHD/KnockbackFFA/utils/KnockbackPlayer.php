@@ -4,7 +4,7 @@ namespace ItzLightyHD\KnockbackFFA\utils;
 
 use ItzLightyHD\KnockbackFFA\event\PlayerDoubleJumpEvent;
 use ItzLightyHD\KnockbackFFA\listeners\EssentialsListener;
-use ItzLightyHD\KnockbackFFA\Loader;
+use ItzLightyHD\KnockbackFFA\Utils;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerJumpEvent;
@@ -12,30 +12,34 @@ use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\PlayerAuthInputPacket;
-use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\network\mcpe\protocol\types\PlayerAuthInputFlags;
-use pocketmine\player\Player;
 use pocketmine\Server;
+
 use function microtime;
 
-class KnockbackPlayer implements Listener
+final class KnockbackPlayer implements Listener
 {
-
     /** @var self $instance */
     protected static KnockbackPlayer $instance;
+    /** @var array<string> */
     public array $lastDmg = [];
+    /** @var array<int|string> */
     public array $killstreak = [];
+    /** @var array<float> */
     public array $jump_queue = [];
+    /** @var array<float> */
     public array $double_jump_queue = [];
-    /** @var Loader $plugin */
-    private Loader $plugin;
 
-    public function __construct(Loader $plugin)
+    public function __construct()
     {
-        $this->plugin = $plugin;
         self::$instance = $this;
     }
 
+    /**
+     * @param PlayerJoinEvent $event
+     * @return void
+     * @priority HIGH
+     */
     public function onJoin(PlayerJoinEvent $event): void
     {
         $player = $event->getPlayer();
@@ -46,16 +50,28 @@ class KnockbackPlayer implements Listener
             EssentialsListener::$cooldown[$player->getName()] = 0;
         }
         if ($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
-            $lobbyWorld = GameSettings::getInstance()->lobby_world;
-            $player->teleport(Server::getInstance()->getWorldManager()->getWorldByName($lobbyWorld)?->getSpawnLocation());
+            $lobbyWorld = Server::getInstance()->getWorldManager()->getWorldByName(GameSettings::getInstance()->lobby_world);
+            if ($lobbyWorld !== null) {
+                $player->teleport($lobbyWorld->getSpawnLocation());
+            } else {
+                $player->teleport(Server::getInstance()->getWorldManager()->getDefaultWorld()?->getSpawnLocation());
+            }
         }
     }
 
+    /**
+     * @return self
+     */
     public static function getInstance(): self
     {
         return self::$instance;
     }
 
+    /**
+     * @param PlayerQuitEvent $event
+     * @return void
+     * @priority HIGH
+     */
     public function onQuit(PlayerQuitEvent $event): void
     {
         $player = $event->getPlayer();
@@ -63,30 +79,50 @@ class KnockbackPlayer implements Listener
         unset($this->lastDmg[$name], $this->killstreak[$name], EssentialsListener::$cooldown[$name]);
         foreach (Server::getInstance()->getOnlinePlayers() as $p) {
             $world = $p->getWorld()->getFolderName();
-            if ($world === GameSettings::getInstance()->world && isset($this->lastDmg[$name])) {
+            if (isset($this->lastDmg[$name]) && $world === GameSettings::getInstance()->world) {
                 // $this->lastDmg[$p->getName()] === $name;
                 $this->lastDmg[$name] = "none";
             }
         }
     }
 
+    /**
+     * @param PlayerJumpEvent $event
+     * @return void
+     * @priority HIGH
+     */
     public function onPlayerJump(PlayerJumpEvent $event): void
     {
-        if (!GameSettings::getInstance()->doublejump) return;
+        if (!GameSettings::getInstance()->doublejump) {
+            return;
+        }
         $player = $event->getPlayer();
-        if ($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) $this->jump_queue[$player->getName()] = microtime(true);
+        if ($player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
+            $this->jump_queue[$player->getName()] = microtime(true);
+        }
     }
 
+    /**
+     * @param DataPacketReceiveEvent $event
+     * @return void
+     * @priority MONITOR
+     */
     public function onDataPacketReceive(DataPacketReceiveEvent $event): void
     {
-        if (!GameSettings::getInstance()->doublejump) return;
+        if (!GameSettings::getInstance()->doublejump) {
+            return;
+        }
         $player = $event->getOrigin()->getPlayer();
-        if($player == null) return;
+        if ($player === null) {
+            return;
+        }
         $ev = new PlayerDoubleJumpEvent($player);
         $ev->call();
-        if ($ev->isCancelled()) return;
+        if ($ev->isCancelled()) {
+            return;
+        }
         $packet = $event->getPacket();
-        if ($player === null || !$packet instanceof PlayerAuthInputPacket || !$packet->hasFlag(PlayerAuthInputFlags::JUMP_DOWN) || !isset($this->jump_queue[$player->getName()]) || microtime(true) - $this->jump_queue[$player->getName()] < 0.05 || (isset($this->double_jump_queue[$player->getName()]) && microtime(true) - $this->jump_queue[$player->getName()] < 0.3)) {
+        if (!$packet instanceof PlayerAuthInputPacket || !$packet->hasFlag(PlayerAuthInputFlags::JUMP_DOWN) || !isset($this->jump_queue[$player->getName()]) || microtime(true) - $this->jump_queue[$player->getName()] < 0.05 || (isset($this->double_jump_queue[$player->getName()]) && microtime(true) - $this->jump_queue[$player->getName()] < 0.3)) {
             return;
         }
         if (!isset(EssentialsListener::$cooldown[$player->getName()])) {
@@ -99,22 +135,10 @@ class KnockbackPlayer implements Listener
             $dx = $directionvector->getX();
             $dz = $directionvector->getZ();
             $player->setMotion(new Vector3($dx, 1, $dz));
-            $this->playSound("mob.enderdragon.flap", $player);
+            Utils::playSound("mob.enderdragon.flap", $player);
             EssentialsListener::$cooldown[$player->getName()] = time() + 10;
         } else {
             $player->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cWait §e" . (10 - ((time() + 10) - EssentialsListener::$cooldown[$player->getName()])) . "§c seconds before using your leap/double jump again.");
         }
-    }
-
-    public function playSound(string $soundName, ?Player $player): void
-    {
-        $pk = new PlaySoundPacket();
-        $pk->soundName = $soundName;
-        $pk->x = $player?->getLocation()->getX();
-        $pk->y = $player?->getLocation()->getY();
-        $pk->z = $player?->getLocation()->getZ();
-        $pk->volume = 500;
-        $pk->pitch = 1;
-        Server::getInstance()->broadcastPackets($player?->getWorld()->getPlayers(), [$pk]);
     }
 }

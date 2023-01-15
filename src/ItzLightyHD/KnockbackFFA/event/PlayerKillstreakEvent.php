@@ -8,8 +8,9 @@ use pocketmine\player\Player;
 
 class PlayerKillstreakEvent extends Event
 {
-
+    /** @var Loader */
     protected Loader $plugin;
+    /** @var Player */
     protected Player $player;
 
     public function __construct(Player $player)
@@ -18,14 +19,19 @@ class PlayerKillstreakEvent extends Event
         $this->player = $player;
     }
 
+    /**
+     * @return Loader
+     */
     public function getPlugin(): Loader
     {
         return $this->plugin;
     }
 
+    /**
+     * @return Player
+     */
     public function getPlayer(): Player
     {
         return $this->player;
     }
-
 }
