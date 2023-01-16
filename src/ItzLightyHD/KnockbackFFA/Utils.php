@@ -22,7 +22,10 @@ final class Utils
         $yy = $player->getWorld()->getSafeSpawn()->getY();
         $zz = $player->getWorld()->getSafeSpawn()->getZ();
         $sr = GameSettings::getInstance()->getConfig()->get("protection-radius");
-        return !(abs($xx - $x) < $sr && abs($yy - $y) < $sr && abs($zz - $z) < $sr);
+        if ((abs($xx - $x) < $sr && abs($yy - $y) < $sr && abs($zz - $z) < $sr)) {
+            return false;
+        }
+        return true;
     }
 
     /**
