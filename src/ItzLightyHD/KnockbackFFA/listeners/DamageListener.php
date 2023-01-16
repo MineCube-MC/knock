@@ -138,7 +138,7 @@ class DamageListener implements Listener
             $player->setHealth(20);
             $player->getHungerManager()->setSaturation(20);
             if ($damager instanceof Player) {
-                if (Utils::canTakeDamage($player)) {
+                if (!Utils::canTakeDamage($player)) {
                     $damager->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou can't hit the players here!");
                     $event->cancel();
                     return;
@@ -175,7 +175,7 @@ class DamageListener implements Listener
             $event->setBaseDamage(0);
             $player->setHealth(20);
             $player->getHungerManager()->setSaturation(20);
-            if (Utils::canTakeDamage($player)) {
+            if (!Utils::canTakeDamage($player)) {
                 $event->cancel();
                 $damager->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou can't hit the players here!");
                 return;

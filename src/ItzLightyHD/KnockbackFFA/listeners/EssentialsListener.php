@@ -81,7 +81,7 @@ class EssentialsListener implements Listener
     public function onEntityShootBow(EntityShootBowEvent $event): void
     {
         $entity = $event->getEntity();
-        if (($entity instanceof Player) && Utils::canTakeDamage($entity) && $entity->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
+        if (($entity instanceof Player) && !Utils::canTakeDamage($entity) && $entity->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
             $event->cancel();
             $entity->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou can't use that item here!");
         }
@@ -95,7 +95,7 @@ class EssentialsListener implements Listener
     public function onItemUse(PlayerItemUseEvent $event): void
     {
         $player = $event->getPlayer();
-        if (Utils::canTakeDamage($player) && ($event->getItem()->getId() === ItemIds::SNOWBALL) && $player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
+        if (!Utils::canTakeDamage($player) && ($event->getItem()->getId() === ItemIds::SNOWBALL) && $player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
             $event->cancel();
             $player->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou can't use that item here!");
         }
