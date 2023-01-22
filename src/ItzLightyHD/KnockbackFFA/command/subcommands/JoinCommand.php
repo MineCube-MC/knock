@@ -12,12 +12,17 @@ use pocketmine\world\World;
 
 class JoinCommand extends BaseSubCommand
 {
-
     public function __construct(Loader $plugin)
     {
         parent::__construct($plugin, "join", "Join the minigame", []);
     }
 
+    /**
+     * @param CommandSender $sender
+     * @param string $aliasUsed
+     * @param array $args
+     * @return void
+     */
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
         if (!$sender instanceof Player) {
@@ -32,9 +37,10 @@ class JoinCommand extends BaseSubCommand
         }
     }
 
+    /**
+     * @return void
+     */
     protected function prepare(): void
     {
-
     }
-
 }

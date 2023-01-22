@@ -10,9 +10,8 @@ use pocketmine\item\enchantment\VanillaEnchantments;
 use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
 
-class KnockbackKit
+final class KnockbackKit
 {
-
     public function __construct(Player $player)
     {
         KnockbackPlayer::getInstance()->killstreak[strtolower($player->getName())] = 0;

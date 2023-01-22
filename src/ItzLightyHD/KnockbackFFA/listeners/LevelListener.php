@@ -4,7 +4,6 @@ namespace ItzLightyHD\KnockbackFFA\listeners;
 
 use ItzLightyHD\KnockbackFFA\event\GameJoinEvent;
 use ItzLightyHD\KnockbackFFA\event\GameQuitEvent;
-use ItzLightyHD\KnockbackFFA\Loader;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackKit;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
@@ -16,18 +15,19 @@ use pocketmine\player\Player;
 
 class LevelListener implements Listener
 {
-
     /** @var self $instance */
     protected static LevelListener $instance;
-    /** @var Loader $plugin */
-    private Loader $plugin;
 
-    public function __construct(Loader $plugin)
+    public function __construct()
     {
-        $this->plugin = $plugin;
         self::$instance = $this;
     }
 
+    /**
+     * @param ProjectileHitBlockEvent $event
+     * @return void
+     * @priority HIGH
+     */
     public function onProjectileHitBlock(ProjectileHitBlockEvent $event): void
     {
         $entity = $event->getEntity();
@@ -36,11 +36,19 @@ class LevelListener implements Listener
         }
     }
 
+    /**
+     * @return self
+     */
     public static function getInstance(): self
     {
         return self::$instance;
     }
 
+    /**
+     * @param EntityTeleportEvent $event
+     * @return void
+     * @priority HIGH
+     */
     public function onEntityTeleport(EntityTeleportEvent $event): void
     {
         $player = $event->getEntity();

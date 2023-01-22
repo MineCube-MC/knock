@@ -8,9 +8,11 @@ use pocketmine\player\Player;
 
 class PlayerKillEvent extends Event
 {
-
+    /** @var Loader */
     protected Loader $plugin;
+    /** @var Player */
     protected Player $player;
+    /** @var Player */
     protected Player $target;
 
     public function __construct(Player $player, Player $target)
@@ -20,19 +22,27 @@ class PlayerKillEvent extends Event
         $this->target = $target;
     }
 
+    /**
+     * @return Loader
+     */
     public function getPlugin(): Loader
     {
         return $this->plugin;
     }
 
+    /**
+     * @return Player
+     */
     public function getPlayer(): Player
     {
         return $this->player;
     }
 
+    /**
+     * @return Player
+     */
     public function getTarget(): Player
     {
         return $this->target;
     }
-
 }

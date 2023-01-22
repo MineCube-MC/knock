@@ -16,12 +16,17 @@ use pocketmine\world\World;
 
 class SettingsCommand extends BaseSubCommand
 {
-
     public function __construct(Loader $plugin)
     {
         parent::__construct($plugin, "settings", "Customize the minigame directly from the game", []);
     }
 
+    /**
+     * @param CommandSender $sender
+     * @param string $aliasUsed
+     * @param array $args
+     * @return void
+     */
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
         if (!$sender instanceof Player) {
@@ -31,17 +36,21 @@ class SettingsCommand extends BaseSubCommand
         $this->customizeGame($sender);
     }
 
+    /**
+     * @param Player $player
+     * @return void
+     */
     public function customizeGame(Player $player): void
     {
         $form = new CustomForm(function (Player $player, $data) {
             if ($data === null) {
                 return;
             }
-            
             $ev = new SettingsChangeEvent($player);
             $ev->call();
-            if ($ev->isCancelled()) return;
-
+            if ($ev->isCancelled()) {
+                return;
+            }
             if ($data[1]) {
                 GameSettings::getInstance()->massive_knockback = true;
             } else {
@@ -67,10 +76,10 @@ class SettingsCommand extends BaseSubCommand
             } else {
                 GameSettings::getInstance()->doublejump = false;
             }
-            GameSettings::getInstance()->enchant_level = intval($data[6]);
-            GameSettings::getInstance()->knockback_level = intval($data[7]);
-            GameSettings::getInstance()->speed_level = intval($data[8]);
-            GameSettings::getInstance()->jump_boost_level = intval($data[9]);
+            GameSettings::getInstance()->enchant_level = (int)$data[6];
+            GameSettings::getInstance()->knockback_level = (int)$data[7];
+            GameSettings::getInstance()->speed_level = (int)$data[8];
+            GameSettings::getInstance()->jump_boost_level = (int)$data[9];
             $this->reloadGame(GameSettings::getInstance()->world);
         });
         $form->setTitle(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§8Settings");
@@ -87,6 +96,10 @@ class SettingsCommand extends BaseSubCommand
         $player->sendForm($form);
     }
 
+    /**
+     * @param string $world
+     * @return void
+     */
     public function reloadGame(string $world): void
     {
         if (Server::getInstance()->getWorldManager()->getWorldByName($world) instanceof World) {
@@ -97,9 +110,11 @@ class SettingsCommand extends BaseSubCommand
         }
     }
 
+    /**
+     * @return void
+     */
     protected function prepare(): void
     {
         $this->setPermission("knockbackffa.customize");
     }
-
 }

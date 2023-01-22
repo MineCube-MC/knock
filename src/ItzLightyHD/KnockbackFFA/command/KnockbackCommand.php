@@ -12,7 +12,7 @@ use pocketmine\command\CommandSender;
 
 class KnockbackCommand extends BaseCommand
 {
-
+    /** @var Loader */
     protected $plugin;
 
     public function __construct(Loader $plugin)
@@ -21,11 +21,20 @@ class KnockbackCommand extends BaseCommand
         parent::__construct($plugin, "kbffa", "Play an amazing sumo FFA minigame", ["knock"]);
     }
 
+    /**
+     * @param CommandSender $sender
+     * @param string $aliasUsed
+     * @param array $args
+     * @return void
+     */
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
         $this->sendUsage();
     }
 
+    /**
+     * @return void
+     */
     protected function prepare(): void
     {
         $this->registerSubCommand(new JoinCommand($this->plugin));
