@@ -1,22 +1,34 @@
 {
-    "name": "itzlightyhd/knock",
+    "name": "imlighty/knock",
     "description": "The classic and fully customizable minigame fun to play for PocketMine-MP.",
     "type": "library",
     "require-dev": {
-        "pocketmine/pocketmine-mp": "4.*",
-        "cortexpe/commando": "dev-master"
+        "pocketmine/pocketmine-mp": "^5.0.0",
+        "cortexpe/commando": "dev-PM5"
     },
     "license": "MIT",
     "authors": [
         {
-            "name": "ItzLightyHD",
-            "email": "lightybusiness@outlook.com"
+            "name": "ImLighty",
+            "email": "imlighty@apexie.dev"
         }
     ],
     "repositories": [
         {
           "type": "vcs",
-          "url": "https://github.com/pmmp/PocketMine-MP.git"
+          "url": "https://github.com/ACM-PocketMine-MP/Commando/"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "muqsit/simplepackethandler",
+                "version": "0.1.0",
+                "source": {
+                    "url": "https://github.com/Muqsit/SimplePacketHandler",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
         }
     ],
     "require": {}

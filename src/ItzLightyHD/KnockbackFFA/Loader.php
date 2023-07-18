@@ -10,7 +10,6 @@ use ItzLightyHD\KnockbackFFA\listeners\EssentialsListener;
 use ItzLightyHD\KnockbackFFA\listeners\LevelListener;
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
 use ItzLightyHD\KnockbackFFA\utils\KnockbackPlayer;
-use JackMD\UpdateNotifier\UpdateNotifier;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\world\World;
@@ -37,8 +36,6 @@ final class Loader extends PluginBase
         new GameSettings();
         // Loads the arena that is written in the folder and upgrades it to the PM 4 world format
         $this->getServer()->getWorldManager()->loadWorld(GameSettings::getInstance()->world, true);
-        // Checking for a new update (new system)
-        UpdateNotifier::checkUpdate($this->getDescription()->getName(), $this->getDescription()->getVersion());
         // Register the packet hooker for Commando (command framework)
         if (!PacketHooker::isRegistered()) {
             PacketHooker::register($this);

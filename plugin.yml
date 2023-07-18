@@ -1,8 +1,13 @@
 name: KnockbackFFA
 main: ItzLightyHD\KnockbackFFA\Loader
-api: 4.0.0
-version: 1.6.2-beta
-author: ItzLightyHD
+api: 5.0.0
+version: 1.0.0
+authors:
+  - ItzLightyHD
+  - OwoNico
+  - MBG
 permissions:
   knockbackffa.customize:
     default: op
+  knockbackffa.player:
+    default: true

@@ -15,7 +15,7 @@ class KillsCommand extends BaseSubCommand
 {
     public function __construct(Loader $plugin)
     {
-        parent::__construct($plugin, "kills", "Get the kills of an online player", []);
+        parent::__construct("kills", "Get the kills of an online player", []);
     }
 
     /**
@@ -48,6 +48,8 @@ class KillsCommand extends BaseSubCommand
      */
     protected function prepare(): void
     {
+        $this->setPermission("knockbackffa.player");
+
         $this->registerArgument(0, new RawStringArgument("player", false));
     }
 }

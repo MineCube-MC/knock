@@ -18,6 +18,8 @@ class KnockbackCommand extends BaseCommand
     public function __construct(Loader $plugin)
     {
         $this->plugin = $plugin;
+        $this->setPermission("knockbackffa.player");
+
         parent::__construct($plugin, "kbffa", "Play an amazing sumo FFA minigame", ["knock"]);
     }
 

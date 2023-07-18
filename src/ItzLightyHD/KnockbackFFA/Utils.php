@@ -3,6 +3,7 @@
 namespace ItzLightyHD\KnockbackFFA;
 
 use ItzLightyHD\KnockbackFFA\utils\GameSettings;
+use pocketmine\network\mcpe\NetworkBroadcastUtils;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\player\Player;
 use pocketmine\Server;
@@ -42,6 +43,6 @@ final class Utils
         $pk->z = $player->getLocation()->getZ();
         $pk->volume = 500;
         $pk->pitch = 1;
-        Server::getInstance()->broadcastPackets($player->getWorld()->getPlayers(), [$pk]);
+        NetworkBroadcastUtils::broadcastPackets($player->getWorld()->getPlayers(), [$pk]);
     }
 }

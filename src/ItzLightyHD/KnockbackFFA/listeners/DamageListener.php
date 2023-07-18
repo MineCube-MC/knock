@@ -15,7 +15,7 @@ use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;
-use pocketmine\item\ItemIds;
+use pocketmine\item\ItemTypeIds;
 use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
 use pocketmine\Server;
@@ -148,7 +148,7 @@ class DamageListener implements Listener
                     return;
                 }
                 KnockbackPlayer::getInstance()->lastDmg[strtolower($player->getName())] = strtolower($damager->getName());
-                if (GameSettings::getInstance()->massive_knockback && $damager->getInventory()->getItemInHand()->getId() === ItemIds::STICK) {
+                if (GameSettings::getInstance()->massive_knockback && $damager->getInventory()->getItemInHand()->getTypeId() === ItemTypeIds::STICK) {
                     $x = $damager->getDirectionVector()->x;
                     $z = $damager->getDirectionVector()->z;
                     $player->knockBack($x, $z, 0.6);

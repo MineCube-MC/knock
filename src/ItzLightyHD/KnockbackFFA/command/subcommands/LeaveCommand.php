@@ -14,7 +14,7 @@ class LeaveCommand extends BaseSubCommand
 {
     public function __construct(Loader $plugin)
     {
-        parent::__construct($plugin, "leave", "Leave the minigame", []);
+        parent::__construct("leave", "Leave the minigame", []);
     }
 
     /**
@@ -42,5 +42,6 @@ class LeaveCommand extends BaseSubCommand
      */
     protected function prepare(): void
     {
+        $this->setPermission("knockbackffa.player");
     }
 }

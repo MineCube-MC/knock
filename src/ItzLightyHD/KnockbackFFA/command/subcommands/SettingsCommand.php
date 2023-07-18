@@ -18,7 +18,7 @@ class SettingsCommand extends BaseSubCommand
 {
     public function __construct(Loader $plugin)
     {
-        parent::__construct($plugin, "settings", "Customize the minigame directly from the game", []);
+        parent::__construct("settings", "Customize the minigame directly from the game", []);
     }
 
     /**

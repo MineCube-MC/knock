@@ -11,7 +11,7 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDropItemEvent;
 use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\event\player\PlayerItemUseEvent;
-use pocketmine\item\ItemIds;
+use pocketmine\item\ItemTypeIds;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 
@@ -95,7 +95,7 @@ class EssentialsListener implements Listener
     public function onItemUse(PlayerItemUseEvent $event): void
     {
         $player = $event->getPlayer();
-        if (!Utils::canTakeDamage($player) && ($event->getItem()->getId() === ItemIds::SNOWBALL) && $player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
+        if (!Utils::canTakeDamage($player) && ($event->getItem()->getTypeId() === ItemTypeIds::SNOWBALL) && $player->getWorld()->getFolderName() === GameSettings::getInstance()->world) {
             $event->cancel();
             $player->sendMessage(GameSettings::getInstance()->getConfig()->get("prefix") . "§r§cYou can't use that item here!");
         }
