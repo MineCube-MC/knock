@@ -6,8 +6,8 @@
 <p align="center">
         <a href="https://poggit.pmmp.io/p/KnockbackFFA"><img src="https://poggit.pmmp.io/shield.state/KnockbackFFA" alt="Poggit Release"></a>
 	<a href="https://github.com/ApexieDevelopment/Knock/releases"><img src="https://img.shields.io/github/v/tag/ApexieDevelopment/Knock?label=release&logo=github" alt="GitHub tag (latest release)" /></a>
-	<a href="https://discord.gg/a75eNEAtrt"><img src="https://img.shields.io/discord/736977303539810365?label=discord&color=7289DA&logo=discord" alt="Discord" /></a>
-        <a href="https://ko-fi.com/K3K25X9S1"><img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Ko-Fi"></a>
+	<a href="https://dsc.gg/apexie"><img src="https://img.shields.io/discord/736977303539810365?label=discord&color=7289DA&logo=discord" alt="Discord" /></a>
+        <a href="https://ko-fi.com/imlighty"><img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Ko-Fi"></a>
 </p>
 
 ## Features
