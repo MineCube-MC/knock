@@ -4,7 +4,7 @@
     "type": "library",
     "require-dev": {
         "pocketmine/pocketmine-mp": "^5.0.0",
-        "cortexpe/commando": "dev-PM5"
+        "cortexpe/commando": "dev-master"
     },
     "license": "MIT",
     "authors": [
