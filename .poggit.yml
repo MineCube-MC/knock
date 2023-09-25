@@ -9,9 +9,9 @@ projects:
     lint:
       phpstan: false
     libs:
-    - src: "CortexPE/Commando/Commando"
+    - src: "ACM-PocketMine-MP/Commando/Commando"
       branch: "master"
-      version: ^3.2.0
+      version: ^3.2.1
     - src: "WolvesFortress/FormAPI/libFormAPI"
       version: ^1.3.0
     - src: "ifera-mc/UpdateNotifier/UpdateNotifier"
