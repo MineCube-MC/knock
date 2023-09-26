@@ -41,7 +41,7 @@ final class Loader extends PluginBase
             PacketHooker::register($this);
         }
         // Registers the "kbffa" command
-        $this->getServer()->getCommandMap()->register($this->getName(), new KnockbackCommand($this));
+        $this->getServer()->getCommandMap()->register("kbffa", new KnockbackCommand($this, "kbffa", "join kbffa arena!!"));
         // Check for world existance (if the world doesn't exist, it will instantly disable the plugin)
         if (!($this->getServer()->getWorldManager()->getWorldByName(GameSettings::getInstance()->world) instanceof World)) {
             $this->getLogger()->alert("The world specified for the arena in the configuration file doesn't exist. Change it or make sure it has the correct name!");
