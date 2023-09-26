@@ -1,10 +1,8 @@
 name: KnockbackFFA
 main: ItzLightyHD\KnockbackFFA\Loader
-api: 5.3.0
+api: 5.6.0
 version: 1.7.0
 authors:
-  - ItzLightyHD
-  - OwoNico
   - MBG
 permissions:
   knockbackffa.customize:
