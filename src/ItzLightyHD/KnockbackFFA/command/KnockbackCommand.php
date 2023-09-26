@@ -3,6 +3,7 @@
 namespace ItzLightyHD\KnockbackFFA\command;
 
 use CortexPE\Commando\BaseCommand;
+use CortexPE\Commando\args\RawStringArgument;
 use ItzLightyHD\KnockbackFFA\command\subcommands\JoinCommand;
 use ItzLightyHD\KnockbackFFA\command\subcommands\KillsCommand;
 use ItzLightyHD\KnockbackFFA\command\subcommands\LeaveCommand;
@@ -15,12 +16,17 @@ class KnockbackCommand extends BaseCommand
     /** @var Loader */
     protected $plugin;
 
-    public function __construct(Loader $plugin)
+    public function __construct(Loader $plugin, string $name, string $description)
     {
         $this->plugin = $plugin;
         $this->setPermission("knockbackffa.player");
 
-        parent::__construct($plugin, "kbffa", "Play an amazing sumo FFA minigame", ["knock"]);
+       parent::__construct($plugin, $name, $description);
+    }
+
+    public function getPermission(): string
+    {
+        return $this->getPermission();
     }
 
     /**
@@ -31,7 +37,7 @@ class KnockbackCommand extends BaseCommand
      */
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
-        $this->sendUsage();
+        $this->sendUsage($sender);
     }
 
     /**
@@ -39,9 +45,11 @@ class KnockbackCommand extends BaseCommand
      */
     protected function prepare(): void
     {
-        $this->registerSubCommand(new JoinCommand($this->plugin));
-        $this->registerSubCommand(new LeaveCommand($this->plugin));
-        $this->registerSubCommand(new KillsCommand($this->plugin));
-        $this->registerSubCommand(new SettingsCommand($this->plugin));
+        $this->setPermission("knockbackffa.player");
+
+        $this->registerSubCommand(new JoinCommand($this->plugin, "join", "Join the Knockback FFA"));
+        $this->registerSubCommand(new LeaveCommand($this->plugin, "leave", "Leave the Knockback FFA"));
+        $this->registerSubCommand(new KillsCommand($this->plugin, "kills", "View your kills in the Knockback FFA"));
+        $this->registerSubCommand(new SettingsCommand($this->plugin, "settings", "Adjust settings for the Knockback FFA"));
     }
 }
