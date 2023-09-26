@@ -9,7 +9,7 @@ projects:
     lint:
       phpstan: false
     libs:
-    - src: "ACM-PocketMine-MP/Commando/Commando"
+    - src: "CortexPe/Commando/Commando"
       branch: "master"
       version: ^3.2.1
     - src: "WolvesFortress/FormAPI/libFormAPI"
