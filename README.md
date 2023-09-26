@@ -1,11 +1,11 @@
 <p align="center">
-	<a href="https://github.com/ApexieDevelopment/Knock"><img src="https://raw.githubusercontent.com/ApexieDevelopment/Knock/main/assets/Logo.png"></img></a><br>
+	<a href="https://github.com/MineCube-MC/Knock"><img src="https://raw.githubusercontent.com/MineCube-MC/Knock/main/assets/Logo.png"></img></a><br>
 	<b>The classic and fully customizable minigame fun to play for PocketMine-MP API 5.</b>
 </p>
 
 <p align="center">
         <a href="https://poggit.pmmp.io/p/KnockbackFFA"><img src="https://poggit.pmmp.io/shield.state/KnockbackFFA" alt="Poggit Release"></a>
-	<a href="https://github.com/ApexieDevelopment/Knock/releases"><img src="https://img.shields.io/github/v/tag/ApexieDevelopment/Knock?label=release&logo=github" alt="GitHub tag (latest release)" /></a>
+	<a href="https://github.com/MineCube-MC/Knock/releases"><img src="https://img.shields.io/github/v/tag/MineCube-MC/Knock?label=release&logo=github" alt="GitHub tag (latest release)" /></a>
 	<a href="https://discord.gg/jNRC76kpVC"><img src="https://img.shields.io/discord/736977303539810365?label=discord&color=7289DA&logo=discord" alt="Discord" /></a>
 </p>
 
