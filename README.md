@@ -6,8 +6,7 @@
 <p align="center">
         <a href="https://poggit.pmmp.io/p/KnockbackFFA"><img src="https://poggit.pmmp.io/shield.state/KnockbackFFA" alt="Poggit Release"></a>
 	<a href="https://github.com/ApexieDevelopment/Knock/releases"><img src="https://img.shields.io/github/v/tag/ApexieDevelopment/Knock?label=release&logo=github" alt="GitHub tag (latest release)" /></a>
-	<a href="https://dsc.gg/apexie"><img src="https://img.shields.io/discord/736977303539810365?label=discord&color=7289DA&logo=discord" alt="Discord" /></a>
-        <a href="https://ko-fi.com/imlighty"><img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Ko-Fi"></a>
+	<a href="https://discord.gg/jNRC76kpVC"><img src="https://img.shields.io/discord/736977303539810365?label=discord&color=7289DA&logo=discord" alt="Discord" /></a>
 </p>
 
 ## Features
@@ -33,14 +32,14 @@ The plugin itself it's easy to setup. Follow the steps:
   - kills -> Check the kills of a player (can be used in console too)
   - settings -> Customize the minigame settings directly in-game
 ### Permissions
-- knockbackffa.customize -> Customize the minigame settings
+- knockbackffa.customize -> Customize the minigame settings ( Default : OP )
 
 ## Troubleshooting
 ### Why the plugin won't work fine on X fork of PocketMine?
 Why are you even using a PocketMine fork?
 
 ## Developers and API
-The documentation is in my [GitHub Wiki](https://github.com/ApexieDevelopment/Knock/wiki): it explains how to use the API to check some settings or to get the kills and the last damager, how to edit some in-game settings and even how to listen for the plugin events.
+The documentation is in my [GitHub Wiki](https://github.com/MineCube-MC/Knock/wiki): it explains how to use the API to check some settings or to get the kills and the last damager, how to edit some in-game settings and even how to listen for the plugin events.
 
-## Credits
-- [MBG1337](https://github.com/MBG1337) and [Moqi_](https://github.com/OwoNico) for updating the plugin to PM5
+## Support
+https://discord.gg/jNRC76kpVC
